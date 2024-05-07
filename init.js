@@ -90,18 +90,90 @@
   ];
   db.employee.insertMany(employees);
 
+  const vehicles = [
+    { _id: 'U-BC-123', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 60, brand: 'BMW', model: '3er', ensurance: 120.00, original_price: 40000.00, milage: 20000, date_of_purchase: "15-06-2020" },
+    { _id: 'V-DE-456', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 110, brand: 'Volvo', model: 'FH', ensurance: 220.00, original_price: 260000.00, milage: 50000, date_of_purchase: "12-12-2021" },
+    { _id: 'NN-OP-123', fueltype: 'Diesel', vehicletype: 'Transporter', dailyrate: 75, brand: 'Mercedes', model: 'Sprinter', ensurance: 150.00, original_price: 35000.00, milage: 0, date_of_purchase: "01-01-2024" },
+    { _id: 'W-FG-789', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 70, brand: 'Mercedes', model: 'C-Klasse', ensurance: 140.00, original_price: 45000.00, milage: 30000, date_of_purchase: "01-01-2022" },
+    { _id: 'X-HI-321', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 120, brand: 'MAN', model: 'TGX', ensurance: 240.00, original_price: 280000.00, milage: 60000, date_of_purchase: "01-05-2023" },
+    { _id: 'OO-PQ-456', fueltype: 'Diesel', vehicletype: 'Transporter', dailyrate: 80, brand: 'Volkswagen', model: 'Crafter', ensurance: 160.00, original_price: 36000.00, milage: 0, date_of_purchase: "01-05-2024" },
+    { _id: 'Y-JK-654', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 80, brand: 'Audi', model: 'A6', ensurance: 160.00, original_price: 50000.00, milage: 0, date_of_purchase: "01-09-2023" },
+    { _id: 'Z-LM-987', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 130, brand: 'Scania', model: 'R-Serie', ensurance: 260.00, original_price: 300000.00, milage: 0, date_of_purchase: "01-01-2024" },
+    { _id: 'PP-QR-789', fueltype: 'Diesel', vehicletype: 'Transporter', dailyrate: 85, brand: 'Ford', model: 'Transit', ensurance: 170.00, original_price: 37000.00, milage: 0, date_of_purchase: "01-09-2024" },
+    { _id: 'AA-NP-123', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 90, brand: 'BMW', model: '5er', ensurance: 180.00, original_price: 55000.00, milage: 0, date_of_purchase: "01-05-2024" },
+    { _id: 'BB-QR-456', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 140, brand: 'Mercedes', model: 'Arocs', ensurance: 280.00, original_price: 320000.00, milage: 0, date_of_purchase: "01-09-2024" },
+    { _id: 'QQ-RS-321', fueltype: 'Diesel', vehicletype: 'Transporter', dailyrate: 90, brand: 'Peugeot', model: 'Boxer', ensurance: 180.00, original_price: 38000.00, milage: 0, date_of_purchase: "01-01-2025" },
+    { _id: 'CC-ST-789', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 100, brand: 'Audi', model: 'A8', ensurance: 200.00, original_price: 60000.00, milage: 0, date_of_purchase: "01-01-2025" },
+    { _id: 'DD-UV-321', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 150, brand: 'Volvo', model: 'FM', ensurance: 300.00, original_price: 340000.00, milage: 0, date_of_purchase: "01-05-2025" },
+    { _id: 'RR-ST-654', fueltype: 'Diesel', vehicletype: 'Transporter', dailyrate: 95, brand: 'Renault', model: 'Master', ensurance: 190.00, original_price: 39000.00, milage: 0, date_of_purchase: "01-05-2025" },
+    { _id: 'EE-WX-123', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 60, brand: 'BMW', model: '3er', ensurance: 120.00, original_price: 40000.00, milage: 20000, date_of_purchase: "15-06-2020" },
+    { _id: 'FF-YZ-456', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 110, brand: 'Volvo', model: 'FH', ensurance: 220.00, original_price: 260000.00, milage: 50000, date_of_purchase: "12-12-2021" },
+    { _id: 'SS-TU-987', fueltype: 'Diesel', vehicletype: 'Transporter', dailyrate: 100, brand: 'Iveco', model: 'Daily', ensurance: 200.00, original_price: 40000.00, milage: 0, date_of_purchase: "01-09-2025" },
+    { _id: 'GG-AB-789', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 70, brand: 'Mercedes', model: 'C-Klasse', ensurance: 140.00, original_price: 45000.00, milage: 30000, date_of_purchase: "01-01-2022" },
+    { _id: 'HH-CD-321', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 120, brand: 'MAN', model: 'TGX', ensurance: 240.00, original_price: 280000.00, milage: 60000, date_of_purchase: "01-05-2023" },
+    { _id: 'TT-UV-123', fueltype: 'Diesel', vehicletype: 'Transporter', dailyrate: 105, brand: 'Citroen', model: 'Jumper', ensurance: 210.00, original_price: 41000.00, milage: 0, date_of_purchase: "01-01-2025" },
+    { _id: 'II-EF-654', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 80, brand: 'Audi', model: 'A6', ensurance: 160.00, original_price: 50000.00, milage: 0, date_of_purchase: "01-09-2023" },
+    { _id: 'JJ-GH-987', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 130, brand: 'Scania', model: 'R-Serie', ensurance: 260.00, original_price: 300000.00, milage: 0, date_of_purchase: "01-01-2024" },
+    { _id: 'UU-VW-456', fueltype: 'Diesel', vehicletype: 'Transporter', dailyrate: 110, brand: 'Fiat', model: 'Ducato', ensurance: 220.00, original_price: 42000.00, milage: 100000, date_of_purchase: "01-05-2023" },
+    { _id: 'KK-IJ-123', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 90, brand: 'BMW', model: '5er', ensurance: 180.00, original_price: 55000.00, milage: 0, date_of_purchase: "01-05-2024" },
+    { _id: 'LL-KL-456', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 140, brand: 'Mercedes', model: 'Arocs', ensurance: 280.00, original_price: 320000.00, milage: 0, date_of_purchase: "01-09-2024" },
+    { _id: 'VV-WX-789', fueltype: 'Diesel', vehicletype: 'Transporter', dailyrate: 115, brand: 'Nissan', model: 'NV400', ensurance: 230.00, original_price: 43000.00, milage: 96000, date_of_purchase: "01-09-2022" },
+    { _id: 'MM-MN-789', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 100, brand: 'Audi', model: 'A8', ensurance: 200.00, original_price: 60000.00, milage: 0, date_of_purchase: "01-01-2025" },
+    { _id: 'NN-OP-321', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 150, brand: 'Volvo', model: 'FM', ensurance: 300.00, original_price: 340000.00, milage: 0, date_of_purchase: "01-05-2025" },
+    { _id: 'WW-XY-321', fueltype: 'Diesel', vehicletype: 'Transporter', dailyrate: 120, brand: 'Opel', model: 'Movano', ensurance: 240.00, original_price: 44000.00, milage: 0, date_of_purchase: "01-01-2024" },
+    { _id: 'OO-PQ-123', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 60, brand: 'BMW', model: '3er', ensurance: 120.00, original_price: 40000.00, milage: 20000, date_of_purchase: "15-06-2020" },
+    { _id: 'PP-QR-456', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 110, brand: 'Volvo', model: 'FH', ensurance: 220.00, original_price: 260000.00, milage: 50000, date_of_purchase: "12-12-2021" },
+    { _id: 'XX-YZ-456', fueltype: 'Diesel', vehicletype: 'Transporter', dailyrate: 125, brand: 'Hyundai', model: 'H350', ensurance: 250.00, original_price: 45000.00, milage: 5000, date_of_purchase: "01-05-2024" },
+    { _id: 'QQ-RS-789', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 70, brand: 'Mercedes', model: 'C-Klasse', ensurance: 140.00, original_price: 45000.00, milage: 30000, date_of_purchase: "01-01-2022" },
+    { _id: 'RR-ST-321', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 120, brand: 'MAN', model: 'TGX', ensurance: 240.00, original_price: 280000.00, milage: 60000, date_of_purchase: "01-05-2023" },
+    { _id: 'YY-ZA-789', fueltype: 'Diesel', vehicletype: 'Transporter', dailyrate: 130, brand: 'Toyota', model: 'Proace', ensurance: 260.00, original_price: 46000.00, milage: 123000, date_of_purchase: "01-09-2022" },
+    { _id: 'SS-TU-654', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 80, brand: 'Audi', model: 'A6', ensurance: 160.00, original_price: 50000.00, milage: 0, date_of_purchase: "01-09-2023" },
+    { _id: 'TT-UV-987', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 130, brand: 'Scania', model: 'R-Serie', ensurance: 260.00, original_price: 300000.00, milage: 0, date_of_purchase: "01-01-2024" },
+    { _id: 'ZZ-AB-321', fueltype: 'Diesel', vehicletype: 'Transporter', dailyrate: 135, brand: 'Peugeot', model: 'Expert', ensurance: 270.00, original_price: 47000.00, milage: 12000, date_of_purchase: "01-01-2024" },
+    { _id: 'UU-VW-123', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 90, brand: 'BMW', model: '5er', ensurance: 180.00, original_price: 55000.00, milage: 0, date_of_purchase: "01-05-2024" },
+    { _id: 'VV-WX-456', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 140, brand: 'Mercedes', model: 'Arocs', ensurance: 280.00, original_price: 320000.00, milage: 0, date_of_purchase: "01-09-2024" },
+    { _id: 'AA-BC-654', fueltype: 'Diesel', vehicletype: 'Transporter', dailyrate: 140, brand: 'Citroen', model: 'Jumpy', ensurance: 280.00, original_price: 48000.00, milage: 0, date_of_purchase: "01-05-2023" },
+    { _id: 'WW-XY-789', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 100, brand: 'Audi', model: 'A8', ensurance: 200.00, original_price: 60000.00, milage: 0, date_of_purchase: "01-01-2025" },
+    { _id: 'XX-YZ-321', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 150, brand: 'Volvo', model: 'FM', ensurance: 300.00, original_price: 340000.00, milage: 0, date_of_purchase: "01-05-2025" },
+    { _id: 'BB-CD-987', fueltype: 'Diesel', vehicletype: 'Transporter', dailyrate: 145, brand: 'Fiat', model: 'Talento', ensurance: 290.00, original_price: 49000.00, milage: 0, date_of_purchase: "01-09-2023" },
+    { _id: 'OO-PQ-123', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 60, brand: 'BMW', model: '3er', ensurance: 120.00, original_price: 40000.00, milage: 20000, date_of_purchase: "15-06-2020" },
+    { _id: 'PP-QR-456', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 110, brand: 'Volvo', model: 'FH', ensurance: 220.00, original_price: 260000.00, milage: 50000, date_of_purchase: "12-12-2021" },
+    { _id: 'CC-DE-123', fueltype: 'Diesel', vehicletype: 'Transporter', dailyrate: 150, brand: 'Renault', model: 'Trafic', ensurance: 300.00, original_price: 50000.00, milage: 0, date_of_purchase: "01-01-2024" },
+    { _id: 'QQ-RS-789', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 70, brand: 'Mercedes', model: 'C-Klasse', ensurance: 140.00, original_price: 45000.00, milage: 30000, date_of_purchase: "01-01-2022" },
+    { _id: 'RR-ST-321', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 120, brand: 'MAN', model: 'TGX', ensurance: 240.00, original_price: 280000.00, milage: 60000, date_of_purchase: "01-05-2023" },
+    { _id: 'DD-EF-456', fueltype: 'Diesel', vehicletype: 'Transporter', dailyrate: 155, brand: 'Nissan', model: 'NV300', ensurance: 310.00, original_price: 51000.00, milage: 0, date_of_purchase: "01-05-2020" },
+    { _id: 'SS-TU-654', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 80, brand: 'Audi', model: 'A6', ensurance: 160.00, original_price: 50000.00, milage: 0, date_of_purchase: "01-09-2023" },
+    { _id: 'TT-UV-987', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 130, brand: 'Scania', model: 'R-Serie', ensurance: 260.00, original_price: 300000.00, milage: 0, date_of_purchase: "01-01-2024" },
+    { _id: 'EE-FG-789', fueltype: 'Diesel', vehicletype: 'Transporter', dailyrate: 160, brand: 'Opel', model: 'Vivaro', ensurance: 320.00, original_price: 52000.00, milage: 0, date_of_purchase: "01-09-2021" },
+    { _id: 'UU-VW-123', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 90, brand: 'BMW', model: '5er', ensurance: 180.00, original_price: 55000.00, milage: 0, date_of_purchase: "01-05-2024" },
+    { _id: 'VV-WX-456', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 140, brand: 'Mercedes', model: 'Arocs', ensurance: 280.00, original_price: 320000.00, milage: 0, date_of_purchase: "01-09-2024" },
+    { _id: 'FF-GH-321', fueltype: 'Diesel', vehicletype: 'Transporter', dailyrate: 165, brand: 'Vauxhall', model: 'Vivaro', ensurance: 330.00, original_price: 53000.00, milage: 0, date_of_purchase: "01-01-2022" },
+    { _id: 'WW-XY-789', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 100, brand: 'Audi', model: 'A8', ensurance: 200.00, original_price: 60000.00, milage: 0, date_of_purchase: "01-01-2025" },
+    { _id: 'XX-YZ-321', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 150, brand: 'Volvo', model: 'FM', ensurance: 300.00, original_price: 340000.00, milage: 0, date_of_purchase: "01-05-2025" },
+    { _id: 'GG-HI-654', fueltype: 'Diesel', vehicletype: 'Transporter', dailyrate: 170, brand: 'Iveco', model: 'Daily', ensurance: 340.00, original_price: 54000.00, milage: 0, date_of_purchase: "01-05-2023" },
+    { _id: 'II-JK-123', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 60, brand: 'BMW', model: '3er', ensurance: 120.00, original_price: 40000.00, milage: 20000, date_of_purchase: "15-06-2020" },
+    { _id: 'JJ-KL-456', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 110, brand: 'Volvo', model: 'FH', ensurance: 220.00, original_price: 260000.00, milage: 50000, date_of_purchase: "12-12-2021" },
+    { _id: 'HH-IJ-987', fueltype: 'Diesel', vehicletype: 'Transporter', dailyrate: 175, brand: 'Mercedes', model: 'Vito', ensurance: 350.00, original_price: 55000.00, milage: 0, date_of_purchase: "01-09-2019" },
+    { _id: 'KK-LM-789', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 70, brand: 'Mercedes', model: 'C-Klasse', ensurance: 140.00, original_price: 45000.00, milage: 30000, date_of_purchase: "01-01-2022" },
+    { _id: 'LL-MN-321', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 120, brand: 'MAN', model: 'TGX', ensurance: 240.00, original_price: 280000.00, milage: 60000, date_of_purchase: "01-05-2023" },
+    { _id: 'II-JK-123', fueltype: 'Diesel', vehicletype: 'Transporter', dailyrate: 180, brand: 'Volkswagen', model: 'Transporter', ensurance: 360.00, original_price: 56000.00, milage: 0, date_of_purchase: "01-01-2016" },
+    { _id: 'MM-NO-654', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 80, brand: 'Audi', model: 'A6', ensurance: 160.00, original_price: 50000.00, milage: 0, date_of_purchase: "01-09-2023" }
+    // Add more vehicle documents here... Milage ändern. Sehr oft 0 Obwohl Fahrzeug schon länger vorhanden ist
+  ];
+  db.vehicle.insertMany(vehicles);
+
   const centrals = [
-    { _id: 1, name: 'Zentrale Hamburg', location: 'Flughafen', streetname: 'Herberstraße 20', region: 'Hamburg', zipcode: '20359', rent: 1000.00 , employees: [1,2,3,4,5,6] },
-    { _id: 2, name: 'Zentrale Berlin', location: 'Bahnhof', streetname: 'Bahnhofstraße 1', region: 'Berlin', zipcode: '10115', rent: 1200.00, employees: [7,8,9,10,11,12] },
-    { _id: 3, name: 'Zentrale München', location: 'Innenstadt', streetname: 'Marienplatz 8', region: 'München', zipcode: '80331', rent: 3000.00, employees: [13,14,15,16,17,18] },
-    { _id: 4, name: 'Zentrale Köln', location: 'Industriegebiet', streetname: 'Ettore-Bugatti-Straße 1', region: 'Köln', zipcode: '51149', rent: 4500.00, employees: [19,20,21,22,23,24] },
-    { _id: 5, name: 'Zentrale Frankfurt', location: 'Ländlich', streetname: 'Am Burghof 55', region: 'Frankfurt', zipcode: '60437', rent: 2000.00, employees: [25,26,27,28,29,30] },
-    { _id: 6, name: 'Zentrale Stuttgart', location: 'Hafen', streetname: 'Unterländer Straße 66-68', region: 'Stuttgart', zipcode: '70435', rent: 3500.00, employees: [31,32,33,34,35,36] },
-    { _id: 7, name: 'Zentrale Düsseldorf', location: 'Flughafen', streetname: 'Flughafenstraße 120', region: 'Düsseldorf', zipcode: '40474', rent: 4000.00, employees: [37,38,39,40,41,42] },
-    { _id: 8, name: 'Zentrale Leipzig', location: 'Bahnhof', streetname: 'Willy-Brandt-Platz 5', region: 'Leipzig', zipcode: '04109', rent: 2500.00, employees: [43,44,45,46,47,48] },
-    { _id: 9, name: 'Zentrale Dresden', location: 'Innenstadt', streetname: 'Altmarkt 10', region: 'Dresden', zipcode: '01067', rent: 3000.00, employees: [49,50,51,52,53,54] },
-    { _id: 10, name: 'Zentrale Hannover', location: 'Industriegebiet', streetname: 'Heinkelstraße 8', region: 'Hannover', zipcode: '30827', rent: 4500.00, employees: [55,56,57,58,59,60] },
-    { _id: 11, name: 'Zentrale Nürnberg', location: 'Ländlich', streetname: 'Am Wegfeld 60', region: 'Nürnberg', zipcode: '90427', rent: 2000.00, employees: [61,62,63,64,65,66] }
+    { _id: 1, name: 'Zentrale Hamburg', location: 'Flughafen', streetname: 'Herberstraße 20', region: 'Hamburg', zipcode: '20359', rent: 1000.00 , employees: [1,2,3,4,5,6], vehicles: ['M-XY-789', 'D-EF-321', 'K-LM-654', 'S-NP-987', 'NN-OP-123'] },
+    { _id: 2, name: 'Zentrale Berlin', location: 'Bahnhof', streetname: 'Bahnhofstraße 1', region: 'Berlin', zipcode: '10115', rent: 1200.00, employees: [7,8,9,10,11,12], vehicles: ['H-QR-123', 'F-ST-456', 'N-UV-789', 'P-WX-321', 'OO-PQ-456'] },
+    { _id: 3, name: 'Zentrale München', location: 'Innenstadt', streetname: 'Marienplatz 8', region: 'München', zipcode: '80331', rent: 3000.00, employees: [13,14,15,16,17,18], vehicles: ['R-YZ-654', 'T-AB-987', 'U-BC-123', 'V-DE-456', 'PP-QR-789'] },
+    { _id: 4, name: 'Zentrale Köln', location: 'Industriegebiet', streetname: 'Ettore-Bugatti-Straße 1', region: 'Köln', zipcode: '51149', rent: 4500.00, employees: [19,20,21,22,23,24], vehicles: ['K-LM-654', 'S-NP-987', 'H-QR-123', 'F-ST-456', 'QQ-RS-321'] },
+    { _id: 5, name: 'Zentrale Frankfurt', location: 'Ländlich', streetname: 'Am Burghof 55', region: 'Frankfurt', zipcode: '60437', rent: 2000.00, employees: [25,26,27,28,29,30], vehicles: ['N-UV-789', 'P-WX-321', 'R-YZ-654', 'T-AB-987', 'RR-ST-654'] },
+    { _id: 6, name: 'Zentrale Stuttgart', location: 'Hafen', streetname: 'Unterländer Straße 66-68', region: 'Stuttgart', zipcode: '70435', rent: 3500.00, employees: [31,32,33,34,35,36], vehicles: ['U-BC-123', 'V-DE-456', 'K-LM-654', 'S-NP-987', 'SS-TU-987'] },
+    { _id: 7, name: 'Zentrale Düsseldorf', location: 'Flughafen', streetname: 'Flughafenstraße 120', region: 'Düsseldorf', zipcode: '40474', rent: 4000.00, employees: [37,38,39,40,41,42], vehicles: ['H-QR-123', 'F-ST-456', 'N-UV-789', 'P-WX-321', 'TT-UV-123'] },
+    { _id: 8, name: 'Zentrale Leipzig', location: 'Bahnhof', streetname: 'Willy-Brandt-Platz 5', region: 'Leipzig', zipcode: '04109', rent: 2500.00, employees: [43,44,45,46,47,48], vehicles: ['R-YZ-654', 'T-AB-987', 'U-BC-123', 'V-DE-456', 'UU-VW-456'] },
+    { _id: 9, name: 'Zentrale Dresden', location: 'Innenstadt', streetname: 'Altmarkt 10', region: 'Dresden', zipcode: '01067', rent: 3000.00, employees: [49,50,51,52,53,54], vehicles: ['K-LM-654', 'S-NP-987', 'H-QR-123', 'F-ST-456', 'VV-WX-789']},
+    { _id: 10, name: 'Zentrale Hannover', location: 'Industriegebiet', streetname: 'Heinkelstraße 8', region: 'Hannover', zipcode: '30827', rent: 4500.00, employees: [55,56,57,58,59,60], vehicles: ['N-UV-789', 'P-WX-321', 'R-YZ-654', 'T-AB-987', 'WW-XY-321'] },
+    { _id: 11, name: 'Zentrale Nürnberg', location: 'Ländlich', streetname: 'Am Wegfeld 60', region: 'Nürnberg', zipcode: '90427', rent: 2000.00, employees: [61,62,63,64,65,66], vehicles: ['U-BC-123', 'V-DE-456', 'K-LM-654', 'S-NP-987', 'XX-YZ-456'] }
     // Add more central documents here...
   ];
   db.central.insertMany(centrals);
@@ -121,37 +193,33 @@
   ];
   db.performance_report.insertMany(performance_reports);
 
-  const vehicles = [
-    { numberplate: 'HH-AB-123', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 50, brand: 'Audi', model: 'A4', ensurance: 100, original_price: 30000, date_of_purchase: new Date(), centralID: 1 },
-    { numberplate: 'B-CD-456', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 100, brand: 'Mercedes', model: 'Actros', ensurance: 200, original_price: 50000, date_of_purchase: new Date(), centralID: 2 },
-    // Add more vehicle documents here...
-  ];
-  db.vehicle.insertMany(vehicles);
-
   const vehicle_costs = [
-    { date: new Date(), costs: 500, typ: 'Reinigung', vehicle: 'HH-AB-123' },
-    { date: new Date(), costs: 1000, typ: 'Reparatur', vehicle: 'B-CD-456' },
-    // Add more vehicle_costs documents here...
+    { date: '02-12-2020', costs: 500.00, vehicle_cost_types: 1, vehicles: 'U-BC-123' },
+    { date: '15-02-2023', costs: 1000.00, vehicle_cost_types: 2, vehicles: 'V-DE-456' },
+    // Add more vehicle_costs documents here... Yakup
   ];
   db.vehicle_costs.insertMany(vehicle_costs);
 
   const vehicle_cost_types = [
-    { type: 'Reinigung'},
-    { type: 'Reparatur'},
-    // Add more vehicle_cost_types documents here...
+    { id_: 1, type: 'Reinigung'},
+    { id_: 2, type: 'Reparatur'},
+    { id_: 3, type: 'Totalschaden'},
+    { id_: 4, type: 'Instandsetzung'},
+    { id_: 5, type: 'Aufbereitung'},
+    // Add more vehicle_cost_types documents here... Yakup
   ];
   db.vehicle_cost_types.insertMany(vehicle_cost_types);
 
-  const rentalagreements = [
-    { orderNr: 'RA123', recieves: new Date(), returned: new Date(), discount: 10, vehicle: 'HH-AB-123', centralID: 1 },
-    { orderNr: 'RA456', recieves: new Date(), returned: new Date(), discount: 15, vehicle: 'B-CD-456', centralID: 2 },
-    // Add more rentalagreement documents here...
-  ];
-  db.rentalagreement.insertMany(rentalagreements);
-
   const customers = [
-    { customerID: 1, lastname: 'Schmidt', firstname: 'Peter', streetname: 'Herberstraße 20', region: 'Hamburg', zipcode: '20359', company: '', rentalagreement: 'RA123' },
-    { customerID: 2, lastname: 'Meyer', firstname: 'Anna', streetname: 'Bahnhofstraße 1', region: 'Berlin', zipcode: '10115', company: 'ABC GmbH', rentalagreement: 'RA456' },
-    // Add more customer documents here...
+    { customerID: 1, lastname: 'Schmidt', firstname: 'Peter', streetname: 'Herberstraße 20', region: 'Hamburg', zipcode: '20359', company: ''},
+    { customerID: 2, lastname: 'Meyer', firstname: 'Anna', streetname: 'Bahnhofstraße 1', region: 'Berlin', zipcode: '10115', company: 'ABC GmbH' },
+    // Add more customer documents here... Yakup
   ];
   db.customer.insertMany(customers);
+
+  const rentalagreements = [
+    { _id: 'RA123', recieves: "20-06-2020", returned: "30-06-2020", discount: 10, vehicles: 'U-BC-123', centrals: 1 , customers: 1},
+    { _id: 'RA456', recieves: "15-12-2021", returned: "15-01-2022", discount: 15, vehicles: 'V-DE-456', centrals: 2 , customers: 2},
+    // Add more rentalagreement documents here... Yakup
+  ];
+  db.rentalagreement.insertMany(rentalagreements);
