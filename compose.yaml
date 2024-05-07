@@ -32,8 +32,10 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
       MONGO_INITDB_DATABASE: carrentalmanagement
+#    command: bash /docker-entrypoint-initdb.d/start.sh
     volumes:
-      - ./init(WIP).js:/docker-entrypoint-initdb.d/init.js:ro
+      - ./init.js:/docker-entrypoint-initdb.d/init.js:ro
+#      - ./start.sh:/docker-entrypoint-initdb.d/start.sh:ro
 
   mongo-express:
     image: mongo-express
