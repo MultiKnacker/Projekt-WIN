@@ -196,6 +196,24 @@
  const vehicle_costs = [
   { date: '02-12-2020', costs: 500.00, vehicle_cost_types: 1, vehicles: 1 },
   { date: '15-02-2023', costs: 1000.00, vehicle_cost_types: 2, vehicles: 2 },
+  { date: '01-10-2023', costs: 750.00, vehicle_cost_types: 3, vehicles: 7 },
+  { date: '29-10-2023', costs: 140.00, vehicle_cost_types: 4, vehicles: 22 },
+  { date: '11-09-2023', costs: 850.00, vehicle_cost_types: 2, vehicles: 37 },
+  { date: '24-01-2024', costs: 900.00, vehicle_cost_types: 3, vehicles: 24 },
+  { date: '15-02-2024', costs: 700.00, vehicle_cost_types: 1, vehicles: 39 },
+  { date: '14-05-2024', costs: 950.00, vehicle_cost_types: 2, vehicles: 54 },
+  { date: '01-05-2024', costs: 800.00, vehicle_cost_types: 3, vehicles: 30 },
+  { date: '12-06-2024', costs: 140.00, vehicle_cost_types: 4, vehicles: 45 },
+  { date: '25-05-2024', costs: 1100.00, vehicle_cost_types: 2, vehicles: 60 },
+  { date: '23-09-2024', costs: 700.00, vehicle_cost_types: 3, vehicles: 11 },
+  { date: '21-10-2024', costs: 550.00, vehicle_cost_types: 1, vehicles: 26 },
+  { date: '01-09-2024', costs: 1200.00, vehicle_cost_types: 2, vehicles: 41 },
+  { date: '01-01-2025', costs: 140.00, vehicle_cost_types: 4, vehicles: 13 },
+  { date: '13-02-2025', costs: 500.00, vehicle_cost_types: 1, vehicles: 28 },
+  { date: '01-01-2025', costs: 1000.00, vehicle_cost_types: 2, vehicles: 43 },
+  { date: '06-05-2025', costs: 900.00, vehicle_cost_types: 3, vehicles: 15 },
+  { date: '26-06-2025', costs: 140.00, vehicle_cost_types: 4, vehicles: 34 },
+  { date: '11-06-2025', costs: 1100.00, vehicle_cost_types: 2, vehicles: 59 }
   // Add more vehicle_costs documents here... Yakup
  ];
  db.vehicle_costs.insertMany(vehicle_costs);
@@ -203,20 +221,60 @@
  const vehicle_cost_types = [
    { _id: 1, type: 'Reinigung'},
    { _id: 2,type: 'Reparatur'},
-   // Add more vehicle_cost_types documents here...
+   { _id: 3,type: 'Steuern'},
+   { _id: 4,type: 'TÜV'},
+   // Add more vehicle_cost_types documents here... Yakup
  ];
  db.vehicle_cost_types.insertMany(vehicle_cost_types);
 
  const rentalagreements = [
   { _id: 1, recieves: "20-06-2020", returned: "30-06-2020", discount: 10, vehicles: 1, centrals: 1 , customers: 1},
   { _id: 2, recieves: "15-12-2021", returned: "15-01-2022", discount: 15, vehicles: 2, centrals: 2 , customers: 2},
-   // Add more rentalagreement documents here...
+  { _id: 3, recieves: "10-08-2020", returned: "18-08-2020", discount: 20, vehicles: 3, centrals: 3, customers: 3 },
+  { _id: 4, recieves: "05-05-2022", returned: "10-05-2022", discount: 25, vehicles: 4, centrals: 4, customers: 4 },
+  { _id: 5, recieves: "20-10-2023", returned: "21-10-2023", discount: 15, vehicles: 5, centrals: 5, customers: 5 },
+  { _id: 6, recieves: "12-03-2021", returned: "15-03-2021", discount: 30, vehicles: 6, centrals: 6, customers: 6 },
+  { _id: 7, recieves: "08-11-2020", returned: "15-11-2020", discount: 10, vehicles: 7, centrals: 7, customers: 7 },
+  { _id: 8, recieves: "25-07-2022", returned: "27-07-2022", discount: 5, vehicles: 8, centrals: 8, customers: 8 },
+  { _id: 9, recieves: "03-12-2023", returned: "10-12-2023", discount: 20, vehicles: 9, centrals: 9, customers: 9 },
+  { _id: 10, recieves: "14-09-2021", returned: "15-09-2021", discount: 15, vehicles: 10, centrals: 10, customers: 10 },
+  { _id: 11, recieves: "18-06-2020", returned: "22-06-2020", discount: 30, vehicles: 11, centrals: 1, customers: 11 },
+  { _id: 12, recieves: "09-04-2022", returned: "15-04-2022", discount: 10, vehicles: 12, centrals: 2, customers: 12 },
+  { _id: 13, recieves: "25-10-2023", returned: "28-10-2023", discount: 25, vehicles: 13, centrals: 3, customers: 13 },
+  { _id: 14, recieves: "02-01-2021", returned: "10-01-2021", discount: 15, vehicles: 14, centrals: 4, customers: 14 },
+  { _id: 15, recieves: "17-07-2022", returned: "25-07-2022", discount: 5, vehicles: 15, centrals: 5, customers: 15 },
+  { _id: 16, recieves: "29-11-2023", returned: "05-12-2023", discount: 20, vehicles: 16, centrals: 6, customers: 16 },
+  { _id: 17, recieves: "08-09-2020", returned: "10-09-2020", discount: 30, vehicles: 17, centrals: 7, customers: 17 },
+  { _id: 18, recieves: "03-06-2021", returned: "08-06-2021", discount: 10, vehicles: 18, centrals: 8, customers: 18 },
+  { _id: 19, recieves: "22-03-2022", returned: "25-03-2022", discount: 25, vehicles: 19, centrals: 9, customers: 19 },
+  { _id: 20, recieves: "12-12-2023", returned: "18-12-2023", discount: 15, vehicles: 20, centrals: 10, customers: 20 },
+  { _id: 21, recieves: "09-05-2020", returned: "12-05-2020", discount: 5, vehicles: 1, centrals: 1, customers: 21 },
+   // Add more rentalagreement documents here... Yakup
  ];
  db.rentalagreement.insertMany(rentalagreements);
 
  const customers = [
   { _id: 1, lastname: 'Schmidt', firstname: 'Peter', streetname: 'Herberstraße 20', region: 'Hamburg', zipcode: '20359', company: ''},
   { _id: 2, lastname: 'Meyer', firstname: 'Anna', streetname: 'Bahnhofstraße 1', region: 'Berlin', zipcode: '10115', company: 'ABC GmbH' },
-   // Add more customer documents here...
+  { _id: 3, lastname: 'Becker', firstname: 'Julia', streetname: 'Schlossallee 12', region: 'München', zipcode: '80331', company: '' },
+  { _id: 4, lastname: 'Schulz', firstname: 'Michael', streetname: 'Hauptstraße 5', region: 'Hamburg', zipcode: '20095', company: '' },
+  { _id: 5, lastname: 'Hofmann', firstname: 'Lisa', streetname: 'Kaiserplatz 3', region: 'Frankfurt', zipcode: '60313', company: '' },
+  { _id: 6, lastname: 'Wagner', firstname: 'Sarah', streetname: 'Ludwigstraße 8', region: 'Stuttgart', zipcode: '70173', company: '' },
+  { _id: 7, lastname: 'Becker', firstname: 'Andreas', streetname: 'Rathausplatz 7', region: 'Düsseldorf', zipcode: '40213', company: '' },
+  { _id: 8, lastname: 'Schulz', firstname: 'Sophie', streetname: 'Friedrichstraße 10', region: 'Dresden', zipcode: '01067', company: '' },
+  { _id: 9, lastname: 'Fischer', firstname: 'Max', streetname: 'Wilhelmstraße 15', region: 'Hannover', zipcode: '30167', company: '' },
+  { _id: 10, lastname: 'Müller', firstname: 'Laura', streetname: 'Glockengießerstraße 9', region: 'Leipzig', zipcode: '04109', company: '' },
+  { _id: 11, lastname: 'Hartmann', firstname: 'Kevin', streetname: 'Augustusplatz 2', region: 'Dresden', zipcode: '01067', company: '' },
+  { _id: 12, lastname: 'Schneider', firstname: 'Maria', streetname: 'Goethestraße 6', region: 'Stuttgart', zipcode: '70178', company: '' },
+  { _id: 13, lastname: 'Koch', firstname: 'Nina', streetname: 'Königstraße 20', region: 'Hamburg', zipcode: '20457', company: '' },
+  { _id: 14, lastname: 'Bauer', firstname: 'Tim', streetname: 'Marktplatz 4', region: 'München', zipcode: '80331', company: '' },
+  { _id: 15, lastname: 'Hoffmann', firstname: 'Sarah', streetname: 'Schlossstraße 8', region: 'Frankfurt', zipcode: '60313', company: '' },
+  { _id: 16, lastname: 'Schuster', firstname: 'David', streetname: 'Königsallee 5', region: 'Düsseldorf', zipcode: '40212', company: '' },
+  { _id: 17, lastname: 'Neumann', firstname: 'Lena', streetname: 'Marienplatz 3', region: 'Hannover', zipcode: '30159', company: '' },
+  { _id: 18, lastname: 'Schmidt', firstname: 'Jan', streetname: 'Musterstraße 7', region: 'Leipzig', zipcode: '04109', company: '' },
+  { _id: 19, lastname: 'Kühn', firstname: 'Laura', streetname: 'Lindenstraße 14', region: 'Dortmund', zipcode: '44135', company: '' },
+  { _id: 20, lastname: 'Bergmann', firstname: 'Tobias', streetname: 'Neuer Weg 3', region: 'Berlin', zipcode: '10117', company: '' },
+  { _id: 21, lastname: 'Wolf', firstname: 'Sabine', streetname: 'Mühlenweg 6', region: 'Essen', zipcode: '45127', company: '' },
+   // Add more customer documents here... Yakup
  ];
  db.customer.insertMany(customers);
