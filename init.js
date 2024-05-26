@@ -3,7 +3,7 @@
  db.createUser({user: 'webserver', pwd: 'webserver', roles: [ { role: 'readWrite', db: 'carrental' } ] });  
 
  // Create the collections
- const collections = ['keydata', 'performance_report', 'central', 'employee', 'customer', 'rentalagreement', 'vehicle', 'vehicle_costs', 'vehicle_cost_types'];
+ const collections = ['keydata', 'performance_report', 'central', 'employee', 'customer', 'rentalagreement', 'vehicle', 'vehicle_costs', 'vehicle_cost_types', 'sys_admins'];
  collections.forEach(collection => {
    db.createCollection(collection, function(err, res) {
      if (err) throw err;
@@ -278,3 +278,11 @@
    // Add more customer documents here... Yakup
  ];
  db.customer.insertMany(customers);
+
+ const sys_admins = [
+  { _id: 1, username: 'admin', password: '$2y$10$mPPbY3OnHfVKKNCj4Lai9upDyrPBarEM0rB5a2WaISj5hFMeI134m'},
+  { _id: 2, username: 'adminTwo', password: '$2y$10$mPPbY3OnHfVKKNCj4Lai9upDyrPBarEM0rB5a2WaISj5hFMeI134m'}
+ ];
+
+ db.sys_admins.insertMany(sys_admins);
+

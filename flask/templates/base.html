@@ -10,19 +10,20 @@
     {% block head%} {% endblock %}
   </head>
   <body>
-      <div class="header container-fluid row">
-        <nav class="navbar navbar-expand-lg rounded">
-          <div class="container navbar">
-            <a class="navbar-brand rounded justify-content-start" href="#">
-              <img src="{{ url_for('static', filename='/pics/Car_Key.svg') }}" width="50">
-            </a>
+      {% if show_navbar is defined and show_navbar %}
+        <div class="header container-fluid row">
+          <nav class="navbar navbar-expand-lg rounded">
+            <div class="container navbar">
+              <a class="navbar-brand rounded justify-content-start" href="#">
+                <img src="{{ url_for('static', filename='/pics/Car_Key.svg') }}" width="50">
+              </a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                   <li class="nav-item rounded">
-                      <a class="nav-link" href="{{ url_for('location.list_location')}}">Mietstationverwaltung</a>
+                    <a class="nav-link" href="{{ url_for('location.list_location')}}">Mietstationverwaltung</a>
                   </li>
                   <li class="nav-item rounded">
                     <a class="nav-link" href="{{ url_for('management.list_management')}}">Personalverwaltung</a>
@@ -34,13 +35,14 @@
                     <a class="nav-link" href="{{ url_for('performance.list_performance')}}">Performanceberichte</a>
                   </li>
                 </ul>
+              </div>
             </div>
-          </div>
-        </nav>
-      </div>
+          </nav>
+        </div>
+      {% endif %}
     <div class="container">
       {% block body%} {% endblock %}
-      <script src="{{ url_for('static', filename='js/bootstrap/bootstrap.bundle.min.js') }}"></script>
     </div>
+    <script src="{{ url_for('static', filename='js/bootstrap/bootstrap.bundle.min.js') }}"></script>
   </body>
 </html>
