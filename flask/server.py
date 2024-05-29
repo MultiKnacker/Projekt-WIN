@@ -11,6 +11,7 @@ from blueprints.performance import performance_bp
 from blueprints.login import login_bp
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'B8D4C9182BA79F36E2DB532C239A1'
 app.register_blueprint(location_bp)
 app.register_blueprint(management_bp)
 app.register_blueprint(vehicles_bp)
@@ -20,6 +21,7 @@ app.register_blueprint(login_bp)
 client = MongoClient("mongodb://localhost:27017/")
 db = client["carrentalmanagement"]
 users_collection = db["sys_admins"]
+carrrental_collection = db["c"]
 
 @app.route('/')
 def index():

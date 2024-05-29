@@ -34,7 +34,7 @@ def login():
 
         # Login failed
         flash('Invalid username/password', 'error')
-    return render_template('login.html', title='Login', login_form=login_form)
+    return render_template('loginview.html', title='Login', login_form=login_form)
 
 def generate_password_hash(password):
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
