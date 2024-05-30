@@ -21,11 +21,23 @@ app.register_blueprint(login_bp)
 client = MongoClient("mongodb://localhost:27017/")
 db = client["carrentalmanagement"]
 users_collection = db["sys_admins"]
-carrrental_collection = db["c"]
+carrental_collection = db["c"]
 
 @app.route('/')
 def index():
     return render_template('locationview.html')
+
+@app.route('/management')
+def carrental():
+    return  render_template('managementview.html')
+
+@app.route('/performance')
+def performance():
+    render_template('performanceview.html')
+
+@app.route('/vehicle')
+def vehicle():
+    render_template('vehiclesview.html')
 
 @app.errorhandler(404)
 def page_not_found(error):
