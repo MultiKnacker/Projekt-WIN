@@ -25,33 +25,15 @@ if not mongo_uri:
 client = MongoClient(mongo_uri)
 db = client["carrentalmanagement"]
 users_collection = db["sys_admins"]
-carrental_collection = db["c"]
+location_collection = db["central"]
+customer_collection = db["customer"]
+vehicles_collection = db["vehicles"]
+performance_collection = db["performance_report"]
+keydata_collection = db["keydata"]
 
 @app.route('/')
 def index():
     return render_template('loginview.html')
-
-@app.route('/management')
-def carrental():
-    if 'username' not in session:
-        flash('Please log in to access this page.', 'error')
-        return redirect(url_for('login.login'))
-    return render_template('managementview.html')
-
-@app.route('/stations')
-def stations():
-    if 'username' not in session:
-        flash('Please log in to access this page.', 'error')
-        return redirect(url_for('login.login'))
-    return render_template('locationview.html')
-
-@app.route('/performance')
-def performance():
-    return render_template('performanceview.html')
-
-@app.route('/vehicle')
-def vehicle():
-    return render_template('vehiclesview.html')
 
 @app.errorhandler(404)
 def page_not_found(error):

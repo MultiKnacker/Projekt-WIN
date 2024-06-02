@@ -285,8 +285,7 @@
  db.customer.insertMany(customers);
 
  const sys_admins = [
-  { _id: 1, username: 'admin', password: '$2y$10$mPPbY3OnHfVKKNCj4Lai9upDyrPBarEM0rB5a2WaISj5hFMeI134m'},
-  { _id: 2, username: 'adminTwo', password: '$2y$10$mPPbY3OnHfVKKNCj4Lai9upDyrPBarEM0rB5a2WaISj5hFMeI134m'},
+  { _id: 1, username: 'admin', email: 'admin@admin.de', password: '$2y$10$mPPbY3OnHfVKKNCj4Lai9upDyrPBarEM0rB5a2WaISj5hFMeI134m'},
   { _id: 3, username: 'test', email: 'test@test.de', password: '$2b$12$zzb5E8.3KhVZH.M8iXJPeeth21HXABIzXlan88rAT4J1rFmZtr/CK'}
  ];
 
