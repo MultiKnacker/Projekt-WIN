@@ -1,6 +1,11 @@
  // Create the users
  db.createUser({user: 'admin', pwd: 'admin', roles: [ { role: 'dbOwner', db: 'carrental' } ] });
- db.createUser({user: 'webserver', pwd: 'webserver', roles: [ { role: 'readWrite', db: 'carrental' } ] });  
+ db.createUser({user: 'webserver', pwd: 'webserver', roles: [ { role: 'readWrite', db: 'carrental' } ] }); 
+ db.createUser({
+  user: "root",
+  pwd: "example",
+  roles: [{ role: "root", db: "admin" }]
+});
 
  // Create the collections
  const collections = ['keydata', 'performance_report', 'central', 'employee', 'customer', 'rentalagreement', 'vehicle', 'vehicle_costs', 'vehicle_cost_types', 'sys_admins'];
@@ -281,7 +286,8 @@
 
  const sys_admins = [
   { _id: 1, username: 'admin', password: '$2y$10$mPPbY3OnHfVKKNCj4Lai9upDyrPBarEM0rB5a2WaISj5hFMeI134m'},
-  { _id: 2, username: 'adminTwo', password: '$2y$10$mPPbY3OnHfVKKNCj4Lai9upDyrPBarEM0rB5a2WaISj5hFMeI134m'}
+  { _id: 2, username: 'adminTwo', password: '$2y$10$mPPbY3OnHfVKKNCj4Lai9upDyrPBarEM0rB5a2WaISj5hFMeI134m'},
+  { _id: 3, username: 'test', email: 'test@test.de', password: '$2b$12$zzb5E8.3KhVZH.M8iXJPeeth21HXABIzXlan88rAT4J1rFmZtr/CK'}
  ];
 
  db.sys_admins.insertMany(sys_admins);

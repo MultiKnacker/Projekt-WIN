@@ -1,7 +1,5 @@
-#!/usr/bin/env python
 import os
-
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, session, flash
 from pymongo import MongoClient
 
 from blueprints.locations import location_bp
@@ -9,6 +7,7 @@ from blueprints.management import management_bp
 from blueprints.vehicles import vehicles_bp
 from blueprints.performance import performance_bp
 from blueprints.login import login_bp
+from blueprints.register import register_bp
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'B8D4C9182BA79F36E2DB532C239A1'
@@ -17,27 +16,42 @@ app.register_blueprint(management_bp)
 app.register_blueprint(vehicles_bp)
 app.register_blueprint(performance_bp)
 app.register_blueprint(login_bp)
+app.register_blueprint(register_bp)
 
-client = MongoClient("mongodb://localhost:27017/")
+# Use the MONGO_URI environment variable to connect to MongoDB
+mongo_uri = os.environ.get("MONGO_URI")
+if not mongo_uri:
+    raise ValueError("No MONGO_URI environment variable set")
+client = MongoClient(mongo_uri)
 db = client["carrentalmanagement"]
 users_collection = db["sys_admins"]
 carrental_collection = db["c"]
 
 @app.route('/')
 def index():
-    return render_template('locationview.html')
+    return render_template('loginview.html')
 
 @app.route('/management')
 def carrental():
-    return  render_template('managementview.html')
+    if 'username' not in session:
+        flash('Please log in to access this page.', 'error')
+        return redirect(url_for('login.login'))
+    return render_template('managementview.html')
+
+@app.route('/staions')
+def stations():
+    if 'username' not in session:
+        flash('Please log in to access this page.', 'error')
+        return redirect(url_for('login.login'))
+    return render_template('locationview.html')
 
 @app.route('/performance')
 def performance():
-    render_template('performanceview.html')
+    return render_template('performanceview.html')
 
 @app.route('/vehicle')
 def vehicle():
-    render_template('vehiclesview.html')
+    return render_template('vehiclesview.html')
 
 @app.errorhandler(404)
 def page_not_found(error):
@@ -48,4 +62,4 @@ def internal_server_error(error):
     return render_template('error500view.html'), 500
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=os.environ.get("FLASK_SERVER_PORT", 9090), debug=True)
+    app.run(host='0.0.0.0', port=os.environ.get("FLASK_SERVER_PORT", 9091), debug=True)
