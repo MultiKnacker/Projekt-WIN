@@ -38,7 +38,7 @@ def carrental():
         return redirect(url_for('login.login'))
     return render_template('managementview.html')
 
-@app.route('/staions')
+@app.route('/stations')
 def stations():
     if 'username' not in session:
         flash('Please log in to access this page.', 'error')

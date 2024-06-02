@@ -22,7 +22,7 @@ def login():
         if user and bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
             session['username'] = user['username']
             flash('Login successful!', 'success')
-            return redirect(url_for('stations'))
+            return redirect(url_for('location.list_location'))
         else:
             flash('Invalid email or password', 'error')
             return redirect(url_for('login.login'))
