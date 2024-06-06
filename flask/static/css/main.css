@@ -1,3 +1,4 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
 /* Basic colors */
 :root {
     --primary-background-color: #222222; /* Antracite */
@@ -10,6 +11,7 @@
     --success-color: #28a745;  /* Green */
     --warning-color: #ffc107;  /* Yellow */
     --danger-color: #dc3545;   /* Red */
+    --white-font-color: #fcffda;
 
     --alpha_light: 0.95; /* slight Alpha */
     --alpha_heavy: 0.30; /* noticble Alpha*/
@@ -17,12 +19,14 @@
     --font-primary: "Open Sans", sans-serif;
 }
 
-.primary_background_color { color: var(--primary-background-color)}
-.secondary_background-color { color: var(--secondary-background-color);}
-.primary_accent_color { color: var(--primary-accent-color);}
+.primary_background_color { background-color: var(--primary-background-color) !important;}
+.secondary_background-color { background-color: var(--secondary-background-color) !important;}
+.primary_accent_color { background-color: var(--primary-accent-color) !important;}
+.transparent_background{ background-color: transparent !important;}
 .success_color { color: var(--success-color);}
 .warning_color { color: var(--warning-color);}
 .danger_color { color: var(--danger-color);}
+.white_font { color: var(--white-font-color)}
 
 body {
     background-color: var(--primary-background-color_lalpha);
@@ -118,4 +122,48 @@ body {
 
 .shadow-lg {
     box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.4) !important;
+}
+
+/*
+    table design
+ */
+.table {
+    background-color: var(--primary-background-color) !important;
+    margin-top: 20px !important;
+    border-color: var(--primary-background-color) !important;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.table thead {
+    background-color: transparent !important;
+}
+
+.table tbody {
+    background-color: transparent !important;
+}
+
+.table tr {
+    border-radius: 5px !important;
+}
+
+.table th {
+    background-color: transparent !important;
+    color: var(--white-font-color) !important;
+}
+
+.table td {
+    background-color: var(--secondary-background-color) !important;
+}
+
+.table button {
+    background-color: var(--primary-background-color);
+    color: var(--white-font-color);
+    border-radius: 25px;
+    border-color: var(--primary-background-color);
+}
+
+.table button:hover {
+    background-color: var(--primary-background-color_lalpha);
+    background: var(--primary-background-color_halpha);
 }
