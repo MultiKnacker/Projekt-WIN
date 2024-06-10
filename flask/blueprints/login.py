@@ -34,3 +34,5 @@ def logout():
     session.pop('username', None)
     flash('You have been logged out.', 'success')
     return redirect(url_for('index'))
+
+

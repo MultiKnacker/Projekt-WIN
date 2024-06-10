@@ -12,4 +12,5 @@ Flask~=3.0.3
 setuptools~=59.6.0
 flask-login~=0.6.3
 flask-wtf~=1.2.1
+flask-modals~=0.5.1
 bcrypt~=4.1.3

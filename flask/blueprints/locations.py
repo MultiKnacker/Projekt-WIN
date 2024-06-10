@@ -1,6 +1,7 @@
 import os
 
-from flask import Blueprint, render_template, abort, flash, session, redirect, url_for
+from bson import ObjectId
+from flask import Blueprint, render_template, abort, flash, session, redirect, url_for, request, jsonify
 from pymongo import MongoClient
 
 location_bp = Blueprint("location", __name__, template_folder='templates')
@@ -22,4 +23,21 @@ def list_location():
     return redirect(url_for('login.login'))
   show_navbar = True
 
-  return render_template("locationview.html", show_navbar = show_navbar, data=documents)
+  return render_template("location/locationview.html", show_navbar = show_navbar, data=documents)
+
+@location_bp.route('/edit/<location_id>', methods=['GET', 'POST'])
+def edit_location(location_id):
+  selected_location = None
+  if location_id == None:
+    flash('Please select a location.', 'error')
+  for location in documents:
+    if location['_id'] == int(location_id):
+      selected_location = location
+      break
+
+  if request.method == 'GET':
+    # Pre-populate form fields based on selected_location data
+    return render_template('edit_location_modal.html', location=selected_location)
+  elif request.method == 'POST':
+    # ... (existing update logic)
+    return jsonify({'message': 'Location updated successfully!'})

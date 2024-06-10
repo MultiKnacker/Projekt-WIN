@@ -167,3 +167,17 @@ body {
     background-color: var(--primary-background-color_lalpha);
     background: var(--primary-background-color_halpha);
 }
+
+/*
+    modal design
+ */
+
+.modal-header {
+    background-color: var(--primary-background-color) !important;
+    color: var(--font-primary) !important;
+}
+
+.modal-content {
+    background-color: var(--secondary-background-color);
+    color: var(--font-primary) !important;
+}

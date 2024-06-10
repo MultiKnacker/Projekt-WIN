@@ -25,11 +25,6 @@ if not mongo_uri:
 client = MongoClient(mongo_uri)
 db = client["carrentalmanagement"]
 users_collection = db["sys_admins"]
-location_collection = db["central"]
-customer_collection = db["customer"]
-vehicles_collection = db["vehicles"]
-performance_collection = db["performance_report"]
-keydata_collection = db["keydata"]
 
 @app.route('/')
 def index():
