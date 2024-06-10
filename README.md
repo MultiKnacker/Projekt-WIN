@@ -7,6 +7,7 @@
 <h2>Links:</h2>
 - Figma: https://www.figma.com/design/0XoqcNG5A7wpnHiDC8TuSC/Projekt_Allgemeine-Verwaltung?node-id=0-1&t=97yjL4B3DyEHbMxo-0
 - Google Docs: https://drive.google.com/drive/u/0/folders/1xg7LR6c9PpoOfn0XcqUVmC3eqxHQPO7T?ths=true
+- https://trello.com/invite/b/Ccn5OFKR/ATTI3cdee4baf465f483ab6ebacb8b49e2885E7F173B/beta
 <h2> ... explain what it is about ...</h2>
 
 
