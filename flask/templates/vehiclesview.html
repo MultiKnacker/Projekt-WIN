@@ -4,6 +4,37 @@
      <title> Im a Title </title>
 {% endblock %}
 
-{% block body%} 
-    I landed on the vehicles!!!!
+{% block body%}
+<div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Nummerschild</th>
+                <th>Kraftstoff</th>
+                <th>Fahrzeugtyp</th>
+                <th>Mietkosten</th>
+                <th>Marke</th>
+                <th>Modell</th>
+                <th>Versicherung</th>
+                <th>Anschaffungspreis</th>
+                <th>Km-Stand</th>
+                <th>Anschaffungsdatum</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for document in data %}
+            <tr>
+                {% for value in document.values() %}
+                <td >{{ value }}</td>
+                {% endfor %}
+                <td>
+                    <button type="button">Bearbeiten</button>
+                    <button type="button">Kosten hinzufügen</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
