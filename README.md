@@ -21,7 +21,7 @@ Das Team Beta implementiert folgende features:
 ## Dokumentation
 
 ### Auftrag
-- Lastenheft (https://drive.google.com/file/d/1cPGY5iQzR0fAIM5708DHBrwGUbb6ySsf/view?usp=sharing)
+- [Lastenheft] (https://drive.google.com/file/d/1cPGY5iQzR0fAIM5708DHBrwGUbb6ySsf/view?usp=sharing)
 - Projektauftrag (https://docs.google.com/document/d/1YZoERCQjYU2XybpR6xJ8VjK7d944WqLQ/edit?usp=sharing&ouid=100448827405486029461&rtpof=true&sd=true)
 
 ### Protokolle
