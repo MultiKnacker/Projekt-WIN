@@ -13,7 +13,7 @@ client = MongoClient(mongo_uri)
 db = client["carrentalmanagement"]
 locations_collection = db["central"]
 
-cursor = locations_collection.find({}, projection={"employees":0, "vehicles":0}).sort("location_name")
+cursor = locations_collection.find({}, projection={"employees":0, "vehicles":0}).sort("name")
 documents = [document for document in cursor]
 
 @location_bp.route("/locations")
@@ -22,8 +22,19 @@ def list_location():
     flash('Please log in to access this page.', 'error')
     return redirect(url_for('login.login'))
   show_navbar = True
-
   return render_template("location/locationview.html", show_navbar = show_navbar, data=documents)
+
+@location_bp.route("/locations", methods=["GET", "POST"])
+def filter_location():
+  if 'username' not in session:
+    flash('Please log in to access this page.', 'error')
+    return redirect(url_for('login.login'))
+
+  search_term = request.form.get('search')
+  print(search_term)
+  filtered_locations = locations_collection.find({"name": {"$regex": search_term}},  projection={"employees":0, "vehicles":0}).sort("name")
+  show_navbar = True
+  return render_template("location/locationview.html", show_navbar = show_navbar, data=filtered_locations)
 
 @location_bp.route('/edit/<location_id>', methods=['GET', 'POST'])
 def edit_location(location_id):
