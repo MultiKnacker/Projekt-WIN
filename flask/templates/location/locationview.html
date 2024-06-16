@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body%}
-    <div>
+    <div class="container">
         <div>
             <div class="pt-3 d-flex flex-row-reverse">
                 <form class="w-25" action="{{ url_for('location.filter_location') }}" method="POST">
@@ -15,6 +15,21 @@
                     </div>
                 </form>
             </div>
+        {% if alert_type is defined and alert_type == "success"%}
+            {% if alert_message is defined%}
+            <div class="alert alert-success">{{alert_message}}</div>
+            {% else %}
+            <div class="alert alert-success">Successful!!!</div>
+            {% endif %}
+        {% endif %}
+
+        {% if alert_type is defined and alert_type == "warning"%}
+            {% if alert_message is defined%}
+            <div class="alert alert-warning">{{alert_message}}</div>
+            {% else %}
+            <div class="alert alert-warning"> Nix geklappt!!! </div>
+            {% endif %}
+        {% endif %}
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -29,7 +44,7 @@
                     <td >{{ document['_id'] }}</td>
                     <td >{{ document['name'] }}</td>
                     <td >{{ document['zipcode'] }}</td>
-                    <td >{{ document['Ort'] }}</td>
+                    <td >{{ document['region'] }}</td>
                     <td >{{ document['streetname'] }}</td>
                     <td >{{ document['location'] }}</td>
                     <td >{{ document['rent'] }}€</td>
