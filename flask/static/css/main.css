@@ -5,7 +5,7 @@
     --primary-background-color_lalpha: #22222295;
     --primary-background-color_halpha: #22222230;
     --secondary-background-color: #6C757D; /* light Gray */
-    --primary-accent-color: #8540F5; /* Purple */
+    --primary-accent-color: #5a3b8d; /* Purple */
     --primary-accent-color-lalpha: #8540F595;
     --primary-accent-color-halpha: #8540F530;
     --success-color: #28a745;  /* Green */
@@ -71,6 +71,16 @@ body {
 
 .btn-primary:hover {
     background-color: #5a28a1;
+    border-color: #5a28a1;
+}
+
+.btn-secondary {
+    background-color: #4b4b4b;
+    border-color: #5a28a1;
+}
+
+.btn-secondary:hover {
+    background-color: #b8b8b8;
     border-color: #5a28a1;
 }
 
