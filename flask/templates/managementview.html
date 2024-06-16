@@ -34,6 +34,7 @@
                     <th scope="col">Region</th>
                     <th scope="col">Postleitzahl</th>
                     <th scope="col">Gehalt</th>
+                    <th scope="col">Zentrale</th>
                     <th scope="col">Settings</th>
                 </tr>
             </thead>
@@ -48,6 +49,7 @@
                         <td>{{ employee['region'] }}</td>
                         <td>{{ employee['zipcode'] }}</td>
                         <td>{{ employee['monthly_wage'] }}</td>
+                        <td>{{ employee['central_name'] }}</td>
                         <td>
                             <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editModal" data-id="{{ employee['_id'] }}" data-lastname="{{ employee['lastname'] }}" data-firstname="{{ employee['firstname'] }}" data-job="{{ employee['job'] }}" data-streetname="{{ employee['streetname'] }}" data-region="{{ employee['region'] }}" data-zipcode="{{ employee['zipcode'] }}" data-monthly_wage="{{ employee['monthly_wage'] }}" data-central_id="{{ employee.get('central_id', '') }}">
                                 Settings
@@ -70,7 +72,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editModalLabel">Edit Employee</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="edit-form" method="POST" action="{{ url_for('management.edit_employee') }}">
@@ -104,14 +106,16 @@
                             <input type="number" class="form-control" id="edit-monthly_wage" name="monthly_wage" required>
                         </div>
                         <div class="form-group">
-                            <label for="edit-central_id">Central</label>
+                            <label for="edit-central_id">Zentrale</label>
                             <select class="form-control" id="edit-central_id" name="central_id">
                                 {% for central in centrals %}
                                     <option value="{{ central['_id'] }}">{{ central['name'] }}</option>
                                 {% endfor %}
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <div class="d-flex justify-content-end mt-3">
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
                     </form>
                 </div>
             </div>

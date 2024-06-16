@@ -40,6 +40,17 @@ def list_management():
 
     employees = list(employee_collection.find(query))
     centrals = list(central_collection.find())
+
+    # Add central name to each employee by reverse lookup
+    central_map = {}
+    for central in centrals:
+        for emp_id in central.get('employees', []):
+            central_map[str(emp_id)] = central['name']
+    
+    for employee in employees:
+        employee_id = str(employee['_id'])
+        employee['central_name'] = central_map.get(employee_id, 'N/A')
+
     print(f"DEBUG: Retrieved Employees: {employees}")  # Debug print
 
     show_navbar = True
