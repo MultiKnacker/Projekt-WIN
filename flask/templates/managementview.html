@@ -34,6 +34,7 @@
                     <th scope="col">Region</th>
                     <th scope="col">Postleitzahl</th>
                     <th scope="col">Gehalt</th>
+                    <th scope="col">Settings</th>
                 </tr>
             </thead>
             <tbody>
@@ -47,18 +48,101 @@
                         <td>{{ employee['region'] }}</td>
                         <td>{{ employee['zipcode'] }}</td>
                         <td>{{ employee['monthly_wage'] }}</td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editModal" data-id="{{ employee['_id'] }}" data-lastname="{{ employee['lastname'] }}" data-firstname="{{ employee['firstname'] }}" data-job="{{ employee['job'] }}" data-streetname="{{ employee['streetname'] }}" data-region="{{ employee['region'] }}" data-zipcode="{{ employee['zipcode'] }}" data-monthly_wage="{{ employee['monthly_wage'] }}" data-central_id="{{ employee.get('central_id', '') }}">
+                                Settings
+                            </button>
+                        </td>
                     </tr>
                     {% endfor %}
                 {% else %}
                     <tr>
-                        <td colspan="7">No employees found.</td>
+                        <td colspan="8">No employees found.</td>
                     </tr>
                 {% endif %}
             </tbody>
         </table>
     </div>
-    <!-- Debug Information -->
-    <pre>Employees: {{ employees | tojson }}</pre>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Employee</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-form" method="POST" action="{{ url_for('management.edit_employee') }}">
+                        <input type="hidden" id="edit-id" name="id">
+                        <div class="form-group">
+                            <label for="edit-lastname">Nachname</label>
+                            <input type="text" class="form-control" id="edit-lastname" name="lastname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-firstname">Vorname</label>
+                            <input type="text" class="form-control" id="edit-firstname" name="firstname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-job">Job</label>
+                            <input type="text" class="form-control" id="edit-job" name="job" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-streetname">Straße</label>
+                            <input type="text" class="form-control" id="edit-streetname" name="streetname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-region">Region</label>
+                            <input type="text" class="form-control" id="edit-region" name="region" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-zipcode">Postleitzahl</label>
+                            <input type="text" class="form-control" id="edit-zipcode" name="zipcode" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-monthly_wage">Gehalt</label>
+                            <input type="number" class="form-control" id="edit-monthly_wage" name="monthly_wage" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-central_id">Central</label>
+                            <select class="form-control" id="edit-central_id" name="central_id">
+                                {% for central in centrals %}
+                                    <option value="{{ central['_id'] }}">{{ central['name'] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
+<script>
+    $('#editModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('id');
+        var lastname = button.data('lastname');
+        var firstname = button.data('firstname');
+        var job = button.data('job');
+        var streetname = button.data('streetname');
+        var region = button.data('region');
+        var zipcode = button.data('zipcode');
+        var monthly_wage = button.data('monthly_wage');
+        var central_id = button.data('central_id');
+
+        var modal = $(this);
+        modal.find('#edit-id').val(id);
+        modal.find('#edit-lastname').val(lastname);
+        modal.find('#edit-firstname').val(firstname);
+        modal.find('#edit-job').val(job);
+        modal.find('#edit-streetname').val(streetname);
+        modal.find('#edit-region').val(region);
+        modal.find('#edit-zipcode').val(zipcode);
+        modal.find('#edit-monthly_wage').val(monthly_wage);
+        modal.find('#edit-central_id').val(central_id);
+    });
+</script>
 {% endblock %}
