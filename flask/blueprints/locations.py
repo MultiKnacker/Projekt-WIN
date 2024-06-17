@@ -3,6 +3,7 @@ import os
 import pymongo
 from flask import Blueprint, render_template, abort, flash, session, redirect, url_for, request, jsonify
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 
 location_bp = Blueprint("location", __name__, template_folder='templates')
 
@@ -58,7 +59,7 @@ def edit_location(location_id):
     # Pre-populate form fields based on selected_location data
     return render_template('edit_location_modal.html', location=selected_location)
   elif request.method == 'POST':
-      filter_criteria = {'_id': location_id}
+      filter_criteria = {'_id': ObjectId(location_id)}
       retrived_location = location_template(request.form.get('name'),
                                             request.form.get('zipcode'),
                                             request.form.get('region'),
@@ -89,10 +90,10 @@ def edit_location(location_id):
                   alert_String = "No changes detected in location data."
           else:
               alert_type = "warning"
-              alert_String = "Location with ID " + str(location_id) + " not found."
+              alert_String = "Location with ID " + location_id + " not found."
       except pymongo.errors.PyMongoError as e:
           alert_type = "error"
-          alert_String = "An error occurred while updating the location: " + str(e)
+          alert_String = "An error occurred while updating the location: " + e
 
       updated_documents = locations_collection.find({}, projection={"employees": 0, "vehicles": 0}).sort("name")
       return render_template("location/locationview.html",

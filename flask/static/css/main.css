@@ -206,3 +206,15 @@ div.navbar {
     border-radius: 10px;
 }
 
+/*
+    checkbox design
+ */
+
+.checkbox {
+    background-color: var(--primary-accent-color);
+    border-color: var(--primary-background-color);
+}
+
+.checkbox:checked {
+    background-color: #7c4e9c;
+}
