@@ -143,6 +143,12 @@ div.navbar {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
+.nav-link.active {
+    background-color: #7c4e9c; /* Darker purple color */
+    color: rgb(255, 255, 255); /* Ensure the text is readable */
+    border-radius: 10px;
+}
+
 /*
     table design
  */
@@ -189,7 +195,6 @@ div.navbar {
 /*
     modal design
  */
-
 .modal-header {
     background-color: var(--primary-background-color) !important;
     color: var(--font-primary) !important;
@@ -200,16 +205,9 @@ div.navbar {
     color: var(--font-primary) !important;
 }
 
-.nav-link.active {
-    background-color: #7c4e9c; /* Darker purple color */
-    color: rgb(255, 255, 255); /* Ensure the text is readable */
-    border-radius: 10px;
-}
-
 /*
     checkbox design
  */
-
 .checkbox {
     background-color: var(--primary-accent-color);
     border-color: var(--primary-background-color);
@@ -217,4 +215,30 @@ div.navbar {
 
 .checkbox:checked {
     background-color: #7c4e9c;
+    border-color: var(--primary-background-color);
+}
+
+.checkbox:active {
+    border-color: var(--white-font-color);
+}
+
+.checkbox:focus {
+    border-color: var(--white-font-color);
+    box-shadow: 0px 0px 5px 3px #7c4e9c;
+}
+
+/*
+    alert design
+ */
+.custom-alert {
+    position: fixed; /* Ensures alert overlays content */
+    top: 10px;
+    right: 10px;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 2s ease-in-out; /* Transition for smooth fade */
+}
+
+.custom-alert.fade.out {
+    opacity: 0; /* Animate opacity to 0 for fading out */
 }
