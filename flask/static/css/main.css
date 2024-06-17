@@ -130,11 +130,19 @@ div.navbar {
 
 .nav-item {
     background-color: var(--primary-accent-color);
+    border-radius: 10px;
+    padding: 5px 10px;
+    transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.nav-item .nav-link {
+    color: #ffffff !important;
 }
 
 .nav-item:hover {
-    background-color: hsla(0, 0%, 95%, 0.2)
+    background-color: rgba(255, 255, 255, 0.1);
 }
+
 /*
     table design
  */
