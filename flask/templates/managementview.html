@@ -1,7 +1,7 @@
 {%- extends "base.html" %}
 
 {% block head %} 
-     <title>Employee Management</title>
+    <title>Employee Management</title>
 {% endblock %}
 
 {% block body %} 
@@ -23,6 +23,9 @@
             </div>
         </div>
     </form>
+    <div class="d-flex justify-content-end mb-4">
+        <button class="btn btn-success" data-toggle="modal" data-target="#addModal">Add Employee</button>
+    </div>
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
             <thead class="thead-dark">
@@ -66,55 +69,54 @@
         </table>
     </div>
 
-    <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <!-- Add Modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Edit Employee</h5>
+                    <h5 class="modal-title" id="addModalLabel">Add Employee</h5>
                     <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="edit-form" method="POST" action="{{ url_for('management.edit_employee') }}">
-                        <input type="hidden" id="edit-id" name="id">
+                    <form id="add-form" method="POST" action="{{ url_for('management.add_employee') }}">
                         <div class="form-group">
-                            <label for="edit-lastname">Nachname</label>
-                            <input type="text" class="form-control" id="edit-lastname" name="lastname" required>
+                            <label for="add-lastname">Nachname</label>
+                            <input type="text" class="form-control" id="add-lastname" name="lastname" required>
                         </div>
                         <div class="form-group">
-                            <label for="edit-firstname">Vorname</label>
-                            <input type="text" class="form-control" id="edit-firstname" name="firstname" required>
+                            <label for="add-firstname">Vorname</label>
+                            <input type="text" class="form-control" id="add-firstname" name="firstname" required>
                         </div>
                         <div class="form-group">
-                            <label for="edit-job">Job</label>
-                            <input type="text" class="form-control" id="edit-job" name="job" required>
+                            <label for="add-job">Job</label>
+                            <input type="text" class="form-control" id="add-job" name="job" required>
                         </div>
                         <div class="form-group">
-                            <label for="edit-streetname">Straße</label>
-                            <input type="text" class="form-control" id="edit-streetname" name="streetname" required>
+                            <label for="add-streetname">Straße</label>
+                            <input type="text" class="form-control" id="add-streetname" name="streetname" required>
                         </div>
                         <div class="form-group">
-                            <label for="edit-region">Region</label>
-                            <input type="text" class="form-control" id="edit-region" name="region" required>
+                            <label for="add-region">Region</label>
+                            <input type="text" class="form-control" id="add-region" name="region" required>
                         </div>
                         <div class="form-group">
-                            <label for="edit-zipcode">Postleitzahl</label>
-                            <input type="text" class="form-control" id="edit-zipcode" name="zipcode" required>
+                            <label for="add-zipcode">Postleitzahl</label>
+                            <input type="text" class="form-control" id="add-zipcode" name="zipcode" required>
                         </div>
                         <div class="form-group">
-                            <label for="edit-monthly_wage">Gehalt</label>
-                            <input type="number" class="form-control" id="edit-monthly_wage" name="monthly_wage" required>
+                            <label for="add-monthly_wage">Gehalt</label>
+                            <input type="number" class="form-control" id="add-monthly_wage" name="monthly_wage" required>
                         </div>
                         <div class="form-group">
-                            <label for="edit-central_id">Zentrale</label>
-                            <select class="form-control" id="edit-central_id" name="central_id">
+                            <label for="add-central_id">Zentrale</label>
+                            <select class="form-control" id="add-central_id" name="central_id">
                                 {% for central in centrals %}
                                     <option value="{{ central['_id'] }}">{{ central['name'] }}</option>
                                 {% endfor %}
                             </select>
                         </div>
                         <div class="d-flex justify-content-end mt-3">
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="submit" class="btn btn-success">Add Employee</button>
                         </div>
                     </form>
                 </div>
@@ -122,6 +124,68 @@
         </div>
     </div>
 
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Employee</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-form" method="POST" action="{{ url_for('management.edit_employee') }}">
+                    <input type="hidden" id="edit-id" name="id">
+                    <div class="form-group">
+                        <label for="edit-lastname">Nachname</label>
+                        <input type="text" class="form-control" id="edit-lastname" name="lastname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-firstname">Vorname</label>
+                        <input type="text" class="form-control" id="edit-firstname" name="firstname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-job">Job</label>
+                        <input type="text" class="form-control" id="edit-job" name="job" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-streetname">Straße</label>
+                        <input type="text" class="form-control" id="edit-streetname" name="streetname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-region">Region</label>
+                        <input type="text" class="form-control" id="edit-region" name="region" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-zipcode">Postleitzahl</label>
+                        <input type="text" class="form-control" id="edit-zipcode" name="zipcode" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-monthly_wage">Gehalt</label>
+                        <input type="number" class="form-control" id="edit-monthly_wage" name="monthly_wage" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-central_id">Zentrale</label>
+                        <select class="form-control" id="edit-central_id" name="central_id">
+                            {% for central in centrals %}
+                                <option value="{{ central['_id'] }}">{{ central['name'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="d-flex justify-content-end mt-3">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+                <form id="delete-form" method="POST" action="{{ url_for('management.delete_employee') }}" class="mt-2">
+                    <input type="hidden" id="delete-id" name="id">
+                    <input type="hidden" id="delete-lastname" name="lastname">
+                    <input type="hidden" id="delete-firstname" name="firstname">
+                    <div class="d-flex justify-content-end mt-3">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -147,6 +211,18 @@
         modal.find('#edit-zipcode').val(zipcode);
         modal.find('#edit-monthly_wage').val(monthly_wage);
         modal.find('#edit-central_id').val(central_id);
+
+        // Set the id for delete form
+        modal.find('#delete-id').val(id);
+        modal.find('#delete-lastname').val(lastname);
+        modal.find('#delete-firstname').val(firstname);
     });
+
+    function confirmDelete() {
+        var lastname = $('#delete-lastname').val();
+        var firstname = $('#delete-firstname').val();
+        return confirm(`Sind sie sicher, dass Sie ${firstname} ${lastname} entfernen wollen?`);
+    }
 </script>
+
 {% endblock %}
