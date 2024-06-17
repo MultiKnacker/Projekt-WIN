@@ -199,3 +199,10 @@ div.navbar {
     background-color: var(--secondary-background-color);
     color: var(--font-primary) !important;
 }
+
+.nav-link.active {
+    background-color: #7c4e9c; /* Darker purple color */
+    color: rgb(255, 255, 255); /* Ensure the text is readable */
+    border-radius: 10px;
+}
+
