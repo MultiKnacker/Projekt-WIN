@@ -1,0 +1,76 @@
+:root {
+    --primary-accent-color: #6f42c1; /* Adjust the purple shade as desired */
+}
+
+body {
+    background-color: #000000e0; /* Light background for better contrast */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.card {
+    background-color: #343a40; /* Dark background for the card */
+    border-radius: 10px; /* Rounded corners */
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.card .card-body {
+    color: #d1d1d1; /* Text color inside the card */
+}
+
+.form-control {
+    border: 1px solid var(--primary-accent-color);
+    border-radius: 5px;
+    color: #ffffff;
+    background-color: #1d1d1d91;
+}
+
+.form-control:focus {
+    border-color: var(--primary-accent-color);
+    box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.25); /* Shadow with purple tint */
+    background-color: #444343;
+    color: #fff;
+}
+
+.btn-primary {
+    background-color: var(--primary-accent-color);
+    border-color: var(--primary-accent-color);
+}
+
+.btn-primary:hover {
+    background-color: #563d7c; /* Darker shade on hover */
+    border-color: #563d7c;
+}
+
+.text-white {
+    color: #fff !important;
+}
+
+.text-center a {
+    color: var(--primary-accent-color);
+}
+
+.text-center a:hover {
+    color: #563d7c; /* Darker shade on hover */
+    text-decoration: underline;
+}
+
+/* New class for rounded box around headings */
+.heading-box {
+    background-color: #6f42c1; /* Slightly lighter background */
+    border-radius: 10px; /* Rounded corners */
+    margin-bottom: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px; /* Fixed height for consistent centering */
+    h1, h2, h3 {  /* Target all possible heading elements within the box */
+        display: block;
+      }
+}

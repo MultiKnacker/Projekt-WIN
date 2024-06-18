@@ -1,25 +1,39 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="{{ url_for('static', filename='css/bootstrap/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/loginview.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-{% block body %}
-<div class="d-flex justify-content-center align-items-center vh-100">
-    <div class="card text-white shadow-lg" style="width: 100%; max-width: 400px; border: none;">
-        <div class="card-body p-4">
-            <h2 class="card-title text-center mb-4">Login</h2>
-            <form method="POST" action="{{ url_for('login.login') }}">
-                <div class="form-group mb-3">
-                    <label for="email" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="card text-white shadow-lg" style="width: 100%; max-width: 400px;">
+            <div class="card-body p-4">
+                <div class="heading-box">
+                    <h2 class="card-title text-white">Login</h2>
                 </div>
-                <div class="form-group mb-4">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" required>
+                <form method="POST" action="{{ url_for('login.login') }}">
+                    <div class="form-group mb-3">
+                        <label for="email" class="form-label text-white">Email address</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="form-group mb-4">
+                        <label for="password" class="form-label text-white">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block" style="background-color: var(--primary-accent-color); border: none;">Login</button>
+                </form>
+                <div class="text-center mt-3">
+                    <p class="text-white">Don't have an account? <a href="{{ url_for('register.register') }}" class="text-decoration-none" style="color: var(--primary-accent-color);">Register here</a></p>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block" style="background-color: var(--primary-accent-color); border: none;">Login</button>
-            </form>
-            <div class="text-center mt-3">
-                <p>Don't have an account? <a href="{{ url_for('register.register') }}" class="text-decoration-none" style="color: var(--primary-accent-color);">Register here</a></p>
             </div>
         </div>
     </div>
-</div>
-{% endblock %}
+</body>
+</html>

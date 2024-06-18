@@ -143,6 +143,21 @@ div.navbar {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
+.nav-item-logout {
+    background-color: var(--primary-accent-color);
+    border-radius: 10px;
+    padding: 5px 10px;
+    transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.nav-item-logout .nav-link {
+    color: #91888f !important;
+}
+
+.nav-item-logout:hover {
+    background-color: rgba(121, 24, 24, 0.548);
+} 
+
 .nav-link.active {
     background-color: #7c4e9c; /* Darker purple color */
     color: rgb(255, 255, 255); /* Ensure the text is readable */
