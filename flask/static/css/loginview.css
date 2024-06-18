@@ -42,9 +42,10 @@ body {
 }
 
 .btn-primary:hover {
-    background-color: #563d7c; /* Darker shade on hover */
-    border-color: #563d7c;
-}
+    background-color: #5e107cfd; /* Darker shade of purple on hover */
+    border-color: #8756c1;
+    transition: background-color 0.3s ease-in-out; /* Add a smooth transition */
+  }
 
 .text-white {
     color: #fff !important;
