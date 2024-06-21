@@ -27,7 +27,8 @@
         </form>
 
         <div class="container-fluid d-flex justify-content-end mb-4 gap-2">
-            <form method="post" action="{{ url_for('location.delete_locations') }}">
+            <form id="delete-form" method="post" action="{{ url_for('location.delete_locations') }}">
+                <input type="hidden" id="selected-locations" name="selected-locations">
                 <button type="submit" class="btn btn-danger" id="remove-button">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
@@ -83,7 +84,8 @@
                     {% for document in data %}
                     <tr>
                         <td>
-                            <input class="form-check-input checkbox" type="checkbox" id="select_location" name="selected_locations[{{ document['_id'] }}]" value="{{ document['_id'] }}">
+                            <input class="form-check-input checkbox" type="checkbox" id="select_location" value="{{ document['_id'] }}">
+                            <input type="hidden" name="location_ids[]" value="{{ document['_id'] }}">
                         </td>
                         <td>{{ document['_id'] }}</td>
                         <td>{{ document['name'] }}</td>
@@ -92,6 +94,8 @@
                         <td>{{ document['region'] }}</td>
                         <td>{{ document['zipcode'] }}</td>
                         <td>{{ document['rent'] }}€</td>
+                        <td>{{ document['employees'] }}/25</td>
+                        <td>{{ document['vehicles'] }}/50</td>
                         <td>
                             <button type="button" data-toggle="tooltip" data-placement="top" title="Fahrzeuge einsehen">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-truck" viewBox="0 0 16 16">
@@ -220,6 +224,45 @@
         $('.checkbox').click(function() {
             var anyChecked = $('.checkbox:checked').length > 0;
             $('#remove-button').prop('disabled', !anyChecked);
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const selectAllCheckbox = document.getElementById('select_all');
+        const checkboxes = document.querySelectorAll('.form-check-input.checkbox');
+        const removeButton = document.getElementById('remove-button');
+        const deleteForm = document.getElementById('delete-form');
+        const selectedLocationsInput = document.getElementById('selected-locations');
+
+        function updateRemoveButtonState() {
+            const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+            removeButton.disabled = !anyChecked;
+        }
+
+        function updateSelectAllState() {
+            const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+            selectAllCheckbox.checked = allChecked;
+        }
+
+        selectAllCheckbox.addEventListener('change', function() {
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+            updateRemoveButtonState();
+        });
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                updateRemoveButtonState();
+                updateSelectAllState();
+            });
+        });
+
+        deleteForm.addEventListener('submit', function(event) {
+            const selectedIds = Array.from(checkboxes)
+                .filter(checkbox => checkbox.checked)
+                .map(checkbox => checkbox.value);
+            selectedLocationsInput.value = selectedIds.join(',');
         });
     });
 </script>

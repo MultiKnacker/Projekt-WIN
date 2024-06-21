@@ -28,7 +28,7 @@ def list_location():
   if 'username' not in session:
     flash('Please log in to access this page.', 'error')
     return redirect(url_for('login.login'))
-  documents = locations_collection.find({}, projection={"employees":0, "vehicles":0}).sort("name")
+  documents = get_updated_locations()
   show_navbar = True
   return render_template("location/locationview.html", show_navbar = show_navbar, data=documents)
 
@@ -40,7 +40,7 @@ def filter_location():
 
   search_input = request.form.get('search-input')
   search_category = request.form.get('search-category')
-  filtered_locations = locations_collection.find({search_category: {"$regex": search_input}},  projection={"employees":0, "vehicles":0}).sort("name")
+  filtered_locations = get_filtered_locations(search_input, search_category)
   show_navbar = True
   return render_template("location/locationview.html", show_navbar = show_navbar, data=filtered_locations)
 
@@ -81,7 +81,7 @@ def edit_location(location_id):
           alert_type = "error"
           alert_String = "An error occurred while updating the location: " + e
 
-      updated_documents = locations_collection.find({}, projection={"employees": 0, "vehicles": 0}).sort("name")
+      updated_documents = get_updated_locations()
       return render_template("location/locationview.html",
                              show_navbar=show_navbar,
                              data=updated_documents,
@@ -113,7 +113,7 @@ def add_location():
             alert_type = "error"
             alert_String = "An error occurred while adding the location: " + e
 
-        updated_documents = locations_collection.find({}, projection={"employees": 0, "vehicles": 0}).sort("name")
+        updated_documents = get_updated_locations()
         return render_template("location/locationview.html",
                            show_navbar=show_navbar,
                            data=updated_documents,
@@ -122,12 +122,13 @@ def add_location():
 
 @location_bp.route('/locations/delete', methods=['GET', 'POST'])
 def delete_locations():
-    selected_locations = request.form.getlist("selected_locations[]")
+    selected_locations = request.form.get('selected_locations')
     if selected_locations:
-        delte_response = locations_collection.delete_many(selected_locations)
+        location_ids = selected_locations.split(',')
+        delete_response = locations_collection.delete_many(location_ids)
         show_navbar = True
         try:
-            if delte_response.acknowledged == True:
+            if delete_response.acknowledged == True:
                 alert_type = "success"
                 alert_String = "Location added successfully!"
             else:
@@ -137,14 +138,14 @@ def delete_locations():
             alert_type = "error"
             alert_String = "An error occurred while adding the location: " + e
 
-        updated_documents = locations_collection.find({}, projection={"employees": 0, "vehicles": 0}).sort("name")
+        updated_documents = get_updated_locations()
         return render_template("location/locationview.html",
                                show_navbar=show_navbar,
                                data=updated_documents,
                                alert_type=alert_type,
                                alert_String=alert_String)
     else:
-        updated_documents = locations_collection.find({}, projection={"employees": 0, "vehicles": 0}).sort("name")
+        updated_documents = get_updated_locations()
         alert_type = "error"
         alert_String = "Couldnt add the location. Please try again."
         return render_template("location/locationview.html",
@@ -152,3 +153,23 @@ def delete_locations():
                                data=updated_documents,
                                alert_type=alert_type,
                                alert_String=alert_String)
+
+def get_updated_locations():
+    updated_locations = locations_collection.find().sort("name")
+
+    data = []
+    for location in updated_locations:
+        location["employees"] = len(location.get("employees", []))
+        location["vehicles"] = len(location.get("vehicles", []))
+        data.append(location)
+    return data
+
+def get_filtered_locations(search_input, search_category):
+    updated_locations = locations_collection.find({search_category: {"$regex": search_input}}).sort("name")
+
+    data = []
+    for location in updated_locations:
+        location["employees"] = len(location.get("employees", []))
+        location["vehicles"] = len(location.get("vehicles", []))
+        data.append(location)
+    return data
