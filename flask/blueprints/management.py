@@ -69,6 +69,16 @@ def edit_employee():
         return redirect(url_for('login.login'))
 
     employee_id = request.form.get("id")
+    new_central_id = ObjectId(request.form.get("central_id"))
+
+    # Find the current central of the employee
+    current_employee = employee_collection.find_one({"_id": ObjectId(employee_id)})
+    if not current_employee:
+        flash('Employee not found.', 'error')
+        return redirect(url_for('management.list_management'))
+
+    current_central_id = current_employee.get("central_id")
+
     employee_data = {
         "lastname": request.form.get("lastname"),
         "firstname": request.form.get("firstname"),
@@ -77,7 +87,7 @@ def edit_employee():
         "region": request.form.get("region"),
         "zipcode": request.form.get("zipcode"),
         "monthly_wage": request.form.get("monthly_wage"),
-        "central_id": ObjectId(request.form.get("central_id"))
+        "central_id": new_central_id
     }
 
     print(f"DEBUG: Updating employee with ID: {employee_id}")
@@ -85,6 +95,23 @@ def edit_employee():
 
     result = employee_collection.update_one({"_id": ObjectId(employee_id)}, {"$set": employee_data})
     print(f"DEBUG: Update result: {result.modified_count} document(s) updated")
+
+    # Update the central's employee list if the central has changed
+    if current_central_id != new_central_id:
+        # Remove employee from the current central
+        if current_central_id:
+            central_collection.update_one(
+                {"_id": current_central_id},
+                {"$pull": {"employees": ObjectId(employee_id)}}
+            )
+            print(f"DEBUG: Removed employee ID: {employee_id} from current central ID: {current_central_id}")
+
+        # Add employee to the new central
+        central_collection.update_one(
+            {"_id": new_central_id},
+            {"$addToSet": {"employees": ObjectId(employee_id)}}
+        )
+        print(f"DEBUG: Added employee ID: {employee_id} to new central ID: {new_central_id}")
 
     flash('Employee details updated successfully.', 'success')
     return redirect(url_for('management.list_management'))
