@@ -4,6 +4,9 @@
      <title> Im a Title </title>
 {% endblock %}
 
-{% block body%} 
-    I landed on the performance!!!!
+{% block body%}
+    <div class="container-fluid align-items-center col">
+        <h1 class="row">Flask Matplotlib Example</h1>
+        <img class="row" src="{{ plot_url }}" alt="Sample Chart">
+    </div>
 {% endblock %}
