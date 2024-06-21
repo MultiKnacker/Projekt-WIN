@@ -51,8 +51,8 @@
         </button>
     </div>
     <div class="table-responsive">
-        <table class="table table-striped table-bordered table-hover">
-            <thead class="thead-dark">
+        <table class="table table-bordered table-hover">
+            <thead class="thead">
                 <tr>
                     <th scope="col">Nachname</th>
                     <th scope="col">Vorname</th>
@@ -78,13 +78,13 @@
                     <td>{{ employee['monthly_wage'] }}</td>
                     <td>{{ employee['central_name'] }}</td>
                     <td>
-                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editModal"
+                        <button data-toggle="modal" data-target="#editModal"
                             data-id="{{ employee['_id'] }}" data-lastname="{{ employee['lastname'] }}"
                             data-firstname="{{ employee['firstname'] }}" data-job="{{ employee['job'] }}"
                             data-streetname="{{ employee['streetname'] }}" data-region="{{ employee['region'] }}"
                             data-zipcode="{{ employee['zipcode'] }}" data-monthly_wage="{{ employee['monthly_wage'] }}"
                             data-central_id="{{ employee.get('central_id', '') }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#5a3b8d" class="bi bi-pencil-square" viewBox="0 0 18 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#ffffff" class="bi bi-pencil-square" viewBox="0 0 18 16">
                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                 <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
                               </svg>
@@ -119,7 +119,7 @@
                     <form id="add-form" method="POST" action="{{ url_for('management.add_employee') }}">
                         <div class="form-group">
                             <label for="add-lastname">Nachname</label>
-                            <input type="text" class="form-control" id="add-lastname" name="lastname" required>
+                            <input type="text" class="form-control text-white" id="add-lastname" name="lastname" required>
                         </div>
                         <div class="form-group">
                             <label for="add-firstname">Vorname</label>

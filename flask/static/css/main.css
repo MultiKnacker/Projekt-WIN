@@ -64,6 +64,20 @@ body {
     box-shadow: none;
 }
 
+.form-control {
+    background-color: #343a40; /* Dark background */
+    border: 1px solid #ced4da; /* Light border */
+    color: white; /* Default text color */
+}
+
+.form-control:focus {
+    color: rgba(207, 247, 169, 0.815); /* Text color on focus */
+    background-color: #3b837f91; /* Ensure background stays dark */
+    border-color: #587756; /* Change border color on focus */
+    outline: 0; /* Remove outline */
+    box-shadow: 0 0 0 0.2rem rgba(128, 189, 255, 0.25); /* Add a slight shadow for focus */
+}
+
 .btn-primary {
     background-color: var(--primary-accent-color);
     border-color: #5a28a1;
@@ -164,26 +178,31 @@ div.navbar {
     border-radius: 10px;
 }
 
-/*
-    table design
- */
+/* Table design */
 .table {
     background-color: var(--primary-background-color) !important;
     border-color: var(--primary-background-color) !important;
     border-radius: 5px;
     text-align: center;
+    color: var(--white-font-color);
+    font-family: var(--font-primary);
 }
 
 .table thead {
-    background-color: transparent !important;
+    background-color: var(--secondary-background-color) !important;
+    border-bottom: 2px solid var(--primary-accent-color);
 }
 
 .table tbody {
     background-color: transparent !important;
 }
 
-.table tr {
-    border-radius: 5px !important;
+.table tbody tr:nth-child(even) td {
+    background-color: var(--primary-accent-color-halpha) !important;
+}
+
+.table tbody tr:nth-child(odd) td {
+    background-color: var(--primary-background-color_lalpha) !important;
 }
 
 .table th {
@@ -192,19 +211,20 @@ div.navbar {
 }
 
 .table td {
-    background-color: var(--secondary-background-color) !important;
+    background-color: var(--primary-background-color_lalpha) !important;
+    color: var(--white-font-color) !important;
 }
 
 .table button {
-    background-color: var(--primary-background-color);
+    background-color: var(--primary-accent-color);
     color: var(--white-font-color);
     border-radius: 25px;
-    border-color: var(--primary-background-color);
+    border-color: var(--primary-accent-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .table button:hover {
-    background-color: var(--primary-background-color_lalpha);
-    background: var(--primary-background-color_halpha);
+    background-color: var(--primary-accent-color-lalpha);
 }
 
 /*
