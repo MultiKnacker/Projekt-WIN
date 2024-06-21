@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, flash, session, redirect, url_for, request
 import os
+import re
 from bson.objectid import ObjectId
 from pymongo import MongoClient
 
@@ -21,14 +22,16 @@ def list_management():
 
     query = {}
     employee_ids = []
+    search_category = None
+    search_input = None
     if request.method == "POST":
         search_category = request.form.get("search-category")
         search_input = request.form.get("search-input")
         if search_category and search_input:
-            if search_category == "central_id":
+            if search_category == "central_name":
                 try:
-                    search_input = ObjectId(search_input)
-                    central = central_collection.find_one({"_id": search_input})
+                    regx = re.compile(search_input, re.IGNORECASE)
+                    central = central_collection.find_one({"name": regx})
                     if central:
                         employee_ids = central.get("employees", [])
                         query["_id"] = {"$in": employee_ids}
@@ -38,10 +41,9 @@ def list_management():
                 query[search_category] = {"$regex": search_input, "$options": "i"}
         print(f"DEBUG: Search Query: {query}")  # Debug print
 
+    # Add central name to each employee by reverse lookup
     employees = list(employee_collection.find(query))
     centrals = list(central_collection.find())
-
-    # Add central name to each employee by reverse lookup
     central_map = {}
     for central in centrals:
         for emp_id in central.get('employees', []):
@@ -51,10 +53,14 @@ def list_management():
         employee_id = str(employee['_id'])
         employee['central_name'] = central_map.get(employee_id, 'N/A')
 
+
     print(f"DEBUG: Retrieved Employees: {employees}")  # Debug print
 
     show_navbar = True
-    return render_template("managementview.html", employees=employees, centrals=centrals, show_navbar=show_navbar)
+    if search_category or search_input:
+        return render_template("managementview.html", employees=employees, centrals=centrals, show_navbar=show_navbar, search_category=search_category, search_input=search_input)
+    else:
+        return render_template("managementview.html", employees=employees, centrals=centrals, show_navbar=show_navbar)
 
 @management_bp.route("/edit_employee", methods=["POST"])
 def edit_employee():

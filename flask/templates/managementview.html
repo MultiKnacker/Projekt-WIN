@@ -13,19 +13,42 @@
                 <label class="input-group-text bg-dark text-white border-0" for="search-category">Suche nach</label>
             </div>
             <select class="custom-select bg-dark text-white border-0" id="search-category" name="search-category">
-                <option value="lastname">Nachname</option>
-                <option value="central_id">Zentral ID</option>
-                <option value="region">Region</option>
+                <option value="lastname" {% if search_category == 'lastname' %} selected {% endif %}>Nachname</option>
+                <option value="central_name" {% if search_category == 'central_name' %} selected {% endif %}>Zentralname</option>
+                <option value="region" {% if search_category == 'region' %} selected {% endif %}>Region</option>
             </select>
             <input class="form-control bg-dark text-white border-0" type="search" placeholder="Search"
-                aria-label="Search" id="search-input" name="search-input">
+                aria-label="Search" id="search-input" name="search-input" value="{{ search_input }}">
             <div class="input-group-append">
-                <button class="btn btn-secondary border-0" type="submit">Suchen</button>
+                <button class="btn btn-secondary btn-outline-secondary border-0" type="button" id="reset-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-backspace-fill" viewBox="0 0 18 18">
+                        <path d="M15.683 3a2 2 0 0 0-2-2h-7.08a2 2 0 0 0-1.519.698L.241 7.35a1 1 0 0 0 0 1.302l4.843 5.65A2 2 0 0 0 6.603 15h7.08a2 2 0 0 0 2-2zM5.829 5.854a.5.5 0 1 1 .707-.708l2.147 2.147 2.146-2.147a.5.5 0 1 1 .707.708L9.39 8l2.146 2.146a.5.5 0 0 1-.707.708L8.683 8.707l-2.147 2.147a.5.5 0 0 1-.707-.708L7.976 8z"/>
+                      </svg>
+                </button>
+                <button class="btn btn-secondary border-0" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-search" viewBox="0 0 18 18">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                      </svg>
+                    Suchen
+                </button>
             </div>
         </div>
     </form>
+    <script>
+        document.getElementById('reset-button').addEventListener('click', function() {
+            document.getElementById('search-category').selectedIndex = 0;
+            document.getElementById('search-input').value = '';
+            document.forms[0].submit();
+        });
+    </script>
     <div class="d-flex justify-content-end mb-4">
-        <button class="btn btn-success" data-toggle="modal" data-target="#addModal">Add Employee</button>
+        <button class="btn btn-success" data-toggle="modal" data-target="#addModal">
+            Mitarbeiter hinzufügen
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 18 18">
+                <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"/>
+              </svg>
+        </button>
     </div>
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover">
@@ -39,7 +62,7 @@
                     <th scope="col">Postleitzahl</th>
                     <th scope="col">Gehalt</th>
                     <th scope="col">Zentrale</th>
-                    <th scope="col">Settings</th>
+                    <th scope="col">Bearbeiten</th>
                 </tr>
             </thead>
             <tbody>
@@ -61,7 +84,10 @@
                             data-streetname="{{ employee['streetname'] }}" data-region="{{ employee['region'] }}"
                             data-zipcode="{{ employee['zipcode'] }}" data-monthly_wage="{{ employee['monthly_wage'] }}"
                             data-central_id="{{ employee.get('central_id', '') }}">
-                            Settings
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#5a3b8d" class="bi bi-pencil-square" viewBox="0 0 18 16">
+                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                              </svg>
                         </button>
                     </td>
                 </tr>
@@ -80,9 +106,14 @@
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addModalLabel">Add Employee</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header justify-content-between">
+                    <h5 class="modal-title" id="addModalLabel">Mitarbeiter hinzufügen</h5>
+                    <button type="button" class="btn btn-danger" fill="#5a3b8d" data-dismiss="modal">
+                        Abbrechen
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 18 18">
+                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                          </svg>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <form id="add-form" method="POST" action="{{ url_for('management.add_employee') }}">
@@ -137,9 +168,14 @@
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header justify-content-between">
                     <h5 class="modal-title" id="editModalLabel">Edit Employee</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn btn-danger" fill="#5a3b8d" data-dismiss="modal">
+                        Abbrechen
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 18 18">
+                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                          </svg>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <form id="edit-form" method="POST" action="{{ url_for('management.edit_employee') }}">
@@ -187,8 +223,19 @@
                             <input type="hidden" id="delete-lastname" name="lastname">
                             <input type="hidden" id="delete-firstname" name="firstname">
                             <div class="d-flex justify-content-between mt-3">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                <button type="submit" class="btn btn-danger">
+                                    Kündigen
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-person-dash-fill" viewBox="0 0 18 18">
+                                        <path fill-rule="evenodd" d="M11 7.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5"/>
+                                        <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                                      </svg>
+                                </button>
+                                <button type="submit" class="btn btn-primary">Speichern
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-download" viewBox="0 0 18 18">
+                                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+                                    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
+                                  </svg>
+                                </button>
                             </div>
                         </form>
                     </form>
