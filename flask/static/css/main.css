@@ -231,12 +231,12 @@ div.navbar {
     modal design
  */
 .modal-header {
-    background-color: var(--primary-background-color) !important;
+    background-color: var(--primary-accent-color) !important;
     color: var(--font-primary) !important;
 }
 
 .modal-content {
-    background-color: var(--secondary-background-color);
+    background-color: var(--primary-background-color);
     color: var(--font-primary) !important;
 }
 
