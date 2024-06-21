@@ -189,7 +189,7 @@ div.navbar {
 }
 
 .table thead {
-    background-color: var(--secondary-background-color) !important;
+    background-color: var(--primary-background-color) !important;
     border-bottom: 2px solid var(--primary-accent-color);
 }
 
