@@ -5,6 +5,7 @@
     --primary-background-color_lalpha: #22222295;
     --primary-background-color_halpha: #22222230;
     --secondary-background-color: #6C757D; /* light Gray */
+    --table-odd-color: #313131;
     --primary-accent-color: #5a3b8d; /* Purple */
     --primary-accent-color-lalpha: #8540F595;
     --primary-accent-color-halpha: #8540F530;
@@ -202,7 +203,7 @@ div.navbar {
 }
 
 .table tbody tr:nth-child(odd) td {
-    background-color: var(--primary-background-color_lalpha) !important;
+    background-color: var(--table-odd-color) !important;
 }
 
 .table th {
