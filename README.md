@@ -31,7 +31,11 @@ Das Team Beta implementiert folgende features:
 - Risikomanagment
 
 ### Design
-- [Mockup](https://www.figma.com/design/0XoqcNG5A7wpnHiDC8TuSC/Projekt_Allgemeine-Verwaltung?node-id=0-1) 
+- [Mockup](https://www.figma.com/design/0XoqcNG5A7wpnHiDC8TuSC/Projekt_Allgemeine-Verwaltung?node-id=0-1)
+
+### Wiki
+- [Wiki](https://github.com/MultiKnacker/Projekt-WIN/wiki)
+- In der Wiki stehen Anleitungen zum einrichten eines Lokalen webservers und der Nutzung der Webseite
 
 ### Datengenerierung (example)
 
