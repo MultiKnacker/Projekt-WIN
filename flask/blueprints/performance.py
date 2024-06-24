@@ -6,6 +6,10 @@ performance_bp = Blueprint("performance", __name__, template_folder='templates')
 
 @performance_bp.route("/performance")
 def prev_performance():
+  if 'username' not in session:
+    flash('Please log in to access this page.', 'error')
+    return redirect(url_for('login.login'))
+
   x = [1, 2, 3, 4, 5]
   y = [2, 4, 1, 5, 3]
 
@@ -33,8 +37,7 @@ def prev_performance():
 
   # Render the template with the image path
   show_navbar = True
-  return render_template('performanceview.html', show_navbar=show_navbar, plot_url='/static/diagrams/plot.png')
-
+  return render_template('performanceview.html', show_navbar=show_navbar, plot_url='/diagrams/plot.png')
 
 @performance_bp.route("/performance/pdf")
 def list_performance():
@@ -43,15 +46,18 @@ def list_performance():
     return redirect(url_for('login.login'))
 
   # Render HTML content
-  html_content = render_template("performanceview.html")
+  html_content = render_template("performanceview.html", plot_url='/diagrams/plot.png')
 
   # Generate PDF using WeasyPrint
-  pdf = HTML(string=html_content).write_pdf()
+  pdf = HTML(string=html_content, base_url=url_for('static', filename='', _external=True)).write_pdf()
 
   # Optionally, you can save the PDF to a file
   # with open('output.pdf', 'wb') as f:
   #     f.write(pdf)
 
   # Return PDF as a response
+  show_navbar = True
   return Response(pdf, mimetype='application/pdf')
+
+
 

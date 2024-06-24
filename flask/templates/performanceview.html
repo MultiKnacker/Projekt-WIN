@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block body%}
-    <div class="container-fluid align-items-center col">
-        <h1 class="row">Flask Matplotlib Example</h1>
-        <img class="row" src="{{ plot_url }}" alt="Sample Chart">
+    <div>
+        <h1>Flask Matplotlib Example</h1>
+        <img src="{{ url_for('static', filename='diagrams/plot.png') }}" alt="Chart 1">
     </div>
 {% endblock %}
