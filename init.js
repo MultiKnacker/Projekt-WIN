@@ -164,6 +164,26 @@
   { _id: ObjectId(), numberplate: 'MM-NO-654', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 80, brand: 'Audi', model: 'A6', ensurance: 160.00, original_price: 50000.00, milage: 0, date_of_purchase: "01-09-2023", state: "frei" }
   // Add more vehicle documents here... Milage ändern. Sehr oft 0 Obwohl Fahrzeug schon länger vorhanden ist
  ];
+
+ // Function to calculate random cost per day based on vehicle type
+ function calculateCostPerDay(vehicleType) {
+  switch (vehicleType) {
+   case 'PKW':
+    return Math.floor(Math.random() * (150 - 50 + 1)) + 50; // Random between 50-150
+   case 'LKW':
+    return Math.floor(Math.random() * (600 - 250 + 1)) + 250; // Random between 250-600
+   case 'Transporter':
+    return Math.floor(Math.random() * (180 - 20 + 1)) + 20; // Random between 20-180
+   default:
+    return 0;
+  }
+ }
+
+ // Add costPerDay field to each vehicle
+ vehicles.forEach(vehicle => {
+  vehicle.costPerDay = calculateCostPerDay(vehicle.vehicletype);
+ });
+
  db.vehicle.insertMany(vehicles);
  const centrals = [
   { _id: ObjectId(), name: 'Zentrale Hamburg', location: 'Flughafen', streetname: 'Herberstraße 20', region: 'Hamburg', zipcode: '20359', rent: 1000.00 , employees: [employees[0]._id,employees[1]._id,employees[2]._id,employees[3]._id,employees[4]._id,employees[5]._id], vehicles: [vehicles[0]._id, vehicles[1]._id, vehicles[2]._id, vehicles[3]._id, vehicles[4]._id] },
@@ -232,32 +252,6 @@
  ];
  db.vehicle_cost_types.insertMany(vehicle_cost_types);
 
- const rentalagreements = [
-  { _id: 1, recieves: "20-06-2020", returned: "30-06-2020", discount: 10, vehicles: 1, centrals: 1 , customers: 1},
-  { _id: 2, recieves: "15-12-2021", returned: "15-01-2022", discount: 15, vehicles: 2, centrals: 2 , customers: 2},
-  { _id: 3, recieves: "10-08-2020", returned: "18-08-2020", discount: 20, vehicles: 3, centrals: 3, customers: 3 },
-  { _id: 4, recieves: "05-05-2022", returned: "10-05-2022", discount: 25, vehicles: 4, centrals: 4, customers: 4 },
-  { _id: 5, recieves: "20-10-2023", returned: "21-10-2023", discount: 15, vehicles: 5, centrals: 5, customers: 5 },
-  { _id: 6, recieves: "12-03-2021", returned: "15-03-2021", discount: 30, vehicles: 6, centrals: 6, customers: 6 },
-  { _id: 7, recieves: "08-11-2020", returned: "15-11-2020", discount: 10, vehicles: 7, centrals: 7, customers: 7 },
-  { _id: 8, recieves: "25-07-2022", returned: "27-07-2022", discount: 5, vehicles: 8, centrals: 8, customers: 8 },
-  { _id: 9, recieves: "03-12-2023", returned: "10-12-2023", discount: 20, vehicles: 9, centrals: 9, customers: 9 },
-  { _id: 10, recieves: "14-09-2021", returned: "15-09-2021", discount: 15, vehicles: 10, centrals: 10, customers: 10 },
-  { _id: 11, recieves: "18-06-2020", returned: "22-06-2020", discount: 30, vehicles: 11, centrals: 1, customers: 11 },
-  { _id: 12, recieves: "09-04-2022", returned: "15-04-2022", discount: 10, vehicles: 12, centrals: 2, customers: 12 },
-  { _id: 13, recieves: "25-10-2023", returned: "28-10-2023", discount: 25, vehicles: 13, centrals: 3, customers: 13 },
-  { _id: 14, recieves: "02-01-2021", returned: "10-01-2021", discount: 15, vehicles: 14, centrals: 4, customers: 14 },
-  { _id: 15, recieves: "17-07-2022", returned: "25-07-2022", discount: 5, vehicles: 15, centrals: 5, customers: 15 },
-  { _id: 16, recieves: "29-11-2023", returned: "05-12-2023", discount: 20, vehicles: 16, centrals: 6, customers: 16 },
-  { _id: 17, recieves: "08-09-2020", returned: "10-09-2020", discount: 30, vehicles: 17, centrals: 7, customers: 17 },
-  { _id: 18, recieves: "03-06-2021", returned: "08-06-2021", discount: 10, vehicles: 18, centrals: 8, customers: 18 },
-  { _id: 19, recieves: "22-03-2022", returned: "25-03-2022", discount: 25, vehicles: 19, centrals: 9, customers: 19 },
-  { _id: 20, recieves: "12-12-2023", returned: "18-12-2023", discount: 15, vehicles: 20, centrals: 10, customers: 20 },
-  { _id: 21, recieves: "09-05-2020", returned: "12-05-2020", discount: 5, vehicles: 1, centrals: 1, customers: 21 },
-   // Add more rentalagreement documents here... Yakup
- ];
- db.rentalagreement.insertMany(rentalagreements);
-
  const customers = [
   { _id: 1, lastname: 'Schmidt', firstname: 'Peter', streetname: 'Herberstraße 20', region: 'Hamburg', zipcode: '20359', company: ''},
   { _id: 2, lastname: 'Meyer', firstname: 'Anna', streetname: 'Bahnhofstraße 1', region: 'Berlin', zipcode: '10115', company: 'ABC GmbH' },
@@ -283,6 +277,31 @@
    // Add more customer documents here... Yakup
  ];
  db.customer.insertMany(customers);
+
+ const rentalagreements = [
+  { _id: 1, recieves: "20-06-2020", returned: "30-06-2020", discount: 10, vehicles: [vehicles[1]._id], centrals: [centrals[1]._id] , customers: [customers[1]._id]},
+  { _id: 2, recieves: "15-12-2021", returned: "15-01-2022", discount: 15, vehicles: [vehicles[2]._id], centrals: [centrals[2]._id] , customers: [customers[2]._id]},
+  { _id: 3, recieves: "10-08-2020", returned: "18-08-2020", discount: 20, vehicles: [vehicles[3]._id], centrals: [centrals[3]._id], customers: [customers[3]._id] },
+  { _id: 4, recieves: "05-05-2022", returned: "10-05-2022", discount: 25, vehicles: [vehicles[4]._id], centrals: [centrals[4]._id], customers: [customers[4]._id] },
+  { _id: 5, recieves: "20-10-2023", returned: "21-10-2023", discount: 15, vehicles: [vehicles[5]._id], centrals: [centrals[5]._id], customers: [customers[5]._id] },
+  { _id: 6, recieves: "12-03-2021", returned: "15-03-2021", discount: 30, vehicles: [vehicles[6]._id], centrals: [centrals[6]._id], customers: [customers[6]._id] },
+  { _id: 7, recieves: "08-11-2020", returned: "15-11-2020", discount: 10, vehicles: [vehicles[7]._id], centrals: [centrals[7]._id], customers: [customers[7]._id] },
+  { _id: 8, recieves: "25-07-2022", returned: "27-07-2022", discount: 5, vehicles: [vehicles[8]._id], centrals: [centrals[8]._id], customers: [customers[8]._id] },
+  { _id: 9, recieves: "03-12-2023", returned: "10-12-2023", discount: 20, vehicles: [vehicles[9]._id], centrals: [centrals[9]._id], customers: [customers[9]._id] },
+  { _id: 10, recieves: "14-09-2021", returned: "15-09-2021", discount: 15, vehicles: [vehicles[10]._id], centrals: [centrals[10]._id], customers: [customers[10]._id] },
+  { _id: 11, recieves: "18-06-2020", returned: "22-06-2020", discount: 30, vehicles: [vehicles[11]._id], centrals: [centrals[1]._id], customers: [customers[11]._id] },
+  { _id: 12, recieves: "09-04-2022", returned: "15-04-2022", discount: 10, vehicles: [vehicles[12]._id], centrals: [centrals[2]._id], customers: [customers[12]._id] },
+  { _id: 13, recieves: "25-10-2023", returned: "28-10-2023", discount: 25, vehicles: [vehicles[13]._id], centrals: [centrals[3]._id], customers: [customers[13]._id] },
+  { _id: 14, recieves: "02-01-2021", returned: "10-01-2021", discount: 15, vehicles: [vehicles[14]._id], centrals: [centrals[4]._id], customers: [customers[14]._id] },
+  { _id: 15, recieves: "17-07-2022", returned: "25-07-2022", discount: 5, vehicles: [vehicles[15]._id], centrals: [centrals[5]._id], customers: [customers[15]._id] },
+  { _id: 16, recieves: "29-11-2023", returned: "05-12-2023", discount: 20, vehicles: [vehicles[16]._id], centrals: [centrals[6]._id], customers: [customers[16]._id] },
+  { _id: 17, recieves: "08-09-2020", returned: "10-09-2020", discount: 30, vehicles: [vehicles[17]._id], centrals: [centrals[7]._id], customers: [customers[17]._id] },
+  { _id: 18, recieves: "03-06-2021", returned: "08-06-2021", discount: 10, vehicles: [vehicles[18]._id], centrals: [centrals[8]._id], customers: [customers[18]._id] },
+  { _id: 19, recieves: "22-03-2022", returned: "25-03-2022", discount: 25, vehicles: [vehicles[19]._id], centrals: [centrals[9]._id], customers: [customers[19]._id] },
+  { _id: 20, recieves: "12-12-2023", returned: "18-12-2023", discount: 15, vehicles: [vehicles[20]._id], centrals: [centrals[10]._id], customers: [customers[20]._id] },
+  // Add more rentalagreement documents here... Yakup
+ ];
+ db.rentalagreement.insertMany(rentalagreements);
 
  const sys_admins = [
   { _id: 1, username: 'admin', email: 'admin@admin.de', password: '$2y$10$mPPbY3OnHfVKKNCj4Lai9upDyrPBarEM0rB5a2WaISj5hFMeI134m'},
