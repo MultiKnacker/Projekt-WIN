@@ -1,7 +1,7 @@
 import os
+from datetime import datetime, date
+from turtle import pd
 
-import bson.objectid
-import logging
 import numpy as np
 from flask import current_app
 from flask import Blueprint, render_template, abort, flash, session, redirect, url_for, Response
@@ -71,7 +71,6 @@ def gen_Car_usage_pie_chart():
     for rental_agreement in rental_agreements:
       for vehicle in vehicles:
         rental_agreement_ids = rental_agreement.get('vehicles')
-        rental_agreement_id = rental_agreement_ids[0]
         if vehicle.get('_id') == rental_agreement_ids[0]:
           if vehicle.get('vehicletype') == 'PKW':
             pkw_usage += 1
@@ -79,8 +78,6 @@ def gen_Car_usage_pie_chart():
             lkw_usage += 1
           elif vehicle.get('vehicletype') == 'Transporter':
             transport_usage += 1
-        else:
-          current_app.logger.debug(f"No match V:{vehicle.get('_id')} R:{rental_agreement_id}")
 
     # make data
     max = lkw_usage + pkw_usage + transport_usage
@@ -115,33 +112,82 @@ def gen_Car_usage_pie_chart():
 
 def gen_coast_comp_bar_chart():
   filename = f"{default_file_path}/revenue_quater.png"
+  # make data
   quarters = ()
   values_per_quater = {
     'Einnahmen': (),
     'zukünftige_Einnahmen': (),
     'Ausgaben' : ()}
+  # adding past data
   if(len(performance_data) >=0):
     for performance_set in performance_data:
       quarters = quarters + (performance_set.get('quater'),)
 
-      revenue = performance_set.get('revenue', 0)  # Default to 0 for missing 'revenue'
-      coast = performance_set.get('personal_costs', 0)  # Default to 0 for missing 'personal_costs'
-      outstanding_revenue = performance_set.get('outstanding_revenue', 0) # Optional
+      revenue = performance_set.get('revenue', 0.00)  # Default to 0 for missing 'revenue'
+      cost = performance_set.get('personal_costs', 0.00)  # Default to 0 for missing 'personal_costs'
+      outstanding_revenue = 0.00
 
-      values_per_quater['Einnahmen'] = values_per_quater['Einnahmen'] + (revenue,)
-      values_per_quater['zukünftige_Einnahmen'] = values_per_quater['zukünftige_Einnahmen'] + (outstanding_revenue,)
-      values_per_quater['Ausgaben'] =  values_per_quater['Ausgaben'] + (coast,)
+      values_per_quater['Einnahmen'] = values_per_quater['Einnahmen'] + (float(revenue),)
+      values_per_quater['zukünftige_Einnahmen'] = values_per_quater['zukünftige_Einnahmen'] + (float(outstanding_revenue),)
+      values_per_quater['Ausgaben'] =  values_per_quater['Ausgaben'] + (float(cost),)
 
+  # adding current data
+  current_date = datetime.now()
+  current_app.logger.debug(f"current_date {current_date}")
+  current_quarter_timespan = get_start_of_quarter(current_date)
+  current_app.logger.debug(f"quaters:  {current_quarter_timespan}")
+
+  rental_agreements_pre_date = list(rental_agreements_collection.find({'returned': {'$lt': current_date.date().__str__()}, 'receives': {'$gt': current_quarter_timespan.get('start_date').__str__()}}))
+  rental_agreements_past_date = list(rental_agreements_collection.find({'receives': {'$gt': current_date.date().__str__()}, 'returned': {'$lt': current_quarter_timespan.get('end_date').__str__()}}))
+
+  current_revenue = 0.00
+  current_cost = 0.00
+  current_outstanding_revenue = 0.00
+
+  if(rental_agreements_pre_date and rental_agreements_past_date):
+    for rental_agreement in rental_agreements_pre_date:
+      for vehicle in vehicles:
+        rental_agreement_ids = rental_agreement.get('vehicles')
+        if rental_agreement_ids[0] == vehicle.get('_id'):
+          cost_per_day = vehicle.get('cost_per_day')
+          rental_time = days_between(rental_agreement.get('receives'), rental_agreement.get('returned'))
+          current_app.logger.debug(f"Cost_per_day {cost_per_day} rental_time {rental_time}")
+          current_revenue += cost_per_day * rental_time
+
+    for rental_agreement in rental_agreements_past_date:
+      for vehicle in vehicles:
+        rental_agreement_ids = rental_agreement.get('vehicles')
+        if rental_agreement_ids[0] == vehicle.get('_id'):
+          cost_per_day = vehicle.get('cost_per_day')
+          rental_time = days_between(rental_agreement.get('receives'), rental_agreement.get('returned'))
+          current_app.logger.debug(f"Cost_per_day {cost_per_day} rental_time {rental_time}")
+          current_outstanding_revenue += cost_per_day * rental_time
+
+    current_app.logger.debug(f"Collection: {values_per_quater}")
+    current_app.logger.debug(f"current_revenue -> {current_revenue}")
+    current_app.logger.debug(f"current_outstanding_revenue -> {current_outstanding_revenue}")
+    current_app.logger.debug(f"current_cost -> {current_cost}")
+
+  quarters += ("current",)
+  current_revenue = float(current_revenue)
+  values_per_quater['Einnahmen'] = values_per_quater['Einnahmen'] + (current_revenue,)
+  current_outstanding_revenue = float(current_outstanding_revenue)
+  values_per_quater['zukünftige_Einnahmen'] = values_per_quater['zukünftige_Einnahmen'] + (current_outstanding_revenue,)
+  current_cost = float(current_cost)
+  values_per_quater['Ausgaben'] =  values_per_quater['Ausgaben'] + (current_cost,)
+
+  # create graph
   x = np.arange(len(quarters))  # the label locations
   width = 0.25  # the width of the bars
   multiplier = 0
 
+  plt.rcParams['figure.facecolor'] = '#222222'
   fig, ax = plt.subplots(layout='constrained')
 
   for attribute, measurement in values_per_quater.items():
     offset = width * multiplier
     rects = ax.bar(x + offset, measurement, width, label=attribute)
-    ax.bar_label(rects, padding=3)
+    ax.bar_label(rects, padding=3, color='white')
     multiplier += 1
 
   ax.tick_params(axis='x', colors='white')
@@ -150,14 +196,38 @@ def gen_coast_comp_bar_chart():
 
   ax.set_ylabel('Euro (€)', color='white')
   ax.set_title('Gewinn und Verlustrechnung' , color='white')
-  ax.set_xticks(x + width, quarters)
-  ax.legend(loc='upper left', ncols=3)
+  ax.set_xticks(x + width, quarters, color='white')
+  ax.legend(loc='upper left', ncols=3, facecolor='#222222', labelcolor='white')
   ax.set_ylim(0, 30000)
 
   plt.savefig(filename)
   plt.close()
 
+def days_between(date_str1, date_str2):
+  current_app.logger.debug(f"date_str1 -> {date_str1} date_str2 -> {date_str2}")
+  date1 = datetime.strptime(date_str1, '%d-%m-%Y').date()
+  date2 = datetime.strptime(date_str2, '%d-%m-%Y').date()
 
+  time_delta = date2 - date1
+  days_between = time_delta.days
+  days_between = float(days_between)
+  current_app.logger.debug(f"Calc Days _between: {days_between}")
+  return days_between
 
+def get_start_of_quarter(current_date):
+  current_year = date.today().year
+  quarters = [
+    {'start_date' : datetime(current_year, 1, 1).date(), 'end_date' : datetime(current_year, 3, 31).date()},
+    {'start_date' : datetime(current_year, 4, 1).date(), 'end_date' : datetime(current_year, 6, 30).date()},
+    {'start_date' : datetime(current_year, 7, 1).date(), 'end_date' : datetime(current_year, 9, 30).date()},
+    {'start_date' : datetime(current_year, 10, 1).date(), 'end_date' : datetime(current_year, 12, 31).date()}
+  ]
+  current_date = current_date.date()
+  current_app.logger.debug(f"current_date -> {current_date} current_year -> {current_year}")
+  current_app.logger.debug(f"start_date {quarters[0]['start_date']} end_date {quarters[0]['end_date']}")
+  for quarter in quarters:
+    if quarter.get('start_date') <= current_date <= quarter.get('end_date'):
+      return quarter
+  return None
 
 
