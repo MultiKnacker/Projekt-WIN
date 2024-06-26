@@ -9,15 +9,8 @@ Das Team Beta implementiert folgende features:
 - Performance Berichte
 - Personal Einsatzplanung
 
-## Installation
+## [Installation (klick mich)](https://github.com/MultiKnacker/Projekt-WIN/wiki#installation)
 
-1. Installieren ...
-2. Starten ...
-3. Erstellen ...
-4. Führen ...
-5. Anpassen ...
-6. ...
-7. 
 ## Dokumentation
 
 ### Auftrag
@@ -35,9 +28,13 @@ Das Team Beta implementiert folgende features:
 
 ### Wiki
 - [Wiki](https://github.com/MultiKnacker/Projekt-WIN/wiki)
-- In der Wiki stehen Anleitungen zum einrichten eines Lokalen webservers und der Nutzung der Webseite
+- ** Website Anleitungen und Erklärungen **
+  - [Login und Registrierung](https://github.com/MultiKnacker/Projekt-WIN/wiki/Login-und-Registrierung)
+  - [Mietstationsverwaltung](https://github.com/MultiKnacker/Projekt-WIN/wiki/Mietstationsverwaltung)
+  - [Personalverwaltung](https://github.com/MultiKnacker/Projekt-WIN/wiki/Personalverwaltung)
+  - [Fahrzeugverwaltung](https://github.com/MultiKnacker/Projekt-WIN/wiki/Fahrzeugverwaltung)
+- ** Datenbank hintergrund Informationen **
+  - [MongoDB](https://github.com/MultiKnacker/Projekt-WIN/wiki/Mongodb)
+    - Hier stehen auch Informationen zum Datenbank Aufbau und den Demodaten der init.js  
+  - [Mongo Express](https://github.com/MultiKnacker/Projekt-WIN/wiki/Mongo-Express)
 
-### Datengenerierung (example)
-
-Die bereits generierten Testdaten befinden sich mit der Datenbankstruktur in der Datei " " und werden automatisch beim Erstellen der Datenbank eingefügt. 
-Das Generieren der Testdaten erfolgte anhand von ...
