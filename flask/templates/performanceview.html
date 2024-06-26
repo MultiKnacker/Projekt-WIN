@@ -6,7 +6,16 @@
 
 {% block body%}
     <div>
-        <h1>Flask Matplotlib Example</h1>
-        <img src="{{ url_for('static', filename='diagrams/plot.png') }}" alt="Chart 1">
+        <div class="container-fluid align-items-center">
+            <h1>Flask Matplotlib Example</h1>
+        </div>
+        <div class="container-fluid">
+            <img  class="rounded-5" src="{{ url_for('static', filename='diagrams/type_usage_pie_chart.png') }}" alt="Usage Pie chart">
+            <h3>Prozentuale Nutzungsverteilung der einzelnen Fahrzeuge. Die genutzten Daten beziehen sich rückwierkend auf das ganze Jahr.</h3>
+        </div>
+        <div class="container-fluid">
+            <img  class="rounded-5" src="{{ url_for('static', filename='diagrams/revenue_quater.png') }}" alt="Usage Pie chart">
+            <h3>Prozentuale Nutzungsverteilung der einzelnen Fahrzeuge. Die genutzten Daten beziehen sich rückwierkend auf das ganze Jahr.</h3>
+        </div>
     </div>
 {% endblock %}

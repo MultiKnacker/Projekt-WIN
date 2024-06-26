@@ -198,7 +198,7 @@
   { _id: ObjectId(), name: 'Zentrale Hannover', location: 'Industriegebiet', streetname: 'Heinkelstraße 8', region: 'Hannover', zipcode: '30827', rent: 4500.00, employees: [employees[54]._id,employees[55]._id,employees[56]._id,employees[57]._id,employees[58]._id,employees[59]._id], vehicles: [vehicles[40]._id,vehicles[41]._id,vehicles[42]._id,vehicles[43]._id,vehicles[44]._id] },
   { _id: ObjectId(), name: 'Zentrale Nürnberg', location: 'Ländlich', streetname: 'Am Wegfeld 60', region: 'Nürnberg', zipcode: '90427', rent: 2000.00, employees: [employees[60]._id,employees[61]._id,employees[62]._id,employees[63]._id,employees[64]._id,employees[65]._id], vehicles: [vehicles[50]._id,vehicles[51]._id,vehicles[52]._id,vehicles[53]._id,vehicles[54]._id] }
   // Add more central documents here...
-   // Add more central documents here...
+  // Add more central documents here...
  ];
  db.central.insertMany(centrals);
 
@@ -299,7 +299,11 @@
   { _id: 18, recieves: "03-06-2021", returned: "08-06-2021", discount: 10, vehicles: [vehicles[18]._id], centrals: [centrals[8]._id], customers: [customers[18]._id] },
   { _id: 19, recieves: "22-03-2022", returned: "25-03-2022", discount: 25, vehicles: [vehicles[19]._id], centrals: [centrals[9]._id], customers: [customers[19]._id] },
   { _id: 20, recieves: "12-12-2023", returned: "18-12-2023", discount: 15, vehicles: [vehicles[20]._id], centrals: [centrals[10]._id], customers: [customers[20]._id] },
-  // Add more rentalagreement documents here... Yakup
+  { _id: 21, receives: "27-12-2023", returned: "03-01-2024", discount: 10, vehicles: [vehicles[2]._id],  centrals: [centrals[1]._id],  customers: [customers[8]._id] },
+  { _id: 22, receives: "10-02-2024", returned: "15-02-2024", discount: 20, vehicles: [vehicles[14]._id], centrals: [centrals[3]._id], customers: [customers[15]._id] },
+  {_id: 23,  receives: "08-03-2024", returned: "12-03-2024", discount: 5,  vehicles: [vehicles[7]._id],  centrals: [centrals[5]._id], customers: [customers[3]._id] },
+  {_id: 24,  receives: "20-03-2024", returned: "27-03-2024", discount: 15, vehicles: [vehicles[11]._id], centrals: [centrals[7]._id], customers: [customers[10]._id] },
+  {_id: 25,  receives: "15-04-2024", returned: "20-04-2024", discount: 25, vehicles: [vehicles[3]._id],  centrals: [centrals[9]._id], customers: [customers[17]._id] },
  ];
  db.rentalagreement.insertMany(rentalagreements);
 
