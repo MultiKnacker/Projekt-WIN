@@ -72,8 +72,8 @@ body {
 }
 
 .form-control:focus {
-    color: rgba(207, 247, 169, 0.815); /* Text color on focus */
-    background-color: #3b837f91; /* Ensure background stays dark */
+    color: rgba(226, 226, 226, 0.815); /* Text color on focus */
+    background-color: #303030; /* Ensure background stays dark */
     border-color: #587756; /* Change border color on focus */
     outline: 0; /* Remove outline */
     box-shadow: 0 0 0 0.2rem rgba(128, 189, 255, 0.25); /* Add a slight shadow for focus */
