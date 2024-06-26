@@ -21,7 +21,7 @@ def register():
         password = request.form.get('password')
         
         if users_collection.find_one({"email": email}):
-            flash('Email address already exists', 'error')
+            flash(f'Email address {email} already exists.', 'danger')
             return redirect(url_for('register.register'))
 
         # Hash the password using bcrypt

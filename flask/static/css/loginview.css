@@ -9,6 +9,23 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
+    position: relative; /* Ensure relative positioning for absolute elements */
+}
+
+.container {
+    position: absolute;
+    top: 20px; /* Adjust the top spacing as needed */
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    z-index: 1000; /* Ensure it's above other content */
+}
+
+.alert {
+    width: 100%; /* Ensure full width */
+    max-width: 400px; /* Adjust max-width as per your design */
+    margin-bottom: 10px; /* Add bottom margin for spacing */
 }
 
 .card {
@@ -16,6 +33,7 @@ body {
     border-radius: 10px; /* Rounded corners */
     border: none;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    margin-top: 80px; /* Adjust top margin to separate from flash messages */
 }
 
 .card .card-body {
@@ -45,7 +63,7 @@ body {
     background-color: #5e107cfd; /* Darker shade of purple on hover */
     border-color: #8756c1;
     transition: background-color 0.3s ease-in-out; /* Add a smooth transition */
-  }
+}
 
 .text-white {
     color: #fff !important;
@@ -71,47 +89,54 @@ body {
     justify-content: center;
     align-items: center;
     height: 60px; /* Fixed height for consistent centering */
-    h1, h2, h3 {  /* Target all possible heading elements within the box */
-        display: block;
-      }
 }
 
 /* Password strength indicator */
 .password-strength {
     margin-top: 5px;
 }
+
 .password-strength .strength-bar {
     height: 10px;
     border-radius: 5px;
 }
+
 .strength-weak {
     width: 25%;
     background-color: red;
 }
+
 .strength-medium {
     width: 50%;
     background-color: yellow;
 }
+
 .strength-strong {
     width: 75%;
     background-color: lightgreen;
 }
+
 .strength-very-strong {
     width: 100%;
     background-color: green;
 }
+
 .strength-text {
     color: rgb(255, 255, 255);
 }
+
 .strength-text.weak {
     color: red;
 }
+
 .strength-text.medium {
     color: yellow;
 }
+
 .strength-text.strong {
     color: lightgreen;
 }
+
 .strength-text.very-strong {
     color: green;
 }

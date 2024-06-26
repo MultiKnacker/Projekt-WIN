@@ -106,34 +106,58 @@
     </script>
 </head>
 <body>
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                    </div>
+                    <script>
+                        // Automatically close and fade out the alert after 5 seconds
+                        const alertElement = document.querySelector('.alert');
+                        setTimeout(function() {
+                            alertElement.classList.add('fade');
+                            alertElement.style.transition = 'opacity 2s ease-out';
+                            alertElement.style.opacity = '0';
+                            setTimeout(function() {
+                                alertElement.remove();
+                            }, 2000); // Remove after fade out transition completes (1s)
+                        }, 5000); // 5000 milliseconds (5 seconds)
+                    </script>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    
     <div class="d-flex justify-content-center align-items-center vh-100">
         <div class="card text-white shadow-lg" style="width: 100%; max-width: 400px;">
             <div class="card-body p-4">
                 <div class="heading-box">
-                    <h2 class="card-title text-white">Register</h2>
+                    <h2 class="card-title text-white">Registrieren</h2>
                 </div>
                 <form method="POST" action="{{ url_for('register.register') }}">
                     <div class="form-group mb-3">
-                        <label for="username" class="form-label text-white">Username</label>
+                        <label for="username" class="form-label text-white">Benutzername</label>
                         <input type="text" class="form-control" id="username" name="username" required>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="email" class="form-label text-white">Email address</label>
+                        <label for="email" class="form-label text-white">E-Mail</label>
                         <input type="email" class="form-control" id="email" name="email" required>
                         <small id="email-error" class="form-text text-danger"></small>
                     </div>
                     <div class="form-group mb-4">
-                        <label for="password" class="form-label text-white">Password</label>
+                        <label for="password" class="form-label text-white">Passwort</label>
                         <input type="password" class="form-control" id="password" name="password" required>
                         <div class="password-strength">
                             <div id="strength-bar" class="strength-bar"></div>
                             <small id="strength-text" class="form-text"></small>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block" disabled>Register</button>
+                    <button type="submit" class="btn btn-primary btn-block" disabled>Registrieren</button>
                 </form>
                 <div class="text-center mt-3">
-                    <p class="text-white">Already have an account? <a href="{{ url_for('login.login') }}" class="text-decoration-none" style="color: var(--primary-accent-color);">Login here</a></p>
+                    <p class="text-white">Sie haben bereits einen Account? <a href="{{ url_for('login.login') }}" class="text-decoration-none" style="color: var(--primary-accent-color);">Hier einloggen</a></p>
                 </div>
             </div>
         </div>
