@@ -75,3 +75,43 @@ body {
         display: block;
       }
 }
+
+/* Password strength indicator */
+.password-strength {
+    margin-top: 5px;
+}
+.password-strength .strength-bar {
+    height: 10px;
+    border-radius: 5px;
+}
+.strength-weak {
+    width: 25%;
+    background-color: red;
+}
+.strength-medium {
+    width: 50%;
+    background-color: yellow;
+}
+.strength-strong {
+    width: 75%;
+    background-color: lightgreen;
+}
+.strength-very-strong {
+    width: 100%;
+    background-color: green;
+}
+.strength-text {
+    color: rgb(255, 255, 255);
+}
+.strength-text.weak {
+    color: red;
+}
+.strength-text.medium {
+    color: yellow;
+}
+.strength-text.strong {
+    color: lightgreen;
+}
+.strength-text.very-strong {
+    color: green;
+}

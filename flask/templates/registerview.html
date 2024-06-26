@@ -10,6 +10,95 @@
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordInput = document.getElementById('password');
+            const strengthBar = document.getElementById('strength-bar');
+            const strengthText = document.getElementById('strength-text');
+            const emailInput = document.getElementById('email');
+            const emailError = document.getElementById('email-error');
+
+            passwordInput.addEventListener('input', function() {
+                const password = passwordInput.value;
+                let strength = 0;
+                const requirements = {
+                    length: password.length >= 8,
+                    lowercase: /[a-z]/.test(password),
+                    uppercase: /[A-Z]/.test(password),
+                    number: /[0-9]/.test(password),
+                    specialChar: /[\W_]/.test(password)
+                };
+
+                // Calculate strength
+                for (const key in requirements) {
+                    if (requirements[key]) strength++;
+                }
+
+                strengthBar.className = 'strength-bar';
+                strengthText.className = 'strength-text';
+
+                if (strength < 3) {
+                    strengthBar.classList.add('strength-weak');
+                    strengthText.classList.add('weak');
+                    strengthText.innerHTML = `
+                        Weak<br>
+                        Password must have:
+                        ${requirements.length ? '✔' : '✘'} at least 8 characters<br>
+                        ${requirements.lowercase ? '✔' : '✘'} at least one lowercase letter<br>
+                        ${requirements.uppercase ? '✔' : '✘'} at least one uppercase letter<br>
+                        ${requirements.number ? '✔' : '✘'} at least one number<br>
+                        ${requirements.specialChar ? '✔' : '✘'} at least one special character
+                    `;
+                } else if (strength === 3) {
+                    strengthBar.classList.add('strength-medium');
+                    strengthText.classList.add('medium');
+                    strengthText.innerHTML = `
+                        Medium<br>
+                        Password must have:
+                        ${requirements.length ? '✔' : '✘'} at least 8 characters<br>
+                        ${requirements.lowercase ? '✔' : '✘'} at least one lowercase letter<br>
+                        ${requirements.uppercase ? '✔' : '✘'} at least one uppercase letter<br>
+                        ${requirements.number ? '✔' : '✘'} at least one number<br>
+                        ${requirements.specialChar ? '✔' : '✘'} at least one special character
+                    `;
+                } else if (strength === 4) {
+                    strengthBar.classList.add('strength-strong');
+                    strengthText.classList.add('strong');
+                    strengthText.innerHTML = `
+                        Strong<br>
+                        Password must have:
+                        ${requirements.length ? '✔' : '✘'} at least 8 characters<br>
+                        ${requirements.lowercase ? '✔' : '✘'} at least one lowercase letter<br>
+                        ${requirements.uppercase ? '✔' : '✘'} at least one uppercase letter<br>
+                        ${requirements.number ? '✔' : '✘'} at least one number<br>
+                        ${requirements.specialChar ? '✔' : '✘'} at least one special character
+                    `;
+                } else if (strength === 5) {
+                    strengthBar.classList.add('strength-very-strong');
+                    strengthText.classList.add('very-strong');
+                    strengthText.innerHTML = `
+                        Very Strong<br>
+                        Password must have:
+                        ${requirements.length ? '✔' : '✘'} at least 8 characters<br>
+                        ${requirements.lowercase ? '✔' : '✘'} at least one lowercase letter<br>
+                        ${requirements.uppercase ? '✔' : '✘'} at least one uppercase letter<br>
+                        ${requirements.number ? '✔' : '✘'} at least one number<br>
+                        ${requirements.specialChar ? '✔' : '✘'} at least one special character
+                    `;
+                }
+            });
+
+            emailInput.addEventListener('input', function() {
+                const email = emailInput.value;
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (emailPattern.test(email)) {
+                    emailError.innerText = '';
+                } else {
+                    emailError.innerText = 'Please enter a valid email address';
+                }
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="d-flex justify-content-center align-items-center vh-100">
@@ -26,10 +115,15 @@
                     <div class="form-group mb-3">
                         <label for="email" class="form-label text-white">Email address</label>
                         <input type="email" class="form-control" id="email" name="email" required>
+                        <small id="email-error" class="form-text text-danger"></small>
                     </div>
                     <div class="form-group mb-4">
                         <label for="password" class="form-label text-white">Password</label>
                         <input type="password" class="form-control" id="password" name="password" required>
+                        <div class="password-strength">
+                            <div id="strength-bar" class="strength-bar"></div>
+                            <small id="strength-text" class="form-text"></small>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">Register</button>
                 </form>
