@@ -15,16 +15,7 @@ Das Team Beta implementiert folgende features:
 - Performance Berichte
 - Personal Einsatzplanung
 
-## Installation
-
-1. Installieren ...
-2. Starten ...
-3. Erstellen ...
-4. Führen ...
-5. Anpassen ...
-6. ...
-7. 
-## Dokumentation
+## [Installation (klick mich)](https://github.com/MultiKnacker/Projekt-WIN/wiki#installation)
 
 ### Auftrag
 - [Lastenheft](https://drive.google.com/file/d/1cPGY5iQzR0fAIM5708DHBrwGUbb6ySsf/view?usp=sharing)
@@ -41,12 +32,35 @@ Das Team Beta implementiert folgende features:
 
 ### Wiki
 - [Wiki](https://github.com/MultiKnacker/Projekt-WIN/wiki)
-- In der Wiki stehen Anleitungen zum einrichten eines Lokalen webservers und der Nutzung der Webseite
+- **Website Anleitungen und Erklärungen**
+  - [Login und Registrierung](https://github.com/MultiKnacker/Projekt-WIN/wiki/Login-und-Registrierung)
+  - [Mietstationsverwaltung](https://github.com/MultiKnacker/Projekt-WIN/wiki/Mietstationsverwaltung)
+  - [Personalverwaltung](https://github.com/MultiKnacker/Projekt-WIN/wiki/Personalverwaltung)
+  - [Fahrzeugverwaltung](https://github.com/MultiKnacker/Projekt-WIN/wiki/Fahrzeugverwaltung)
+- **Datenbank hintergrund Informationen**
+  - [MongoDB](https://github.com/MultiKnacker/Projekt-WIN/wiki/Mongodb)
+    - Hier stehen auch Informationen zum Datenbank Aufbau und den Demodaten der init.js  
+  - [Mongo Express](https://github.com/MultiKnacker/Projekt-WIN/wiki/Mongo-Express)
 
-### Datengenerierung (example)
 
-Die bereits generierten Testdaten befinden sich mit der Datenbankstruktur in der Datei " " und werden automatisch beim Erstellen der Datenbank eingefügt. 
-Das Generieren der Testdaten erfolgte anhand von ...
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
 ## Contributors ✨
 
