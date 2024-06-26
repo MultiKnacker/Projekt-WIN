@@ -53,9 +53,6 @@ def list_management():
         employee_id = str(employee['_id'])
         employee['central_name'] = central_map.get(employee_id, 'N/A')
 
-
-    print(f"DEBUG: Retrieved Employees: {employees}")  # Debug print
-
     show_navbar = True
     if search_category or search_input:
         return render_template("managementview.html", employees=employees, centrals=centrals, show_navbar=show_navbar, search_category=search_category, search_input=search_input)
@@ -90,9 +87,6 @@ def edit_employee():
         "central_id": new_central_id
     }
 
-    print(f"DEBUG: Updating employee with ID: {employee_id}")
-    print(f"DEBUG: New employee data: {employee_data}")
-
     result = employee_collection.update_one({"_id": ObjectId(employee_id)}, {"$set": employee_data})
     print(f"DEBUG: Update result: {result.modified_count} document(s) updated")
 
@@ -104,14 +98,12 @@ def edit_employee():
                 {"_id": current_central_id},
                 {"$pull": {"employees": ObjectId(employee_id)}}
             )
-            print(f"DEBUG: Removed employee ID: {employee_id} from current central ID: {current_central_id}")
 
         # Add employee to the new central
         central_collection.update_one(
             {"_id": new_central_id},
             {"$addToSet": {"employees": ObjectId(employee_id)}}
         )
-        print(f"DEBUG: Added employee ID: {employee_id} to new central ID: {new_central_id}")
 
     flash('Employee details updated successfully.', 'success')
     return redirect(url_for('management.list_management'))
@@ -134,7 +126,6 @@ def add_employee():
     }
 
     print(f"DEBUG: Adding new employee")
-    print(f"DEBUG: Employee data: {employee_data}")
 
     result = employee_collection.insert_one(employee_data)
     print(f"DEBUG: Insert result: {result.inserted_id}")
@@ -155,8 +146,6 @@ def delete_employee():
     if not employee_id:
         flash('No employee ID provided.', 'error')
         return redirect(url_for('management.list_management'))
-
-    print(f"DEBUG: Deleting employee with ID: {employee_id}")
 
     result = employee_collection.delete_one({"_id": ObjectId(employee_id)})
     print(f"DEBUG: Delete result: {result.deleted_count} document(s) deleted")

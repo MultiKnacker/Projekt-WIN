@@ -24,7 +24,7 @@ def login():
             flash('Login successful!', 'success')
             return redirect(url_for('location.list_location'))
         else:
-            flash('Invalid email or password', 'error')
+            flash('Invalid email or password', 'danger')
             return redirect(url_for('login.login'))
 
     return render_template('loginview.html')
