@@ -42,6 +42,8 @@ def filter_location():
   search_category = request.form.get('search-category')
   filtered_locations = get_filtered_locations(search_input, search_category)
   show_navbar = True
+  if search_category or search_input:
+      return render_template("location/locationview.html", show_navbar = show_navbar, data=filtered_locations, search_input=search_input, search_category=search_category)
   return render_template("location/locationview.html", show_navbar = show_navbar, data=filtered_locations)
 
 @location_bp.route('/locations/edit/<location_id>', methods=['GET', 'POST'])

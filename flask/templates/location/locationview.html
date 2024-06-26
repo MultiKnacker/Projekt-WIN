@@ -14,12 +14,12 @@
                     <label class="input-group-text bg-dark text-white border-0" for="search-category">Suche nach</label>
                 </div>
                 <select class="custom-select bg-dark text-white border-0" id="search-category" name="search-category">
-                    <option value="name">Name</option>
-                    <option value="streetname">Straße</option>
-                    <option value="region">Ort</option>
-                    <option value="location">Standort Typ</option>
+                    <option value="name" {% if search_category == 'name' %} selected {% endif %}>Name</option>
+                    <option value="streetname" {% if search_category == 'streetname' %} selected {% endif %}>Straße</option>
+                    <option value="region" {% if search_category == 'region' %} selected {% endif %}>Ort</option>
+                    <option value="location" {% if search_category == 'location' %} selected {% endif %}>Standort Typ</option>
                 </select>
-                <input class="form-control bg-dark text-white border-0" type="search" placeholder="Search" aria-label="Search" id="search-input" name="search-input">
+                <input class="form-control bg-dark text-white border-0" type="search" placeholder="Search" aria-label="Search" id="search-input" name="search-input" value="{{ search_input }}">
                 <div class="input-group-append">
                     <button class="btn btn-secondary border-0" type="submit">Suchen</button>
                 </div>
