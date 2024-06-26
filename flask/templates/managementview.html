@@ -16,6 +16,7 @@
                 <option value="lastname" {% if search_category == 'lastname' %} selected {% endif %}>Nachname</option>
                 <option value="central_name" {% if search_category == 'central_name' %} selected {% endif %}>Zentralname</option>
                 <option value="region" {% if search_category == 'region' %} selected {% endif %}>Region</option>
+                <option value="job" {% if search_category == 'job' %} selected {% endif %}>Job</option>
             </select>
             <input class="form-control bg-dark text-white border-0" type="search" placeholder="Search"
                 aria-label="Search" id="search-input" name="search-input" value="{{ search_input }}">
@@ -157,7 +158,7 @@
                             </select>
                         </div>
                         <div class="d-flex justify-content-end mt-3">
-                            <button type="submit" class="btn btn-success" id="add-submit-button" disabled>Add Employee</button>
+                            <button type="submit" class="btn btn-success" id="add-submit-button" disabled>Speichern</button>
                         </div>
                     </form>
                 </div>
