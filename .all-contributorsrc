@@ -16,7 +16,11 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/79873703?v=4",
       "profile": "https://github.com/MultiKnacker",
       "contributions": [
-        "code"
+        "code",
+        "doc",
+        "design",
+        "ideas",
+        "projectManagement"
       ]
     },
     {
