@@ -1,9 +1,6 @@
 # Gamma Autovermietung
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-0-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Einleitung
@@ -54,6 +51,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/MultiKnacker"><img src="https://avatars.githubusercontent.com/u/79873703?v=4?s=100" width="100px;" alt="KnusperKing"/><br /><sub><b>KnusperKing</b></sub></a><br /><a href="https://github.com/MultiKnacker/Projekt-WIN/commits?author=MultiKnacker" title="Code">💻</a> <a href="https://github.com/MultiKnacker/Projekt-WIN/commits?author=MultiKnacker" title="Documentation">📖</a> <a href="#design-MultiKnacker" title="Design">🎨</a> <a href="#ideas-MultiKnacker" title="Ideas, Planning, & Feedback">🤔</a> <a href="#projectManagement-MultiKnacker" title="Project Management">📆</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/FabianShalk"><img src="https://avatars.githubusercontent.com/u/44805543?v=4?s=100" width="100px;" alt="Fabian K."/><br /><sub><b>Fabian K.</b></sub></a><br /><a href="https://github.com/MultiKnacker/Projekt-WIN/commits?author=FabianShalk" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Kaya42"><img src="https://avatars.githubusercontent.com/u/114980333?v=4?s=100" width="100px;" alt="Yakup Kaya"/><br /><sub><b>Yakup Kaya</b></sub></a><br /><a href="https://github.com/MultiKnacker/Projekt-WIN/commits?author=Kaya42" title="Code">💻</a></td>
     </tr>
   </tbody>
   <tfoot>
