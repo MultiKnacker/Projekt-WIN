@@ -169,11 +169,11 @@
  function calculateCostPerDay(vehicleType) {
   switch (vehicleType) {
    case 'PKW':
-    return Math.floor(Math.random() * (150 - 50 + 1)) + 50; // Random between 50-150
+    return Math.floor(Math.random() * (150.00 - 50.00 + 1)) + 50.00; // Random between 50-150
    case 'LKW':
-    return Math.floor(Math.random() * (600 - 250 + 1)) + 250; // Random between 250-600
+    return Math.floor(Math.random() * (600.00 - 250.00 + 1)) + 250.00; // Random between 250-600
    case 'Transporter':
-    return Math.floor(Math.random() * (180 - 20 + 1)) + 20; // Random between 20-180
+    return Math.floor(Math.random() * (180.00 - 20.00 + 1)) + 20.00; // Random between 20-180
    default:
     return 0;
   }
@@ -181,7 +181,7 @@
 
  // Add costPerDay field to each vehicle
  vehicles.forEach(vehicle => {
-  vehicle.costPerDay = calculateCostPerDay(vehicle.vehicletype);
+  vehicle.cost_per_day = calculateCostPerDay(vehicle.vehicletype);
  });
 
  db.vehicle.insertMany(vehicles);
@@ -202,10 +202,9 @@
  ];
  db.central.insertMany(centrals);
 
-
  const keydatas = [
-   { quater: 1, revenue: 10000, oustanding_revenue: 5000, personal_costs: 2000, rent: 1000, year: 2024, centrals: 1 },
-   { quater: 2, revenue: 15000, oustanding_revenue: 7000, personal_costs: 2500, rent: 1200, year: 2024, centrals: 2 },
+   { quater: 1, revenue: 10000, personal_costs: 2000, rent: 1000, year: 2024},
+   { quater: 2, revenue: 15000, personal_costs: 2500, rent: 1200, year: 2024},
    // Add more keydata documents here...
  ];
  db.keydata.insertMany(keydatas);
@@ -279,26 +278,26 @@
  db.customer.insertMany(customers);
 
  const rentalagreements = [
-  { _id: 1, recieves: "20-06-2020", returned: "30-06-2020", discount: 10, vehicles: [vehicles[1]._id], centrals: [centrals[1]._id] , customers: [customers[1]._id]},
-  { _id: 2, recieves: "15-12-2021", returned: "15-01-2022", discount: 15, vehicles: [vehicles[2]._id], centrals: [centrals[2]._id] , customers: [customers[2]._id]},
-  { _id: 3, recieves: "10-08-2020", returned: "18-08-2020", discount: 20, vehicles: [vehicles[3]._id], centrals: [centrals[3]._id], customers: [customers[3]._id] },
-  { _id: 4, recieves: "05-05-2022", returned: "10-05-2022", discount: 25, vehicles: [vehicles[4]._id], centrals: [centrals[4]._id], customers: [customers[4]._id] },
-  { _id: 5, recieves: "20-10-2023", returned: "21-10-2023", discount: 15, vehicles: [vehicles[5]._id], centrals: [centrals[5]._id], customers: [customers[5]._id] },
-  { _id: 6, recieves: "12-03-2021", returned: "15-03-2021", discount: 30, vehicles: [vehicles[6]._id], centrals: [centrals[6]._id], customers: [customers[6]._id] },
-  { _id: 7, recieves: "08-11-2020", returned: "15-11-2020", discount: 10, vehicles: [vehicles[7]._id], centrals: [centrals[7]._id], customers: [customers[7]._id] },
-  { _id: 8, recieves: "25-07-2022", returned: "27-07-2022", discount: 5, vehicles: [vehicles[8]._id], centrals: [centrals[8]._id], customers: [customers[8]._id] },
-  { _id: 9, recieves: "03-12-2023", returned: "10-12-2023", discount: 20, vehicles: [vehicles[9]._id], centrals: [centrals[9]._id], customers: [customers[9]._id] },
-  { _id: 10, recieves: "14-09-2021", returned: "15-09-2021", discount: 15, vehicles: [vehicles[10]._id], centrals: [centrals[10]._id], customers: [customers[10]._id] },
-  { _id: 11, recieves: "18-06-2020", returned: "22-06-2020", discount: 30, vehicles: [vehicles[11]._id], centrals: [centrals[1]._id], customers: [customers[11]._id] },
-  { _id: 12, recieves: "09-04-2022", returned: "15-04-2022", discount: 10, vehicles: [vehicles[12]._id], centrals: [centrals[2]._id], customers: [customers[12]._id] },
-  { _id: 13, recieves: "25-10-2023", returned: "28-10-2023", discount: 25, vehicles: [vehicles[13]._id], centrals: [centrals[3]._id], customers: [customers[13]._id] },
-  { _id: 14, recieves: "02-01-2021", returned: "10-01-2021", discount: 15, vehicles: [vehicles[14]._id], centrals: [centrals[4]._id], customers: [customers[14]._id] },
-  { _id: 15, recieves: "17-07-2022", returned: "25-07-2022", discount: 5, vehicles: [vehicles[15]._id], centrals: [centrals[5]._id], customers: [customers[15]._id] },
-  { _id: 16, recieves: "29-11-2023", returned: "05-12-2023", discount: 20, vehicles: [vehicles[16]._id], centrals: [centrals[6]._id], customers: [customers[16]._id] },
-  { _id: 17, recieves: "08-09-2020", returned: "10-09-2020", discount: 30, vehicles: [vehicles[17]._id], centrals: [centrals[7]._id], customers: [customers[17]._id] },
-  { _id: 18, recieves: "03-06-2021", returned: "08-06-2021", discount: 10, vehicles: [vehicles[18]._id], centrals: [centrals[8]._id], customers: [customers[18]._id] },
-  { _id: 19, recieves: "22-03-2022", returned: "25-03-2022", discount: 25, vehicles: [vehicles[19]._id], centrals: [centrals[9]._id], customers: [customers[19]._id] },
-  { _id: 20, recieves: "12-12-2023", returned: "18-12-2023", discount: 15, vehicles: [vehicles[20]._id], centrals: [centrals[10]._id], customers: [customers[20]._id] },
+  { _id: 1, receives: "20-06-2020", returned: "30-06-2020", discount: 10, vehicles: [vehicles[1]._id], centrals: [centrals[1]._id] , customers: [customers[1]._id]},
+  { _id: 2, receives: "15-12-2021", returned: "15-01-2022", discount: 15, vehicles: [vehicles[2]._id], centrals: [centrals[2]._id] , customers: [customers[2]._id]},
+  { _id: 3, receives: "10-08-2020", returned: "18-08-2020", discount: 20, vehicles: [vehicles[3]._id], centrals: [centrals[3]._id], customers: [customers[3]._id] },
+  { _id: 4, receives: "05-05-2022", returned: "10-05-2022", discount: 25, vehicles: [vehicles[4]._id], centrals: [centrals[4]._id], customers: [customers[4]._id] },
+  { _id: 5, receives: "20-10-2023", returned: "21-10-2023", discount: 15, vehicles: [vehicles[5]._id], centrals: [centrals[5]._id], customers: [customers[5]._id] },
+  { _id: 6, receives: "12-03-2021", returned: "15-03-2021", discount: 30, vehicles: [vehicles[6]._id], centrals: [centrals[6]._id], customers: [customers[6]._id] },
+  { _id: 7, receives: "08-11-2020", returned: "15-11-2020", discount: 10, vehicles: [vehicles[7]._id], centrals: [centrals[7]._id], customers: [customers[7]._id] },
+  { _id: 8, receives: "25-07-2022", returned: "27-07-2022", discount: 5, vehicles: [vehicles[8]._id], centrals: [centrals[8]._id], customers: [customers[8]._id] },
+  { _id: 9, receives: "03-12-2023", returned: "10-12-2023", discount: 20, vehicles: [vehicles[9]._id], centrals: [centrals[9]._id], customers: [customers[9]._id] },
+  { _id: 10, receives: "14-09-2021", returned: "15-09-2021", discount: 15, vehicles: [vehicles[10]._id], centrals: [centrals[10]._id], customers: [customers[10]._id] },
+  { _id: 11, receives: "18-06-2020", returned: "22-06-2020", discount: 30, vehicles: [vehicles[11]._id], centrals: [centrals[1]._id], customers: [customers[11]._id] },
+  { _id: 12, receives: "09-04-2022", returned: "15-04-2022", discount: 10, vehicles: [vehicles[12]._id], centrals: [centrals[2]._id], customers: [customers[12]._id] },
+  { _id: 13, receives: "25-10-2023", returned: "28-10-2023", discount: 25, vehicles: [vehicles[13]._id], centrals: [centrals[3]._id], customers: [customers[13]._id] },
+  { _id: 14, receives: "02-01-2021", returned: "10-01-2021", discount: 15, vehicles: [vehicles[14]._id], centrals: [centrals[4]._id], customers: [customers[14]._id] },
+  { _id: 15, receives: "17-07-2022", returned: "25-07-2022", discount: 5, vehicles: [vehicles[15]._id], centrals: [centrals[5]._id], customers: [customers[15]._id] },
+  { _id: 16, receives: "29-11-2023", returned: "05-12-2023", discount: 20, vehicles: [vehicles[16]._id], centrals: [centrals[6]._id], customers: [customers[16]._id] },
+  { _id: 17, receives: "08-09-2020", returned: "10-09-2020", discount: 30, vehicles: [vehicles[17]._id], centrals: [centrals[7]._id], customers: [customers[17]._id] },
+  { _id: 18, receives: "03-06-2021", returned: "08-06-2021", discount: 10, vehicles: [vehicles[18]._id], centrals: [centrals[8]._id], customers: [customers[18]._id] },
+  { _id: 19, receives: "22-03-2022", returned: "25-03-2022", discount: 25, vehicles: [vehicles[19]._id], centrals: [centrals[9]._id], customers: [customers[19]._id] },
+  { _id: 20, receives: "12-12-2023", returned: "18-12-2023", discount: 15, vehicles: [vehicles[20]._id], centrals: [centrals[10]._id], customers: [customers[20]._id] },
   { _id: 21, receives: "27-12-2023", returned: "03-01-2024", discount: 10, vehicles: [vehicles[2]._id],  centrals: [centrals[1]._id],  customers: [customers[8]._id] },
   { _id: 22, receives: "10-02-2024", returned: "15-02-2024", discount: 20, vehicles: [vehicles[14]._id], centrals: [centrals[3]._id], customers: [customers[15]._id] },
   {_id: 23,  receives: "08-03-2024", returned: "12-03-2024", discount: 5,  vehicles: [vehicles[7]._id],  centrals: [centrals[5]._id], customers: [customers[3]._id] },
