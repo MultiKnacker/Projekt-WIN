@@ -83,7 +83,7 @@
                             data-firstname="{{ employee['firstname'] }}" data-job="{{ employee['job'] }}"
                             data-streetname="{{ employee['streetname'] }}" data-region="{{ employee['region'] }}"
                             data-zipcode="{{ employee['zipcode'] }}" data-monthly_wage="{{ employee['monthly_wage'] }}"
-                            data-central_id="{{ employee.get('central_id', '') }}">
+                            data-central_id="{{ employee.get('central_id', '') }}" data-central_name="{{ employee['central_name'] }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#ffffff" class="bi bi-pencil-square" viewBox="0 0 18 16">
                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                 <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
@@ -132,6 +132,7 @@
                         <div class="form-group">
                             <label for="add-streetname">Straße</label>
                             <input type="text" class="form-control" id="add-streetname" name="streetname" required>
+                            <small id="add-streetname-error" class="form-text text-danger"></small>
                         </div>
                         <div class="form-group">
                             <label for="add-region">Region</label>
@@ -140,6 +141,7 @@
                         <div class="form-group">
                             <label for="add-zipcode">Postleitzahl</label>
                             <input type="text" class="form-control" id="add-zipcode" name="zipcode" required>
+                            <small id="add-zipcode-error" class="form-text text-danger"></small>
                         </div>
                         <div class="form-group">
                             <label for="add-monthly_wage">Gehalt</label>
@@ -155,7 +157,7 @@
                             </select>
                         </div>
                         <div class="d-flex justify-content-end mt-3">
-                            <button type="submit" class="btn btn-success">Add Employee</button>
+                            <button type="submit" class="btn btn-success" id="add-submit-button" disabled>Add Employee</button>
                         </div>
                     </form>
                 </div>
@@ -198,6 +200,7 @@
                         <div class="form-group">
                             <label for="edit-streetname">Straße</label>
                             <input type="text" class="form-control" id="edit-streetname" name="streetname" required>
+                            <small id="edit-streetname-error" class="form-text text-danger"></small>
                         </div>
                         <div class="form-group">
                             <label for="edit-region">Region</label>
@@ -206,6 +209,7 @@
                         <div class="form-group">
                             <label for="edit-zipcode">Postleitzahl</label>
                             <input type="text" class="form-control" id="edit-zipcode" name="zipcode" required>
+                            <small id="edit-zipcode-error" class="form-text text-danger"></small>
                         </div>
                         <div class="form-group">
                             <label for="edit-monthly_wage">Gehalt</label>
@@ -227,7 +231,7 @@
                                 <input type="hidden" id="edit-firstname" name="firstname">
                                 <input type="hidden" id="edit-central" name="central_id">
                                 <div class="d-flex justify-content-between mt-3">
-                                    <button type="submit" class="btn btn-primary">Speichern
+                                    <button type="submit" class="btn btn-primary" id="edit-submit-button" disabled>Speichern
                                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-download" viewBox="0 0 18 18">
                                         <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
                                         <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
@@ -259,6 +263,59 @@
 </div>
 
 <script>
+    function validatePostalCode(postalCode) {
+        return /^[0-9]{5}$/.test(postalCode);
+    }
+
+    function validateAddress(address) {
+        // Matches street names like "Hansestraße 1", "Hansestraße 1a", "Hansestraße 1A", "Hanse-Straße 12"
+        const addressPattern = /^[A-Za-zÄäÖöÜüß\s\-]+\s+\d+[a-zA-Z]?$/
+        return addressPattern.test(address.trim());
+    }
+
+
+    function validateForm(streetnameId, zipcodeId, submitButtonId) {
+        const streetname = document.getElementById(streetnameId).value;
+        const zipcode = document.getElementById(zipcodeId).value;
+
+        const streetnameError = document.getElementById(streetnameId + '-error');
+        const zipcodeError = document.getElementById(zipcodeId + '-error');
+
+        let isValid = true;
+
+        if (!validateAddress(streetname)) {
+            streetnameError.textContent = 'Bitte geben Sie eine gültige Straße ein.';
+            isValid = false;
+        } else {
+            streetnameError.textContent = '';
+        }
+
+        if (!validatePostalCode(zipcode)) {
+            zipcodeError.textContent = 'Bitte geben Sie eine gültige Postleitzahl ein.';
+            isValid = false;
+        } else {
+            zipcodeError.textContent = '';
+        }
+
+        document.getElementById(submitButtonId).disabled = !isValid;
+    }
+
+    document.getElementById('add-streetname').addEventListener('input', function() {
+        validateForm('add-streetname', 'add-zipcode', 'add-submit-button');
+    });
+
+    document.getElementById('add-zipcode').addEventListener('input', function() {
+        validateForm('add-streetname', 'add-zipcode', 'add-submit-button');
+    });
+
+    document.getElementById('edit-streetname').addEventListener('input', function() {
+        validateForm('edit-streetname', 'edit-zipcode', 'edit-submit-button');
+    });
+
+    document.getElementById('edit-zipcode').addEventListener('input', function() {
+        validateForm('edit-streetname', 'edit-zipcode', 'edit-submit-button');
+    });
+
     $('#editModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var id = button.data('id');
@@ -270,6 +327,7 @@
         var zipcode = button.data('zipcode');
         var monthly_wage = button.data('monthly_wage');
         var central_id = button.data('central_id');
+        var central_name = button.data('central_name'); // This is the central name
 
         var modal = $(this);
         modal.find('#edit-id').val(id);
@@ -280,12 +338,22 @@
         modal.find('#edit-region').val(region);
         modal.find('#edit-zipcode').val(zipcode);
         modal.find('#edit-monthly_wage').val(monthly_wage);
-        modal.find('#edit-central_id').val(central_id);
+       // Set the correct central name in the select dropdown based on the central name
+        modal.find('#edit-central_id option').each(function() {
+            if ($(this).text() == central_name) {
+                $(this).prop('selected', true);
+            } else {
+                $(this).prop('selected', false);
+            }
+        });
 
         // Set the id for delete form
         modal.find('#delete-id').val(id);
         modal.find('#delete-lastname').val(lastname);
         modal.find('#delete-firstname').val(firstname);
+        // Set the correct central in the select dropdown
+
+        validateForm('edit-streetname', 'edit-zipcode', 'edit-submit-button');
     });
 
     function confirmDelete() {
