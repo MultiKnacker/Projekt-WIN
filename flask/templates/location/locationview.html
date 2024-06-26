@@ -173,32 +173,38 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ url_for('location.add_location') }}" method="POST">
+                    <form id="addLocationForm" action="{{ url_for('location.add_location') }}" method="POST">
                         <div class="mb-3">
                             <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="name" name="name">
+                            <input type="text" class="form-control" id="name" name="name" required>
+                            <div class="invalid-feedback">Bitte füllen Sie dieses Feld aus.</div>
                         </div>
                         <div class="mb-3">
                             <label for="location" class="form-label">Standort</label>
-                            <input type="text" class="form-control" id="location" name="location">
+                            <input type="text" class="form-control" id="location" name="location" required>
+                            <div class="invalid-feedback">Bitte füllen Sie dieses Feld aus.</div>
                         </div>
                         <div class="mb-3">
                             <label for="streetname" class="form-label">Strasse</label>
-                            <input type="text" class="form-control" id="streetname" name="streetname">
+                            <input type="text" class="form-control" id="streetname" name="streetname" required>
+                            <div class="invalid-feedback">Bitte geben Sie eine gültige Strasse ein.</div>
                         </div>
                         <div class="mb-3">
                             <label for="region" class="form-label">Ort</label>
-                            <input type="text" class="form-control" id="region" name="region">
+                            <input type="text" class="form-control" id="region" name="region" required>
+                            <div class="invalid-feedback">Bitte füllen Sie dieses Feld aus.</div>
                         </div>
                         <div class="mb-3">
                             <label for="zipcode" class="form-label">PLZ</label>
-                            <input type="text" class="form-control" id="zipcode" name="zipcode">
+                            <input type="text" class="form-control" id="zipcode" name="zipcode" required>
+                            <div class="invalid-feedback">Bitte geben Sie eine gültige PLZ ein.</div>
                         </div>
                         <div class="mb-3">
                             <label for="rent" class="form-label">Miete (in €)</label>
-                            <input type="number" class="form-control" id="rent" name="rent">
+                            <input type="number" class="form-control" id="rent" name="rent" required>
+                            <div class="invalid-feedback">Bitte füllen Sie dieses Feld aus.</div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="submit" id="saveButton" class="btn btn-primary" disabled>Save Changes</button>
                     </form>
                 </div>
             </div>
@@ -207,65 +213,49 @@
 </div>
 
 <script>
-    $(document).ready(function() {
-        $('.alert').each(function(index, element) {
-            var alertId = $(element).attr('id'); // Get the ID of the current alert
-            var timeout = (index + 2) * 1000; // Set a delay based on the alert index (adjust as needed)
+    function validateStrasse(strasse) {
+        const strassePattern = /^[A-Za-zäöüÄÖÜß]+\s\d+[a-zA-Z]?$|^[A-Za-zäöüÄÖÜß]+\d+[a-zA-Z]?$/;
+        return strassePattern.test(strasse);
+    }
 
-            setTimeout(function() {
-                $('#' + alertId).removeClass('show');
-            }, timeout);
-        });
+    function validatePLZ(plz) {
+        const plzPattern = /^\d{5}$/;
+        return plzPattern.test(plz);
+    }
 
-        $('#select-all').click(function() {
-            $('.checkbox').prop('checked', this.checked);
-        });
+    function validateForm() {
+        const name = document.getElementById('name').value.trim();
+        const location = document.getElementById('location').value.trim();
+        const strasse = document.getElementById('streetname').value.trim();
+        const region = document.getElementById('region').value.trim();
+        const plz = document.getElementById('zipcode').value.trim();
+        const rent = document.getElementById('rent').value.trim();
+        const saveButton = document.getElementById('saveButton');
 
-        $('.checkbox').click(function() {
-            var anyChecked = $('.checkbox:checked').length > 0;
-            $('#remove-button').prop('disabled', !anyChecked);
-        });
-    });
+        const isNameValid = name !== '';
+        const isLocationValid = location !== '';
+        const isStrasseValid = validateStrasse(strasse);
+        const isRegionValid = region !== '';
+        const isPLZValid = validatePLZ(plz);
+        const isRentValid = rent !== '';
 
-    document.addEventListener("DOMContentLoaded", function() {
-        const selectAllCheckbox = document.getElementById('select_all');
-        const checkboxes = document.querySelectorAll('.form-check-input.checkbox');
-        const removeButton = document.getElementById('remove-button');
-        const deleteForm = document.getElementById('delete-form');
-        const selectedLocationsInput = document.getElementById('selected-locations');
+        document.getElementById('name').classList.toggle('is-invalid', !isNameValid);
+        document.getElementById('location').classList.toggle('is-invalid', !isLocationValid);
+        document.getElementById('streetname').classList.toggle('is-invalid', !isStrasseValid);
+        document.getElementById('region').classList.toggle('is-invalid', !isRegionValid);
+        document.getElementById('zipcode').classList.toggle('is-invalid', !isPLZValid);
+        document.getElementById('rent').classList.toggle('is-invalid', !isRentValid);
 
-        function updateRemoveButtonState() {
-            const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
-            removeButton.disabled = !anyChecked;
-        }
+        saveButton.disabled = !(isNameValid && isLocationValid && isStrasseValid && isRegionValid && isPLZValid && isRentValid);
+    }
 
-        function updateSelectAllState() {
-            const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
-            selectAllCheckbox.checked = allChecked;
-        }
-
-        selectAllCheckbox.addEventListener('change', function() {
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = selectAllCheckbox.checked;
-            });
-            updateRemoveButtonState();
-        });
-
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                updateRemoveButtonState();
-                updateSelectAllState();
-            });
-        });
-
-        deleteForm.addEventListener('submit', function(event) {
-            const selectedIds = Array.from(checkboxes)
-                .filter(checkbox => checkbox.checked)
-                .map(checkbox => checkbox.value);
-            selectedLocationsInput.value = selectedIds.join(',');
-        });
-    });
+    document.getElementById('name').addEventListener('input', validateForm);
+    document.getElementById('location').addEventListener('input', validateForm);
+    document.getElementById('streetname').addEventListener('input', validateForm);
+    document.getElementById('region').addEventListener('input', validateForm);
+    document.getElementById('zipcode').addEventListener('input', validateForm);
+    document.getElementById('rent').addEventListener('input', validateForm);
 </script>
-
+</div>
 
 {% endblock %}
