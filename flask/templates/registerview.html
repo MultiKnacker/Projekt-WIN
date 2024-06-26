@@ -17,6 +17,7 @@
             const strengthText = document.getElementById('strength-text');
             const emailInput = document.getElementById('email');
             const emailError = document.getElementById('email-error');
+            const registerButton = document.querySelector('button[type="submit"]');
 
             passwordInput.addEventListener('input', function() {
                 const password = passwordInput.value;
@@ -49,6 +50,7 @@
                         ${requirements.number ? '✔' : '✘'} at least one number<br>
                         ${requirements.specialChar ? '✔' : '✘'} at least one special character
                     `;
+                    registerButton.disabled = true;
                 } else if (strength === 3) {
                     strengthBar.classList.add('strength-medium');
                     strengthText.classList.add('medium');
@@ -61,6 +63,7 @@
                         ${requirements.number ? '✔' : '✘'} at least one number<br>
                         ${requirements.specialChar ? '✔' : '✘'} at least one special character
                     `;
+                    registerButton.disabled = false;
                 } else if (strength === 4) {
                     strengthBar.classList.add('strength-strong');
                     strengthText.classList.add('strong');
@@ -73,6 +76,7 @@
                         ${requirements.number ? '✔' : '✘'} at least one number<br>
                         ${requirements.specialChar ? '✔' : '✘'} at least one special character
                     `;
+                    registerButton.disabled = false;
                 } else if (strength === 5) {
                     strengthBar.classList.add('strength-very-strong');
                     strengthText.classList.add('very-strong');
@@ -85,6 +89,7 @@
                         ${requirements.number ? '✔' : '✘'} at least one number<br>
                         ${requirements.specialChar ? '✔' : '✘'} at least one special character
                     `;
+                    registerButton.disabled = false;
                 }
             });
 
@@ -125,7 +130,7 @@
                             <small id="strength-text" class="form-text"></small>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">Register</button>
+                    <button type="submit" class="btn btn-primary btn-block" disabled>Register</button>
                 </form>
                 <div class="text-center mt-3">
                     <p class="text-white">Already have an account? <a href="{{ url_for('login.login') }}" class="text-decoration-none" style="color: var(--primary-accent-color);">Login here</a></p>
