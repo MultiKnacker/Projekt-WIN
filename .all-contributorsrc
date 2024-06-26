@@ -9,7 +9,26 @@
   "imageSize": 100,
   "commit": false,
   "commitConvention": "none",
-  "contributors": [],
+  "contributors": [
+    {
+      "login": "MultiKnacker",
+      "name": "KnusperKing",
+      "avatar_url": "https://avatars.githubusercontent.com/u/79873703?v=4",
+      "profile": "https://github.com/MultiKnacker",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "FabianShalk",
+      "name": "Fabian K.",
+      "avatar_url": "https://avatars.githubusercontent.com/u/44805543?v=4",
+      "profile": "https://github.com/FabianShalk",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
   "contributorsPerLine": 7,
   "linkToUsage": true
 }
