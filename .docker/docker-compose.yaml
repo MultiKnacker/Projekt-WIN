@@ -20,7 +20,9 @@ services:
       - FLASK_SERVER_PORT=9091
       - MONGO_URI=mongodb://root:example@mongo:27017/carrentalmanagement
     volumes:
-      - ./flask
+      - ./flask:/flask
+    working_dir: /flask
+    command: python3 server.py
     depends_on:
       - mongo
     networks:
