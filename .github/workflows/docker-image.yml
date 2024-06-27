@@ -25,12 +25,10 @@ jobs:
       run: docker-compose -f ./compose.yaml build backend
     - name: Tag and push Docker images
       run: |
-        # Retrieve the backend image ID
-        BACKEND_IMAGE_ID=$(docker images -q backend:latest)
-        # Tag backend service
-        docker tag $BACKEND_IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/backend:latest
-        # Push backend service
+        # Tag and push backend service
+        docker tag flask_backend:builder ${{ secrets.DOCKER_USERNAME }}/backend:latest
         docker push ${{ secrets.DOCKER_USERNAME }}/backend:latest
+
         # Tag and push other services
         docker pull nginx:latest
         docker tag nginx:latest ${{ secrets.DOCKER_USERNAME }}/nginx:latest
