@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, redirect, url_for, session, flash
+from flask import Flask, render_template, jsonify
 from pymongo import MongoClient
 
 from blueprints.locations import location_bp
@@ -29,6 +29,23 @@ users_collection = db["sys_admins"]
 @app.route('/')
 def index():
     return render_template('loginview.html')
+
+@app.route('/performance')
+def performance():
+    performance_reports = list(db.performance_report.find())
+    return render_template('performanceview.html', reports=performance_reports)
+
+@app.route('/performance_reports')
+def performance_reports():
+    reports = list(db.performance_report.find())
+    for report in reports:
+        report['_id'] = str(report['_id'])
+        report['date'] = report['date'].strftime("%Y-%m-%d %H:%M:%S")  # Optional: Date zu String
+    return jsonify(reports)
+
+
+app.config['db'] = db
+
 
 @app.errorhandler(404)
 def page_not_found(error):

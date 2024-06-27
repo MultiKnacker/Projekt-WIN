@@ -1,8 +1,6 @@
-{%- extends "base.html" %}
+{% extends "base.html" %}
 
-{% block head%} 
-     <title> Im a Title </title>
-{% endblock %}
+{% block title %}Performance-Berichte{% endblock %}
 
 {% block body%}
     <div>
@@ -18,4 +16,16 @@
             <h3>Prozentuale Nutzungsverteilung der einzelnen Fahrzeuge. Die genutzten Daten beziehen sich rückwierkend auf das ganze Jahr.</h3>
         </div>
     </div>
+</div>
+
+<!-- Einbindung von Chart.js und deinem charts.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+<script>
+    // Ruft die Daten ab und ruft die Funktion zum Rendern der Diagramme auf
+    fetch('/performance_reports')
+        .then(response => response.json())
+        .then(data => renderCharts(data))
+        .catch(error => console.error('Fehler beim Laden der Daten:', error));
+</script>
 {% endblock %}

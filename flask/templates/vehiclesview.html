@@ -1,40 +1,269 @@
-{%- extends "base.html" %}
+{% extends "base.html" %}
 
-{% block head%} 
-     <title> Im a Title </title>
+{% block head %} 
+    <title>Fahrzeugverwaltung</title>
 {% endblock %}
 
-{% block body%}
-<div>
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>Nummerschild</th>
-                <th>Kraftstoff</th>
-                <th>Fahrzeugtyp</th>
-                <th>Mietkosten</th>
-                <th>Marke</th>
-                <th>Modell</th>
-                <th>Versicherung</th>
-                <th>Anschaffungspreis</th>
-                <th>Km-Stand</th>
-                <th>Anschaffungsdatum</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for document in data %}
-            <tr>
-                {% for value in document.values() %}
-                <td >{{ value }}</td>
-                {% endfor %}
-                <td>
-                    <button type="button">Bearbeiten</button>
-                    <button type="button">Kosten hinzufügen</button>
-                </td>
-            </tr>
+{% block body %}
+<div class="container mt-5">
+    <h1 class="mb-4">Fahrzeugverwaltung</h1>
+    <form class="form-inline mb-4" method="POST" action="{{ url_for('vehicles.filter_vehicles') }}">
+        <div class="input-group w-100">
+            <div class="input-group-prepend">
+                <label class="input-group-text bg-dark text-white border-0" for="search-category">Suche nach</label>
+            </div>
+            <select class="custom-select bg-dark text-white border-0" id="search-category" name="search-category">
+                <option value="numberplate">Kennzeichen</option>
+                <option value="brand">Marke</option>
+                <option value="model">Modell</option>
+                <option value="fueltype">Kraftstoffart</option>
+                <option value="vehicletype">Fahrzeugtyp</option>
+                <option value="state">Status</option>
+                <option value="location">Standort</option>
+            </select>
+            <input class="form-control bg-dark text-white border-0" type="search" placeholder="Suche" aria-label="Search" id="search-input" name="search-input">
+            <div class="input-group-append">
+                <button class="btn btn-secondary border-0" type="submit">Suchen</button>
+            </div>
+        </div>
+    </form>
+    <div class="container-fluid d-flex justify-content-end mb-4 gap-2">
+        <button class="btn btn-success" data-toggle="modal" data-target="#addVehicleModal">Fahrzeug hinzufügen</button>
+    </div>
+    <div class="row">
+        {% if vehicles %}
+            {% for vehicle in vehicles %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    {% if vehicle.image %}
+                        <img src="{{ url_for('static', filename='pics/' ~ vehicle.image) }}" class="card-img-top" alt="{{ vehicle.brand }} {{ vehicle.model }}">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='pics/placeholder.png') }}" class="card-img-top" alt="Kein Bild verfügbar">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ vehicle.brand }} {{ vehicle.model }}</h5>
+                        <p class="card-text">
+                            <strong>Kennzeichen:</strong> {{ vehicle.numberplate }}<br>
+                            <strong>Kraftstoffart:</strong> {{ vehicle.fueltype }}<br>
+                            <strong>Fahrzeugtyp:</strong> {{ vehicle.vehicletype }}<br>
+                            <strong>Tagesrate:</strong> {{ vehicle.dailyrate }} €<br>
+                            <strong>Versicherung:</strong> {{ vehicle.ensurance }} €<br>
+                            <strong>Kaufpreis:</strong> {{ vehicle.original_price }} €<br>
+                            <strong>Kilometerstand:</strong> {{ vehicle.milage }} km<br>
+                            <strong>Kaufdatum:</strong> {{ vehicle.date_of_purchase }}<br>
+                            <strong>Standort:</strong> {{ vehicle.central_name }}<br>
+                            <strong>Status:</strong> <span class="badge {{ 'badge-success' if vehicle.state == 'frei' else 'badge-warning' if vehicle.state == 'werkstatt' else 'badge-danger' }}">{{ vehicle.state }}</span>
+                        </p>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#editVehicleModal{{ vehicle._id }}">Bearbeiten</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Vehicle Modal -->
+            <div class="modal fade" id="editVehicleModal{{ vehicle._id }}" tabindex="-1" aria-labelledby="editVehicleLabel{{ vehicle._id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editVehicleLabel{{ vehicle._id }}">Fahrzeug bearbeiten ({{ vehicle.brand }} {{ vehicle.model }})</h5>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ url_for('vehicles.edit_vehicle', vehicle_id=vehicle._id) }}" method="POST">
+                                <div class="mb-3">
+                                    <label for="numberplate{{ vehicle._id }}" class="form-label">Kennzeichen</label>
+                                    <input type="text" class="form-control" id="numberplate{{ vehicle._id }}" name="numberplate" value="{{ vehicle.numberplate }}" pattern="[A-Za-z0-9-]+" title="Nur Buchstaben, Zahlen und Bindestriche erlaubt" required>
+                                    <div class="invalid-feedback">Nur Buchstaben, Zahlen und Bindestriche erlaubt</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="fueltype{{ vehicle._id }}" class="form-label">Kraftstoffart</label>
+                                    <input type="text" class="form-control" id="fueltype{{ vehicle._id }}" name="fueltype" value="{{ vehicle.fueltype }}" pattern="[A-Za-z]+" title="Nur Buchstaben erlaubt" required>
+                                    <div class="invalid-feedback">Nur Buchstaben erlaubt</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="vehicletype{{ vehicle._id }}" class="form-label">Fahrzeugtyp</label>
+                                    <input type="text" class="form-control" id="vehicletype{{ vehicle._id }}" name="vehicletype" value="{{ vehicle.vehicletype }}" pattern="[A-Za-z]+" title="Nur Buchstaben erlaubt" required>
+                                    <div class="invalid-feedback">Nur Buchstaben erlaubt</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="dailyrate{{ vehicle._id }}" class="form-label">Tagesrate</label>
+                                    <input type="number" class="form-control" id="dailyrate{{ vehicle._id }}" name="dailyrate" value="{{ vehicle.dailyrate }}" min="0" required>
+                                    <div class="invalid-feedback">Nur positive Zahlen erlaubt</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="brand{{ vehicle._id }}" class="form-label">Marke</label>
+                                    <input type="text" class="form-control" id="brand{{ vehicle._id }}" name="brand" value="{{ vehicle.brand }}" pattern="[A-Za-z]+" title="Nur Buchstaben erlaubt" required>
+                                    <div class="invalid-feedback">Nur Buchstaben erlaubt</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="model{{ vehicle._id }}" class="form-label">Modell</label>
+                                    <input type="text" class="form-control" id="model{{ vehicle._id }}" name="model" value="{{ vehicle.model }}" pattern="[A-Za-z0-9-]+" title="Nur Buchstaben, Zahlen und Bindestriche erlaubt" required>
+                                    <div class="invalid-feedback">Nur Buchstaben, Zahlen und Bindestriche erlaubt</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="ensurance{{ vehicle._id }}" class="form-label">Versicherung</label>
+                                    <input type="number" class="form-control" id="ensurance{{ vehicle._id }}" name="ensurance" value="{{ vehicle.ensurance }}" min="0" required>
+                                    <div class="invalid-feedback">Nur positive Zahlen erlaubt</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="original_price{{ vehicle._id }}" class="form-label">Kaufpreis</label>
+                                    <input type="number" class="form-control" id="original_price{{ vehicle._id }}" name="original_price" value="{{ vehicle.original_price }}" min="0" required>
+                                    <div class="invalid-feedback">Nur positive Zahlen erlaubt</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="milage{{ vehicle._id }}" class="form-label">Kilometerstand</label>
+                                    <input type="number" class="form-control" id="milage{{ vehicle._id }}" name="milage" value="{{ vehicle.milage }}" min="0" required>
+                                    <div class="invalid-feedback">Nur positive Zahlen erlaubt</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="date_of_purchase{{ vehicle._id }}" class="form-label">Kaufdatum</label>
+                                    <input type="date" class="form-control" id="date_of_purchase{{ vehicle._id }}" name="date_of_purchase" value="{{ vehicle.date_of_purchase }}" required>
+                                    <div class="invalid-feedback">Bitte ein gültiges Datum eingeben</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="location{{ vehicle._id }}" class="form-label">Standort</label>
+                                    <select class="form-control" id="location{{ vehicle._id }}" name="location" required>
+                                        {% for central in centrals %}
+                                        <option value="{{ central['_id'] }}" {% if vehicle.central_id == central['_id'] %}selected{% endif %}>{{ central['name'] }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="state{{ vehicle._id }}" class="form-label">Status</label>
+                                    <select class="form-select" id="state{{ vehicle._id }}" name="state" required>
+                                        <option value="frei" {% if vehicle.state == 'frei' %}selected{% endif %}>Frei</option>
+                                        <option value="werkstatt" {% if vehicle.state == 'werkstatt' %}selected{% endif %}>Werkstatt</option>
+                                        <option value="vermietet" {% if vehicle.state == 'vermietet' %}selected{% endif %}>Vermietet</option>
+                                    </select>
+                                    <div class="invalid-feedback">Bitte einen Status auswählen</div>
+                                </div>
+                                <div class="d-flex justify-content-between mt-3">
+                                    <!-- Speichern-Button -->
+                                    <div class="d-flex justify-content-start">
+                                        <button type="submit" class="btn btn-primary">Änderungen speichern</button>
+                                    </div>
+                                    <!-- Entfernen-Button -->
+                                    <div class="d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-danger" formaction="{{ url_for('vehicles.delete_vehicle', vehicle_id=vehicle._id) }}">Entfernen</button>
+                                    </div>
+                                </div>
+                                </form>
+                                </div>
+                                </div>
+                                </div>
+                                </div>
+                                
             {% endfor %}
-        </tbody>
-    </table>
+        {% else %}
+            <div class="col-12">
+                <p>Keine Fahrzeuge gefunden.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Add Vehicle Modal -->
+    <div class="modal fade" id="addVehicleModal" tabindex="-1" aria-labelledby="addVehicleLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addVehicleLabel">Fahrzeug hinzufügen</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ url_for('vehicles.add_vehicle') }}" method="POST">
+                        <div class="mb-3">
+                            <label for="numberplate" class="form-label">Kennzeichen</label>
+                            <input type="text" class="form-control" id="numberplate" name="numberplate" pattern="[A-Za-z0-9-]+" title="Nur Buchstaben, Zahlen und Bindestriche erlaubt" required>
+                            <div class="invalid-feedback">Nur Buchstaben, Zahlen und Bindestriche erlaubt</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="fueltype" class="form-label">Kraftstoffart</label>
+                            <input type="text" class="form-control" id="fueltype" name="fueltype" pattern="[A-Za-z]+" title="Nur Buchstaben erlaubt" required>
+                            <div class="invalid-feedback">Nur Buchstaben erlaubt</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="vehicletype" class="form-label">Fahrzeugtyp</label>
+                            <input type="text" class="form-control" id="vehicletype" name="vehicletype" pattern="[A-Za-z]+" title="Nur Buchstaben erlaubt" required>
+                            <div class="invalid-feedback">Nur Buchstaben erlaubt</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dailyrate" class="form-label">Tagesrate</label>
+                            <input type="number" class="form-control" id="dailyrate" name="dailyrate" min="0" required>
+                            <div class="invalid-feedback">Nur positive Zahlen erlaubt</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="brand" class="form-label">Marke</label>
+                            <input type="text" class="form-control" id="brand" name="brand" pattern="[A-Za-z]+" title="Nur Buchstaben erlaubt" required>
+                            <div class="invalid-feedback">Nur Buchstaben erlaubt</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="model" class="form-label">Modell</label>
+                            <input type="text" class="form-control" id="model" name="model" pattern="[A-Za-z0-9-]+" title="Nur Buchstaben, Zahlen und Bindestriche erlaubt" required>
+                            <div class="invalid-feedback">Nur Buchstaben, Zahlen und Bindestriche erlaubt</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ensurance" class="form-label">Versicherung</label>
+                            <input type="number" class="form-control" id="ensurance" name="ensurance" min="0" required>
+                            <div class="invalid-feedback">Nur positive Zahlen erlaubt</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="original_price" class="form-label">Kaufpreis</label>
+                            <input type="number" class="form-control" id="original_price" name="original_price" min="0" required>
+                            <div class="invalid-feedback">Nur positive Zahlen erlaubt</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="milage" class="form-label">Kilometerstand</label>
+                            <input type="number" class="form-control" id="milage" name="milage" min="0" required>
+                            <div class="invalid-feedback">Nur positive Zahlen erlaubt</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="date_of_purchase" class="form-label">Kaufdatum</label>
+                            <input type="date" class="form-control" id="date_of_purchase" name="date_of_purchase" required>
+                            <div class="invalid-feedback">Bitte ein gültiges Datum eingeben</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Standort</label>
+                            <select class="form-control" id="location" name="location" required>
+                                {% for central in centrals %}
+                                <option value="{{ central['_id'] }}">{{ central['name'] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="state" class="form-label">Status</label>
+                            <select class="form-select" id="state" name="state" required>
+                                <option value="frei">Frei</option>
+                                <option value="werkstatt">Werkstatt</option>
+                                <option value="vermietet">Vermietet</option>
+                            </select>
+                            <div class="invalid-feedback">Bitte einen Status auswählen</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Hinzufügen</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Funktion zur Markierung ungültiger Eingabefelder
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.addEventListener('invalid', function() {
+                input.classList.add('is-invalid');
+            });
+            input.addEventListener('input', function() {
+                if (input.checkValidity()) {
+                    input.classList.remove('is-invalid');
+                } else {
+                    input.classList.add('is-invalid');
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}

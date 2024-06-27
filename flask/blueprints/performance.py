@@ -9,7 +9,7 @@ from matplotlib import pyplot as plt
 from pymongo import MongoClient
 from weasyprint import HTML
 
-performance_bp = Blueprint("performance", __name__, template_folder='templates')
+performance_bp = Blueprint("performance", __name__, template_folder='../../templates')
 
 mongo_uri = os.environ.get("MONGO_URI")
 if not mongo_uri:
@@ -36,8 +36,8 @@ def prev_performance():
     flash('Please log in to access this page.', 'error')
     return redirect(url_for('login.login'))
 
-  vehicle_type_usage = gen_Car_usage_pie_chart()
-  gen_coast_comp_bar_chart()
+    vehicle_type_usage = gen_Car_usage_pie_chart()
+    gen_coast_comp_bar_chart()
 
   # Render the template with the image path
   show_navbar = True
@@ -45,22 +45,22 @@ def prev_performance():
 
 @performance_bp.route("/performance/pdf")
 def list_performance():
-  if 'username' not in session:
-    flash('Please log in to access this page.', 'error')
-    return redirect(url_for('login.login'))
+    if 'username' not in session:
+        flash('Please log in to access this page.', 'error')
+        return redirect(url_for('login.login'))
 
-  # Render HTML content
-  html_content = render_template("performanceview.html", plot_url='/diagrams/plot.png')
+    # Render HTML content
+    html_content = render_template("performanceview.html", plot_url='/diagrams/plot.png')
 
-  # Generate PDF using WeasyPrint
-  pdf = HTML(string=html_content, base_url=url_for('static', filename='', _external=True)).write_pdf()
+    # Generate PDF using WeasyPrint
+    pdf = HTML(string=html_content, base_url=url_for('static', filename='', _external=True)).write_pdf()
 
-  # Optionally, you can save the PDF to a file
-  # with open('output.pdf', 'wb') as f:
-  #     f.write(pdf)
+    # Optionally, you can save the PDF to a file
+    # with open('output.pdf', 'wb') as f:
+    #     f.write(pdf)
 
-  # Return PDF as a response
-  return Response(pdf, mimetype='application/pdf')
+    # Return PDF as a response
+    return Response(pdf, mimetype='application/pdf')
 
 def gen_Car_usage_pie_chart():
   filename = f"{default_file_path}/type_usage_pie_chart.png"

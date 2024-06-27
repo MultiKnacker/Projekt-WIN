@@ -1,0 +1,90 @@
+{%- extends "base.html" %}
+
+{% block head%} 
+<title> /location </title>
+{% endblock %}
+
+{% block body%}
+    <div>
+        <div>
+            <div class="pt-3 d-flex flex-row-reverse">
+                <form class="w-25" action="{{ url_for('location.filter_location') }}" method="POST">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="search" placeholder="Search locations..." aria-label="Search Locations" aria-describedby="searchButton" value="">
+                        <button type="submit" class="btn primary_background_color white_font" id="searchButton">Search</button>
+                    </div>
+                </form>
+            </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    {% for field in data[0].keys() %}
+                    <th>{{ field }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for document in data %}
+                <tr>
+                    <td >{{ document['_id'] }}</td>
+                    <td >{{ document['name'] }}</td>
+                    <td >{{ document['zipcode'] }}</td>
+                    <td >{{ document['Ort'] }}</td>
+                    <td >{{ document['streetname'] }}</td>
+                    <td >{{ document['location'] }}</td>
+                    <td >{{ document['rent'] }}€</td>
+                    <td>
+                        <button type="button">Fahrzeuge</button>
+                        <button type="button">Mitarbeiter</button>
+                        <button type="button">Performance</button>
+                        <button type="button" data-toggle="modal" data-target="#editLocationModal{{ document['_id'] }}">Edit</button>
+                    </td>
+                </tr>
+
+                <div class="modal fade" id="editLocationModal{{ document['_id'] }}" tabindex="-1" aria-labelledby="editLocationLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editLocationLabel">Edit Location ({{ document['name'] }})</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ url_for('location.edit_location', location_id=document['_id']) }}" method="POST">
+                                    <div class="mb-3">
+                                        <label for="name{{ document['_id'] }}" class="form-label">Name</label>
+                                        <input type="text" class="form-control" id="name{{ document['_id'] }}" name="name" value="{{ document['name'] }}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="location{{ document['_id'] }}" class="form-label">Standort</label>
+                                        <input type="text" class="form-control" id="location{{ document['_id'] }}" name="location" value="{{ document['location'] }}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="streetname{{ document['_id'] }}" class="form-label">Strasse</label>
+                                        <input type="text" class="form-control" id="streetname{{ document['_id'] }}" name="streetname" value="{{ document['streetname'] }}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="region{{ document['_id'] }}" class="form-label">Ort</label>
+                                        <input type="text" class="form-control" id="region{{ document['_id'] }}" name="region" value="{{ document['region'] }}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="zipcode{{ document['_id'] }}" class="form-label">PLZ</label>
+                                        <input type="text" class="form-control" id="zipcode{{ document['_id'] }}" name="zipcode" value="{{ document['zipcode'] }}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="rent{{ document['_id'] }}" class="form-label">Miete (in €)</label>
+                                        <input type="number" class="form-control" id="rent{{ document['_id'] }}" name="rent" value="{{ document['rent'] }}">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock %}
