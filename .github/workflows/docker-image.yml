@@ -26,7 +26,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Build Docker images
-      run: docker-compose -f ./compose.yaml build
+      run: docker-compose -f ./compose.yaml build --build-arg VERBOSE=true
 
     - name: List Docker images
       run: docker images
