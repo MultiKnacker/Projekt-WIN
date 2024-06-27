@@ -21,5 +21,21 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: Build and push Docker image
+    - name: Build Docker images
       run: docker-compose -f ./compose.yaml build
+    - name: Tag and Push projekt-win-backend
+      run: |
+        docker tag projekt-win-backend:latest knusperking/projekt-win-backend:latest
+        docker push knusperking/projekt-win-backend:latest
+    - name: Tag and Push nginx
+      run: |
+        docker tag nginx:latest knusperking/nginx:latest
+        docker push knusperking/nginx:latest
+    - name: Tag and Push mongo
+      run: |
+        docker tag mongo:latest knusperking/mongo:latest
+        docker push knusperking/mongo:latest
+    - name: Tag and Push mongo-express
+      run: |
+        docker tag mongo-express:latest knusperking/mongo-express:latest
+        docker push knusperking/mongo-express:latest
