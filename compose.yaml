@@ -23,7 +23,7 @@ services:
       - FLASK_SERVER_PORT=9091
       - MONGO_URI=mongodb://root:example@mongo:27017/carrentalmanagement
     volumes:
-      - ./flask:
+      - ./flask:/flask
     depends_on:
       - mongo
     networks:
