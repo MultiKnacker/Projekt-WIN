@@ -21,25 +21,18 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: Build backend service
-      run: docker-compose -f ./compose.yaml build backend
-    - name: Tag and push Docker images
+    - name: Build and push Docker images
       run: |
-        # Retrieve the backend image ID
-        BACKEND_IMAGE_ID=$(docker images -q backend:latest)
+        # Build backend service
+        docker-compose -f ./compose.yaml build backend
         # Tag backend service
-        docker tag $BACKEND_IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/backend:latest
+        docker tag backend:latest ${{ secrets.DOCKER_USERNAME }}/backend:latest
         # Push backend service
         docker push ${{ secrets.DOCKER_USERNAME }}/backend:latest
         # Tag and push other services
-        docker pull nginx:latest
         docker tag nginx:latest ${{ secrets.DOCKER_USERNAME }}/nginx:latest
         docker push ${{ secrets.DOCKER_USERNAME }}/nginx:latest
-
-        docker pull mongo:latest
         docker tag mongo:latest ${{ secrets.DOCKER_USERNAME }}/mongo:latest
         docker push ${{ secrets.DOCKER_USERNAME }}/mongo:latest
-
-        docker pull mongo-express:latest
         docker tag mongo-express:latest ${{ secrets.DOCKER_USERNAME }}/mongo-express:latest
         docker push ${{ secrets.DOCKER_USERNAME }}/mongo-express:latest
