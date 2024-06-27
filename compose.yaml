@@ -1,6 +1,6 @@
 services:
   web:
-    image: nginx
+    image: your_dockerhub_username/nginx:latest
     volumes:
       - ./nginx/nginx.conf:/tmp/nginx.conf
     environment:
@@ -18,6 +18,7 @@ services:
       context: ./flask
       dockerfile: Dockerfile
       target: builder
+    image: your_dockerhub_username/backend:latest
     stop_signal: SIGINT
     environment:
       - FLASK_SERVER_PORT=9091
@@ -30,7 +31,7 @@ services:
       - mynetwork
 
   mongo:
-    image: mongo
+    image: your_dockerhub_username/mongo:latest
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
@@ -42,7 +43,7 @@ services:
       - mynetwork
 
   mongo-express:
-    image: mongo-express
+    image: your_dockerhub_username/mongo-express:latest
     restart: always
     ports:
       - 8081:8081
