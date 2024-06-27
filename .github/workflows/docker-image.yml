@@ -24,8 +24,5 @@ jobs:
     - name: Build and push Docker image
       run: |
         docker-compose -f ./compose.yaml build
-        images=("projekt-win-backend" "nginx" "mongo" "mongo-express")
-        for image in "${images[@]}"; do
-          docker tag ${image}:latest ${{ secrets.DOCKER_USERNAME }}/${image}:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/${image}:latest
-        done
+        docker tag my-image:latest ${{ secrets.DOCKER_USERNAME }}/my-image:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/my-image:latest
