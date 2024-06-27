@@ -27,8 +27,8 @@ jobs:
       run: docker images
     - name: Tag and Push projekt-win-backend
       run: |
-        docker tag projekt-win-backend:latest knusperking/projekt-win-backend:latest
-        docker push knusperking/projekt-win-backend:latest
+        docker tag projekt-win-backend:latest knusperking/projekt-win_backend:latest
+        docker push knusperking/projekt-win_backend:latest
     - name: Tag and Push nginx
       run: |
         docker tag nginx:latest knusperking/nginx:latest
