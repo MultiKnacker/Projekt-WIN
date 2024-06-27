@@ -3,6 +3,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![CodeQL](https://github.com/MultiKnacker/Projekt-WIN/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/MultiKnacker/Projekt-WIN/actions/workflows/github-code-scanning/codeql)
+[![Docker Image CI](https://github.com/MultiKnacker/Projekt-WIN/actions/workflows/docker-image.yml/badge.svg)](https://github.com/MultiKnacker/Projekt-WIN/actions/workflows/docker-image.yml)
 
 ## Einleitung
 Test
