@@ -24,9 +24,4 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Build and push Docker image
-      uses: docker/build-push-action@v3
-      with:
-        context: .
-        file: ./docker/Dockerfile
-        push: true
-        tags: my-dockerhub-username/my-image-name:latest
+      run: docker-compose -f ./.docker/docker-compose.yaml build
