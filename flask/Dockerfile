@@ -20,8 +20,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pip3 install WeasyPrint
 
 # Set up your application directory
-WORKDIR /src
-COPY requirements.txt /src
+WORKDIR /flask
+COPY requirements.txt /flask
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip3 install -r requirements.txt
 
