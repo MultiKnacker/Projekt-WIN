@@ -23,6 +23,8 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Build Docker images
       run: docker-compose -f ./compose.yaml build
+    - name: List Docker images
+      run: docker images
     - name: Tag and Push projekt-win-backend
       run: |
         docker tag projekt-win-backend:latest knusperking/projekt-win-backend:latest
