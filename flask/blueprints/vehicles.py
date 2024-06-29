@@ -2,6 +2,8 @@ import os
 from flask import Blueprint, render_template, flash, session, redirect, url_for, request
 from pymongo import MongoClient
 from bson import ObjectId
+from datetime import datetime
+
 
 vehicles_bp = Blueprint("vehicles", __name__, template_folder='templates')
 
@@ -79,6 +81,12 @@ def edit_vehicle(vehicle_id):
     centrals = list(central_collection.find({}))
 
     if request.method == 'GET':
+        # Datum formatieren für das Datepicker-Feld
+        if 'date_of_purchase' in selected_vehicle:
+            selected_vehicle["formatted_date_of_purchase"] = datetime.strptime(selected_vehicle['date_of_purchase'], '%d-%m-%Y').strftime('%d-%m-%Y')
+        else:
+            selected_vehicle["formatted_date_of_purchase"] = ''
+        selected_vehicle["central_id"] = str(selected_vehicle.get("central_id", "Unbekannt"))
         return render_template('vehicles/edit_vehicle_modal.html', vehicle=selected_vehicle, centrals=centrals)
     elif request.method == 'POST':
         updated_data = {
@@ -91,7 +99,7 @@ def edit_vehicle(vehicle_id):
             'ensurance': request.form['ensurance'],
             'original_price': request.form['original_price'],
             'milage': request.form['milage'],
-            'date_of_purchase': request.form['date_of_purchase'],
+            'date_of_purchase': datetime.strptime(request.form['date_of_purchase'], '%Y-%m-%d').strftime('%d-%m-%Y'),
             'state': request.form['state'],
             'central_id': ObjectId(request.form['location'])
         }
@@ -114,6 +122,7 @@ def edit_vehicle(vehicle_id):
 
         flash('Vehicle updated successfully!', 'success')
         return redirect(url_for('vehicles.list_vehicles'))
+
 
 @vehicles_bp.route('/delete/<vehicle_id>', methods=['POST'])
 def delete_vehicle(vehicle_id):
