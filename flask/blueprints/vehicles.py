@@ -4,7 +4,6 @@ from pymongo import MongoClient
 from bson import ObjectId
 from datetime import datetime
 
-
 vehicles_bp = Blueprint("vehicles", __name__, template_folder='templates')
 
 # MongoDB-Verbindung
@@ -16,17 +15,31 @@ db = client["carrentalmanagement"]
 vehicles_collection = db["vehicle"]
 central_collection = db["central"]
 
-@vehicles_bp.route("/vehicles", methods=['GET'])
+@vehicles_bp.route('/vehicles')
 def list_vehicles():
     if 'username' not in session:
         flash('Please log in to access this page.', 'error')
-        return redirect(url_for('login.login'))
+        return redirect(url_for('auth.login'))
     
     vehicles = list(vehicles_collection.find({}))
     centrals = list(central_collection.find({}))
     central_map = {str(central["_id"]): central["name"] for central in centrals}
 
-    # Update vehicle data with central name
+    for vehicle in vehicles:
+        vehicle["central_name"] = central_map.get(str(vehicle.get("central_id", "Unbekannt")), "Unbekannt")
+        if 'date_of_purchase' in vehicle:
+            try:
+                vehicle_date = datetime.strptime(vehicle['date_of_purchase'], '%d-%m-%Y')
+                vehicle['formatted_date_of_purchase'] = vehicle_date.strftime('%d-%m-%Y')
+                vehicle['formatted_date_of_purchase_for_form'] = vehicle_date.strftime('%Y-%m-%d')
+            except ValueError:
+                vehicle['formatted_date_of_purchase'] = 'tt.mm.jjjj'
+                vehicle['formatted_date_of_purchase_for_form'] = ''
+        else:
+            vehicle['formatted_date_of_purchase'] = 'tt.mm.jjjj'
+            vehicle['formatted_date_of_purchase_for_form'] = ''
+
+              # Update vehicle data with central name
     for vehicle in vehicles:
         for central in centrals:
             if vehicle["_id"] in central.get("vehicles", []):
@@ -35,7 +48,7 @@ def list_vehicles():
                 break
         else:
             vehicle["central_name"] = "Unbekannt"
-
+    
     show_navbar = True
     return render_template("vehiclesview.html", show_navbar=show_navbar, vehicles=vehicles, centrals=centrals)
 
@@ -58,15 +71,19 @@ def filter_vehicles():
     centrals = list(central_collection.find({}))
     central_map = {str(central["_id"]): central["name"] for central in centrals}
 
-    # Update vehicle data with central name
     for vehicle in filtered_vehicles:
-        for central in centrals:
-            if vehicle["_id"] in central.get("vehicles", []):
-                vehicle["central_name"] = central["name"]
-                vehicle["central_id"] = central["_id"]
-                break
+        vehicle["central_name"] = central_map.get(str(vehicle.get("central_id", "Unbekannt")), "Unbekannt")
+        if 'date_of_purchase' in vehicle:
+            try:
+                vehicle_date = datetime.strptime(vehicle['date_of_purchase'], '%d-%m-%Y')
+                vehicle['formatted_date_of_purchase'] = vehicle_date.strftime('%d-%m-%Y')
+                vehicle['formatted_date_of_purchase_for_form'] = vehicle_date.strftime('%Y-%m-%d')
+            except ValueError:
+                vehicle['formatted_date_of_purchase'] = 'tt.mm.jjjj'
+                vehicle['formatted_date_of_purchase_for_form'] = ''
         else:
-            vehicle["central_name"] = "Unbekannt"
+            vehicle['formatted_date_of_purchase'] = 'tt.mm.jjjj'
+            vehicle['formatted_date_of_purchase_for_form'] = ''
 
     show_navbar = True
     return render_template("vehiclesview.html", show_navbar=show_navbar, vehicles=filtered_vehicles, centrals=centrals)
@@ -81,13 +98,19 @@ def edit_vehicle(vehicle_id):
     centrals = list(central_collection.find({}))
 
     if request.method == 'GET':
-        # Datum formatieren für das Datepicker-Feld
         if 'date_of_purchase' in selected_vehicle:
-            selected_vehicle["formatted_date_of_purchase"] = datetime.strptime(selected_vehicle['date_of_purchase'], '%d-%m-%Y').strftime('%d-%m-%Y')
+            try:
+                selected_vehicle["formatted_date_of_purchase"] = datetime.strptime(selected_vehicle['date_of_purchase'], '%d-%m-%Y').strftime('%d-%m-%Y')
+                selected_vehicle["formatted_date_of_purchase_for_form"] = datetime.strptime(selected_vehicle['date_of_purchase'], '%d-%m-%Y').strftime('%Y-%m-%d')
+            except ValueError:
+                selected_vehicle["formatted_date_of_purchase"] = 'tt.mm.jjjj'
+                selected_vehicle["formatted_date_of_purchase_for_form"] = ''
         else:
-            selected_vehicle["formatted_date_of_purchase"] = ''
+            selected_vehicle["formatted_date_of_purchase"] = 'tt.mm.jjjj'
+            selected_vehicle["formatted_date_of_purchase_for_form"] = ''
+        
         selected_vehicle["central_id"] = str(selected_vehicle.get("central_id", "Unbekannt"))
-        return render_template('vehicles/edit_vehicle_modal.html', vehicle=selected_vehicle, centrals=centrals)
+        return render_template('vehiclesview.html', vehicle=selected_vehicle, centrals=centrals)
     elif request.method == 'POST':
         updated_data = {
             'numberplate': request.form['numberplate'],
@@ -103,12 +126,11 @@ def edit_vehicle(vehicle_id):
             'state': request.form['state'],
             'central_id': ObjectId(request.form['location'])
         }
+
         vehicles_collection.update_one({'_id': ObjectId(vehicle_id)}, {'$set': updated_data})
 
-        # Update central's vehicles list
-        current_central_id = selected_vehicle.get("central_id")
+        current_central_id = selected_vehicle.get('central_id')
         new_central_id = ObjectId(request.form['location'])
-
         if current_central_id != new_central_id:
             if current_central_id:
                 central_collection.update_one(
@@ -120,9 +142,38 @@ def edit_vehicle(vehicle_id):
                 {"$addToSet": {"vehicles": ObjectId(vehicle_id)}}
             )
 
-        flash('Vehicle updated successfully!', 'success')
+        flash('Das Fahrzeug wurde erfolgreich angepasst!', 'success')
         return redirect(url_for('vehicles.list_vehicles'))
 
+@vehicles_bp.route('/add_vehicle', methods=['POST'])
+def add_vehicle():
+    if 'username' not in session:
+        flash('Please log in to access this page.', 'error')
+        return redirect(url_for('auth.login'))
+
+    new_vehicle = {
+        'numberplate': request.form['numberplate'],
+        'fueltype': request.form['fueltype'],
+        'vehicletype': request.form['vehicletype'],
+        'dailyrate': request.form['dailyrate'],
+        'brand': request.form['brand'],
+        'model': request.form['model'],
+        'ensurance': request.form['ensurance'],
+        'original_price': request.form['original_price'],
+        'milage': request.form['milage'],
+        'date_of_purchase': datetime.strptime(request.form['date_of_purchase'], '%Y-%m-%d').strftime('%d-%m-%Y'),
+        'state': request.form['state'],
+        'central_id': ObjectId(request.form['location'])
+    }
+
+    vehicle_id = vehicles_collection.insert_one(new_vehicle).inserted_id
+    central_collection.update_one(
+        {"_id": ObjectId(request.form['location'])},
+        {"$addToSet": {"vehicles": vehicle_id}}
+    )
+
+    flash('Das Fahrzeug wurde erfolgreich hinzugefügt!', 'success')
+    return redirect(url_for('vehicles.list_vehicles'))
 
 @vehicles_bp.route('/delete/<vehicle_id>', methods=['POST'])
 def delete_vehicle(vehicle_id):
@@ -145,31 +196,4 @@ def delete_vehicle(vehicle_id):
     else:
         flash('Vehicle not found.', 'error')
 
-    return redirect(url_for('vehicles.list_vehicles'))
-
-@vehicles_bp.route('/vehicles/add', methods=['POST'])
-def add_vehicle():
-    new_vehicle = {
-        'numberplate': request.form['numberplate'],
-        'fueltype': request.form['fueltype'],
-        'vehicletype': request.form['vehicletype'],
-        'dailyrate': request.form['dailyrate'],
-        'brand': request.form['brand'],
-        'model': request.form['model'],
-        'ensurance': request.form['ensurance'],
-        'original_price': request.form['original_price'],
-        'milage': request.form['milage'],
-        'date_of_purchase': request.form['date_of_purchase'],
-        'state': request.form['state'],
-        'central_id': ObjectId(request.form['location'])
-    }
-    new_vehicle_id = vehicles_collection.insert_one(new_vehicle).inserted_id
-
-    central_id = ObjectId(request.form['location'])
-    central_collection.update_one(
-        {"_id": central_id},
-        {"$addToSet": {"vehicles": new_vehicle_id}}
-    )
-
-    flash('Vehicle added successfully!', 'success')
     return redirect(url_for('vehicles.list_vehicles'))
