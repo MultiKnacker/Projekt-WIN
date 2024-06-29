@@ -72,9 +72,14 @@
                                     <div class="invalid-feedback">Nur Buchstaben, Zahlen und Bindestriche erlaubt</div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="fueltype{{ vehicle._id }}" class="form-label">Kraftstoffart</label>
-                                    <input type="text" class="form-control" id="fueltype{{ vehicle._id }}" name="fueltype" value="{{ vehicle.fueltype }}" pattern="[A-Za-z]+" title="Nur Buchstaben erlaubt" required>
-                                    <div class="invalid-feedback">Nur Buchstaben erlaubt</div>
+                                    <label for="fueltype" class="form-label">Kraftstoffart</label>
+                                    <select class="form-select" id="fueltype" name="fueltype" required>
+                                        <option value="Benzin" {% if vehicle.fueltype == "Benzin" %}selected{% endif %}>Benzin</option>
+                                        <option value="Diesel" {% if vehicle.fueltype == "Diesel" %}selected{% endif %}>Diesel</option>
+                                        <option value="Gas" {% if vehicle.fueltype == "Gas" %}selected{% endif %}>Gas</option>
+                                        <option value="Strom" {% if vehicle.fueltype == "Strom" %}selected{% endif %}>Strom</option>
+                                        <option value="Wasserstoff" {% if vehicle.fueltype == "Wasserstoff" %}selected{% endif %}>Wasserstoff</option>
+                                    </select>
                                 </div>
                                 <div class="mb-3">
                                     <label for="vehicletype{{ vehicle._id }}" class="form-label">Fahrzeugtyp</label>
@@ -173,8 +178,13 @@
                         </div>
                         <div class="mb-3">
                             <label for="fueltype" class="form-label">Kraftstoffart</label>
-                            <input type="text" class="form-control" id="fueltype" name="fueltype" pattern="[A-Za-z]+" title="Nur Buchstaben erlaubt" required>
-                            <div class="invalid-feedback">Nur Buchstaben erlaubt</div>
+                            <select class="form-select" id="fueltype" name="fueltype" required>
+                                <option value="Benzin">Benzin</option>
+                                <option value="Diesel">Diesel</option>
+                                <option value="Gas">Gas</option>
+                                <option value="Strom">Strom</option>
+                                <option value="Wasserstoff">Wasserstoff</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="vehicletype" class="form-label">Fahrzeugtyp</label>

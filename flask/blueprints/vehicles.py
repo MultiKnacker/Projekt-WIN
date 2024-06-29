@@ -99,22 +99,15 @@ def edit_vehicle(vehicle_id):
 
     if request.method == 'GET':
         if 'date_of_purchase' in selected_vehicle:
-            try:
-                selected_vehicle["formatted_date_of_purchase"] = datetime.strptime(selected_vehicle['date_of_purchase'], '%d-%m-%Y').strftime('%d-%m-%Y')
-                selected_vehicle["formatted_date_of_purchase_for_form"] = datetime.strptime(selected_vehicle['date_of_purchase'], '%d-%m-%Y').strftime('%Y-%m-%d')
-            except ValueError:
-                selected_vehicle["formatted_date_of_purchase"] = 'tt.mm.jjjj'
-                selected_vehicle["formatted_date_of_purchase_for_form"] = ''
+            selected_vehicle["formatted_date_of_purchase"] = datetime.strptime(selected_vehicle['date_of_purchase'], '%d-%m-%Y').strftime('%Y-%m-%d')
         else:
-            selected_vehicle["formatted_date_of_purchase"] = 'tt.mm.jjjj'
-            selected_vehicle["formatted_date_of_purchase_for_form"] = ''
-        
+            selected_vehicle["formatted_date_of_purchase"] = ''
         selected_vehicle["central_id"] = str(selected_vehicle.get("central_id", "Unbekannt"))
-        return render_template('vehiclesview.html', vehicle=selected_vehicle, centrals=centrals)
+        return render_template('vehicles/edit_vehicle_modal.html', vehicle=selected_vehicle, centrals=centrals)
     elif request.method == 'POST':
         updated_data = {
             'numberplate': request.form['numberplate'],
-            'fueltype': request.form['fueltype'],
+            'fueltype': request.form['fueltype'],  # Ensure this field is processed
             'vehicletype': request.form['vehicletype'],
             'dailyrate': request.form['dailyrate'],
             'brand': request.form['brand'],
@@ -145,6 +138,7 @@ def edit_vehicle(vehicle_id):
         flash('Das Fahrzeug wurde erfolgreich angepasst!', 'success')
         return redirect(url_for('vehicles.list_vehicles'))
 
+
 @vehicles_bp.route('/add_vehicle', methods=['POST'])
 def add_vehicle():
     if 'username' not in session:
@@ -166,13 +160,23 @@ def add_vehicle():
         'central_id': ObjectId(request.form['location'])
     }
 
-    vehicle_id = vehicles_collection.insert_one(new_vehicle).inserted_id
+    # Überprüfen, ob ein Fahrzeug mit denselben Attributen bereits existiert
+    existing_vehicle = vehicles_collection.find_one(new_vehicle)
+    if existing_vehicle:
+        flash('Fahrzeug bereits vorhanden.', 'error')
+        return redirect(url_for('vehicles.list_vehicles'))
+
+    # Neues Fahrzeug hinzufügen, wenn es nicht existiert
+    new_vehicle_id = vehicles_collection.insert_one(new_vehicle).inserted_id
+
+    # Fahrzeug der ausgewählten Zentrale hinzufügen
+    central_id = ObjectId(request.form['location'])
     central_collection.update_one(
-        {"_id": ObjectId(request.form['location'])},
-        {"$addToSet": {"vehicles": vehicle_id}}
+        {"_id": central_id},
+        {"$addToSet": {"vehicles": new_vehicle_id}}
     )
 
-    flash('Das Fahrzeug wurde erfolgreich hinzugefügt!', 'success')
+    flash('Fahrzeug erfolgreich hinzugefügt!', 'success')
     return redirect(url_for('vehicles.list_vehicles'))
 
 @vehicles_bp.route('/delete/<vehicle_id>', methods=['POST'])
