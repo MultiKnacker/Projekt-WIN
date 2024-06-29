@@ -36,6 +36,7 @@
             {% for vehicle in vehicles %}
             <div class="col-md-4">
                 <div class="card mb-4">
+                    <img src="{{ url_for('static', filename='pics/car_pics/car_placeholder.jpg') }}" class="card-img-top" alt="Fahrzeugbild">
                     <div class="card-body">
                         <h5 class="card-title">{{ vehicle.brand }} {{ vehicle.model }}</h5>
                         <p class="card-text">
