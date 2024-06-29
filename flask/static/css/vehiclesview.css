@@ -1,0 +1,47 @@
+/* vehiclesview.css */
+
+/* Allgemeine Textfarbe für die Cards auf weiß setzen */
+.card-body {
+    color: white;
+    text-align: center; /* Text zentrieren */
+}
+
+/* Badge Farben für den Status */
+.badge-success {
+    background-color: #28a745; /* grün für 'frei' */
+    color: white;
+}
+
+.badge-warning {
+    background-color: #ffc107; /* gelb für 'werkstatt' */
+    color: black;
+}
+
+.badge-danger {
+    background-color: #dc3545; /* rot für 'vermietet' */
+    color: white;
+}
+
+/* Beispiel für andere spezifische Stile für die Fahrzeug-Cards */
+.card {
+    background-color: #343a40; /* Dunkler Hintergrund für die Card */
+    border: none; /* Keine Rahmen für die Card */
+}
+
+.card-title {
+    font-size: 1.5rem; /* Schriftgröße für den Titel vergrößern */
+    font-weight: bold; /* Schrift fett machen */
+    margin-bottom: 15px; /* Abstand nach unten */
+}
+
+.card-text {
+    font-size: 1rem; /* Schriftgröße für den Text */
+}
+
+/* Vertikale Zentrierung */
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%; /* Höhe auf 100% setzen, damit flex funktioniert */
+}

@@ -20,18 +20,16 @@ def list_vehicles():
         flash('Please log in to access this page.', 'error')
         return redirect(url_for('login.login'))
     
-    # Fahrzeuge und Zentralen aus der Datenbank abrufen
     vehicles = list(vehicles_collection.find({}))
     centrals = list(central_collection.find({}))
-
-    # Zentrale-ID zu Zentrale-Name-Zuordnungskarte erstellen
     central_map = {str(central["_id"]): central["name"] for central in centrals}
 
-    # Fahrzeugdaten mit Zentrale-Namen aktualisieren
+    # Update vehicle data with central name
     for vehicle in vehicles:
         for central in centrals:
             if vehicle["_id"] in central.get("vehicles", []):
                 vehicle["central_name"] = central["name"]
+                vehicle["central_id"] = central["_id"]
                 break
         else:
             vehicle["central_name"] = "Unbekannt"
@@ -52,18 +50,18 @@ def filter_vehicles():
         flash('Please enter a search term.', 'error')
         return redirect(url_for('vehicles.list_vehicles'))
 
-    # Fahrzeuge basierend auf der Suchanfrage filtern
     filtered_vehicles = list(vehicles_collection.find({
         search_category: {"$regex": search_term, "$options": "i"}
     }))
     centrals = list(central_collection.find({}))
     central_map = {str(central["_id"]): central["name"] for central in centrals}
 
-    # Fahrzeugdaten mit Zentrale-Namen aktualisieren
+    # Update vehicle data with central name
     for vehicle in filtered_vehicles:
         for central in centrals:
             if vehicle["_id"] in central.get("vehicles", []):
                 vehicle["central_name"] = central["name"]
+                vehicle["central_id"] = central["_id"]
                 break
         else:
             vehicle["central_name"] = "Unbekannt"
@@ -97,12 +95,12 @@ def edit_vehicle(vehicle_id):
             'state': request.form['state'],
             'central_id': ObjectId(request.form['location'])
         }
-
         vehicles_collection.update_one({'_id': ObjectId(vehicle_id)}, {'$set': updated_data})
 
-        # Entferne das Fahrzeug aus der aktuellen Zentrale, wenn es geändert wurde
-        current_central_id = selected_vehicle.get('central_id')
+        # Update central's vehicles list
+        current_central_id = selected_vehicle.get("central_id")
         new_central_id = ObjectId(request.form['location'])
+
         if current_central_id != new_central_id:
             if current_central_id:
                 central_collection.update_one(
@@ -114,8 +112,31 @@ def edit_vehicle(vehicle_id):
                 {"$addToSet": {"vehicles": ObjectId(vehicle_id)}}
             )
 
-        flash('Das Fahrzeug wurde erfolgreich angepasst!', 'success')
+        flash('Vehicle updated successfully!', 'success')
         return redirect(url_for('vehicles.list_vehicles'))
+
+@vehicles_bp.route('/delete/<vehicle_id>', methods=['POST'])
+def delete_vehicle(vehicle_id):
+    if not vehicle_id:
+        flash('No vehicle ID provided', 'error')
+        return redirect(url_for('vehicles.list_vehicles'))
+
+    selected_vehicle = vehicles_collection.find_one({"_id": ObjectId(vehicle_id)})
+
+    if selected_vehicle:
+        current_central_id = selected_vehicle.get("central_id")
+        if current_central_id:
+            central_collection.update_one(
+                {"_id": current_central_id},
+                {"$pull": {"vehicles": ObjectId(vehicle_id)}}
+            )
+
+        vehicles_collection.delete_one({"_id": ObjectId(vehicle_id)})
+        flash('Das Fahrzeug wurde erfolgreich entfernt!', 'success')
+    else:
+        flash('Vehicle not found.', 'error')
+
+    return redirect(url_for('vehicles.list_vehicles'))
 
 @vehicles_bp.route('/vehicles/add', methods=['POST'])
 def add_vehicle():
@@ -133,35 +154,13 @@ def add_vehicle():
         'state': request.form['state'],
         'central_id': ObjectId(request.form['location'])
     }
+    new_vehicle_id = vehicles_collection.insert_one(new_vehicle).inserted_id
 
-    vehicles_collection.insert_one(new_vehicle)
-
-    # Fahrzeug der ausgewählten Zentrale hinzufügen
     central_id = ObjectId(request.form['location'])
     central_collection.update_one(
         {"_id": central_id},
-        {"$addToSet": {"vehicles": new_vehicle["_id"]}}
+        {"$addToSet": {"vehicles": new_vehicle_id}}
     )
 
-    flash('Fahrzeug wurde erfolgreich angelegt!', 'success')
-    return redirect(url_for('vehicles.list_vehicles'))
-
-@vehicles_bp.route('/delete_vehicle/<vehicle_id>', methods=['POST'])
-def delete_vehicle(vehicle_id):
-    if not vehicle_id:
-        flash('No vehicle ID provided', 'error')
-        return redirect(url_for('vehicles.list_vehicles'))
-
-    # Fahrzeug aus der Sammlung entfernen
-    vehicle = vehicles_collection.find_one({"_id": ObjectId(vehicle_id)})
-    vehicles_collection.delete_one({"_id": ObjectId(vehicle_id)})
-
-    # Fahrzeug auch aus der zugehörigen Zentrale entfernen
-    if vehicle and 'central_id' in vehicle:
-        central_collection.update_one(
-            {"_id": vehicle['central_id']},
-            {"$pull": {"vehicles": ObjectId(vehicle_id)}}
-        )
-
-    flash('Das Fahrzeug wurde erfolgreich entfernt!', 'success')
+    flash('Vehicle added successfully!', 'success')
     return redirect(url_for('vehicles.list_vehicles'))

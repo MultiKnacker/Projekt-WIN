@@ -2,6 +2,7 @@
 
 {% block head %} 
     <title>Fahrzeugverwaltung</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vehiclesview.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -35,11 +36,6 @@
             {% for vehicle in vehicles %}
             <div class="col-md-4">
                 <div class="card mb-4">
-                    {% if vehicle.image %}
-                        <img src="{{ url_for('static', filename='pics/' ~ vehicle.image) }}" class="card-img-top" alt="{{ vehicle.brand }} {{ vehicle.model }}">
-                    {% else %}
-                        <img src="{{ url_for('static', filename='pics/placeholder.png') }}" class="card-img-top" alt="Kein Bild verfügbar">
-                    {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ vehicle.brand }} {{ vehicle.model }}</h5>
                         <p class="card-text">
@@ -115,15 +111,14 @@
                                     <div class="invalid-feedback">Nur positive Zahlen erlaubt</div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="date_of_purchase{{ vehicle._id }}" class="form-label">Kaufdatum</label>
-                                    <input type="date" class="form-control" id="date_of_purchase{{ vehicle._id }}" name="date_of_purchase" value="{{ vehicle.date_of_purchase }}" required>
-                                    <div class="invalid-feedback">Bitte ein gültiges Datum eingeben</div>
+                                    <label for="date_of_purchase" class="form-label">Kaufdatum</label>
+                                    <input type="date" class="form-control" id="date_of_purchase" name="date_of_purchase" value="{{ vehicle.date_of_purchase }}" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="location{{ vehicle._id }}" class="form-label">Standort</label>
-                                    <select class="form-control" id="location{{ vehicle._id }}" name="location" required>
+                                    <label for="location" class="form-label">Standort</label>
+                                    <select class="form-select" id="location" name="location" required>
                                         {% for central in centrals %}
-                                        <option value="{{ central['_id'] }}" {% if vehicle.central_id == central['_id'] %}selected{% endif %}>{{ central['name'] }}</option>
+                                            <option value="{{ central._id }}" {% if central._id == vehicle.central_id %}selected{% endif %}>{{ central.name }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
