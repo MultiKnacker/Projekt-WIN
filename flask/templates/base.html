@@ -36,7 +36,7 @@
                     <a class="nav-link {% if request.endpoint == 'vehicles.list_vehicles' %}active{% endif %}" href="{{ url_for('vehicles.list_vehicles')}}">Fahrzeugverwaltung</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link {% if request.endpoint == 'performance.list_performance' %}active{% endif %}" href="{{ url_for('performance.list_performance')}}">Performanceberichte</a>
+                    <a class="nav-link {% if request.endpoint == 'performance.prev_performance' %}active{% endif %}" href="{{ url_for('performance.prev_performance')}}">Performanceberichte</a>
                   </li>
                 </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">

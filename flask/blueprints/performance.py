@@ -3,7 +3,7 @@ from datetime import datetime, date
 from turtle import pd
 
 import numpy as np
-from flask import current_app
+from flask import current_app, request
 from flask import Blueprint, render_template, abort, flash, session, redirect, url_for, Response
 from matplotlib import pyplot as plt
 from pymongo import MongoClient
@@ -35,32 +35,53 @@ def prev_performance():
   if 'username' not in session:
     flash('Please log in to access this page.', 'error')
     return redirect(url_for('login.login'))
+  else:
+    vtype_usage_filename = gen_Car_usage_pie_chart()
+    revenue_quater_filename = gen_coast_comp_bar_chart()
 
-    vehicle_type_usage = gen_Car_usage_pie_chart()
-    gen_coast_comp_bar_chart()
+      # Render the template with the image path
+    show_navbar = True
+    show_toolbar = True
+    return render_template('performanceview.html', show_navbar=show_navbar, show_toolbar=show_toolbar)
 
-  # Render the template with the image path
-  show_navbar = True
-  return render_template('performanceview.html', show_navbar=show_navbar)
 
-@performance_bp.route("/performance/pdf")
-def list_performance():
+@performance_bp.route("/performance/pdf", methods=['GET', 'POST'])
+def print_performance_pdf():
     if 'username' not in session:
         flash('Please log in to access this page.', 'error')
         return redirect(url_for('login.login'))
+    else:
+      if request.method == 'POST':
+        current_date = date.today()
+        filename = "Bericht-"
+        res_filename = request.form.get('pdf_filename')
+        if(len(res_filename) != 0):
+          if(res_filename.endswith('-')):
+            filename = res_filename
+          else:
+            filename = res_filename + "-"
 
-    # Render HTML content
-    html_content = render_template("performanceview.html", plot_url='/diagrams/plot.png')
+        filename = filename + current_date.strftime("%d-%M-%Y")
 
-    # Generate PDF using WeasyPrint
-    pdf = HTML(string=html_content, base_url=url_for('static', filename='', _external=True)).write_pdf()
+        # Render HTML content
+        html_content = render_template("performanceview.html", show_tooltips=False)
 
-    # Optionally, you can save the PDF to a file
-    # with open('output.pdf', 'wb') as f:
-    #     f.write(pdf)
+        # Generate PDF using WeasyPrint
+        pdf = HTML(string=html_content, base_url=url_for('static', filename=filename, _external=True)).write_pdf()
 
-    # Return PDF as a response
-    return Response(pdf, mimetype='application/pdf')
+        # Optionally, you can save the PDF to a file
+        # with open('output.pdf', 'wb') as f:
+        #     f.write(pdf)
+
+        # Return PDF as a response
+        response = Response(pdf, mimetype='application/pdf')
+        response.headers['Content-Disposition'] = f"attachment; filename={filename}"
+        return response
+      else:
+        return None
+
+
+# minions
 
 def gen_Car_usage_pie_chart():
   filename = f"{default_file_path}/type_usage_pie_chart.png"
@@ -203,6 +224,7 @@ def gen_coast_comp_bar_chart():
   plt.savefig(filename)
   plt.close()
 
+# minions
 def days_between(date_str1, date_str2):
   current_app.logger.debug(f"date_str1 -> {date_str1} date_str2 -> {date_str2}")
   date1 = datetime.strptime(date_str1, '%d-%m-%Y').date()

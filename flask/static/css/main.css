@@ -240,6 +240,19 @@ div.navbar {
     background-color: var(--primary-background-color);
     color: var(--font-primary) !important;
 }
+/*
+    textfield design
+ */
+
+.textfield input[type=text], .textfield input[type=password] {
+    border:2px solid black;
+    background-color: var(--secondary-background-color);
+}
+
+.textfield::selection input[type=text], .textfield::selection input[type=password] {
+    outline: 6px solid var(--primary-background-color);
+    outline-offset: 6px;
+}
 
 /*
     checkbox design

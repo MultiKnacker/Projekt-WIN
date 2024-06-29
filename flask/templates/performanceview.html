@@ -3,17 +3,32 @@
 {% block title %}Performance-Berichte{% endblock %}
 
 {% block body%}
-    <div>
-        <div class="container-fluid align-items-center">
-            <h1>Flask Matplotlib Example</h1>
+    <div class="container-fluid">
+        {% if show_toolbar is defined and show_toolbar %}
+        <div class="container-fluid text-end row gap-3 pt-3 ">
+            <form id="print-form" method="post" action="{{ url_for('performance.print_performance_pdf') }}">
+                <input type="search" class="textfield rounded secondary_background-color" id="pdf_filename" name="pdf_filename" placeholder="Filename ... " autofocus>
+                <button type="submit" class="btn btn-danger" id="remove-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                    </svg> Drucken
+                </button>
+            </form>
         </div>
-        <div class="container-fluid">
-            <img  class="rounded-5" src="{{ url_for('static', filename='diagrams/type_usage_pie_chart.png') }}" alt="Usage Pie chart">
-            <h3>Prozentuale Nutzungsverteilung der einzelnen Fahrzeuge. Die genutzten Daten beziehen sich rückwierkend auf das ganze Jahr.</h3>
-        </div>
-        <div class="container-fluid">
-            <img  class="rounded-5" src="{{ url_for('static', filename='diagrams/revenue_quater.png') }}" alt="Usage Pie chart">
-            <h3>Prozentuale Nutzungsverteilung der einzelnen Fahrzeuge. Die genutzten Daten beziehen sich rückwierkend auf das ganze Jahr.</h3>
+        {% endif %}
+        <div class="d-block justify-content-center text-center">
+            <div class="container-fluid row">
+                <h1>Flask Matplotlib Example</h1>
+            </div>
+            <div class="container-fluid ">
+                <img  class="rounded-5" src="{{ url_for('static', filename='diagrams/type_usage_pie_chart.png') }}" alt="Usage Pie chart">
+                <h3>Prozentuale Nutzungsverteilung der einzelnen Fahrzeuge. Die genutzten Daten beziehen sich rückwierkend auf das ganze Jahr.</h3>
+            </div>
+            <div class="container-fluid">
+                <img  class="rounded-5" src="{{ url_for('static', filename='diagrams/revenue_quater.png') }}" alt="Usage Pie chart">
+                <h3>Prozentuale Nutzungsverteilung der einzelnen Fahrzeuge. Die genutzten Daten beziehen sich rückwierkend auf das ganze Jahr.</h3>
+            </div>
         </div>
     </div>
 </div>
