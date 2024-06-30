@@ -29,7 +29,7 @@ def list_location():
         return redirect(url_for('login.login'))
     documents = get_updated_locations()
     show_navbar = True
-    return render_template("location/locationview.html", show_navbar = show_navbar, data=documents)
+    return render_template("locationview.html", show_navbar = show_navbar, data=documents)
 
 @location_bp.route("/locations", methods=["GET", "POST"])
 def filter_location():
@@ -42,10 +42,10 @@ def filter_location():
     filtered_locations = get_filtered_locations(search_input, search_category)
     show_navbar = True
     if search_category or search_input:
-        return render_template("location/locationview.html", show_navbar = show_navbar, data=filtered_locations, search_input=search_input, search_category=search_category)
-    return render_template("location/locationview.html", show_navbar = show_navbar, data=filtered_locations)
+        return render_template("locationview.html", show_navbar = show_navbar, data=filtered_locations, search_input=search_input, search_category=search_category)
+    return render_template("locationview.html", show_navbar = show_navbar, data=filtered_locations)
 
-@location_bp.route('/locations/edit/<location_id>', methods=['GET', 'POST'])
+@location_bp.route('/edit/<location_id>', methods=['GET', 'POST'])
 def edit_location(location_id):
     if request.method == 'POST':
         filter_criteria = {'_id': ObjectId(location_id)}
@@ -70,11 +70,9 @@ def edit_location(location_id):
         try:
             if update_response.matched_count > 0:
                 if update_response.modified_count > 0:
-                    alert_type = "success"
-                    alert_String = "Location updated successfully!"
+                    flash("Location updated successfully!", "success")
                 else:
-                    alert_type = "warning"
-                    alert_String = "No changes detected in location data."
+                    flash("No changes detected in location data.", "warning")
             else:
                 alert_type = "error"
                 alert_String = "Location with ID " + location_id + " not found."
@@ -82,14 +80,10 @@ def edit_location(location_id):
             alert_type = "error"
             alert_String = "An error occurred while updating the location: " + e
 
-        updated_documents = get_updated_locations()
-        return render_template("location/locationview.html",
-                               show_navbar=show_navbar,
-                               data=updated_documents,
-                               alert_type=alert_type,
-                               alert_String=alert_String)
+        #updated_documents = get_updated_locations()
+        return redirect(url_for('location.list_location'))
 
-@location_bp.route('/locations/add', methods=['GET', 'POST'])
+@location_bp.route('/add', methods=['GET', 'POST'])
 def add_location():
     if request.method == 'POST':
         location_data = {
@@ -105,56 +99,37 @@ def add_location():
         show_navbar = True
         try:
             if added_response.acknowledged:
-                alert_type = "success"
-                alert_String = "Location added successfully!"
+                flash("Location added successfully!", "success")
             else:
-                alert_type = "error"
-                alert_String = "Couldnt add the location. Please try again."
+                flash("Could not add the location. Please try again.", "warning")
+
         except pymongo.errors.PyMongoError as e:
-            alert_type = "error"
-            alert_String = "An error occurred while adding the location: " + e
+            print(e)
 
-        updated_documents = get_updated_locations()
-        return render_template("location/locationview.html",
-                               show_navbar=show_navbar,
-                               data=updated_documents,
-                               alert_type=alert_type,
-                               alert_String=alert_String)
+        return redirect(url_for('location.list_location'))
 
-@location_bp.route('/locations/delete', methods=['GET', 'POST'])
+@location_bp.route('/delete', methods=['POST'])
 def delete_locations():
-    selected_locations = request.form.get('selected_locations')
-    if selected_locations:
-        location_ids = selected_locations.split(',')
-        location_ids = [ObjectId(id.strip()) for id in location_ids]
-        delete_response = locations_collection.delete_many({"_id": {"$in": location_ids}})
-        show_navbar = True
-        try:
-            if delete_response.acknowledged:
-                alert_type = "success"
-                alert_String = "Location(s) deleted successfully!"
-            else:
-                alert_type = "warning"
-                alert_String = "Couldnt delete the location(s). Please try again."
-        except pymongo.errors.PyMongoError as e:
-            alert_type = "error"
-            alert_String = "An error occurred while deleting the location(s): " + e
+    selected_locations = request.form.get('selected-locations')
 
-        updated_documents = get_updated_locations()
-        return render_template("location/locationview.html",
-                               show_navbar=show_navbar,
-                               data=updated_documents,
-                               alert_type=alert_type,
-                               alert_String=alert_String)
+    if selected_locations:
+        location_ids = [ObjectId(id.strip()) for id in selected_locations.split(',')]
+        selected_docs = locations_collection.find({"_id": {"$in": location_ids}})
+        location_names = [doc['name'] for doc in selected_docs]
+        
+        flash(f'Selected locations: {location_names}', 'info')
+        try:
+            delete_response = locations_collection.delete_many({"_id": {"$in": location_ids}})
+            if delete_response.deleted_count > 0:
+                flash("Location(s) deleted successfully!", "success")
+            else:
+                flash("Couldn't delete the location(s). Please try again.", "error")
+        except pymongo.errors.PyMongoError as e:
+            flash(f"An error occurred while deleting locations: {str(e)}", "error")
     else:
-        updated_documents = get_updated_locations()
-        alert_type = "error"
-        alert_String = "No locations selected for deletion. Please try again."
-        return render_template("location/locationview.html",
-                               show_navbar=True,
-                               data=updated_documents,
-                               alert_type=alert_type,
-                               alert_String=alert_String)
+        flash("No locations selected for deletion.", "error")
+
+    return redirect(url_for('location.list_location'))
 
 def get_updated_locations():
     updated_locations = locations_collection.find().sort("name")
