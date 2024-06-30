@@ -62,15 +62,24 @@ def filter_vehicles():
     search_category = request.form.get('search-category')
 
     if not search_term:
-        flash('Please enter a search term.', 'error')
+        flash('Bitte geben Sie einen Suchbegriff ein.', 'error')
         return redirect(url_for('vehicles.list_vehicles'))
 
-    filtered_vehicles = list(vehicles_collection.find({
-        search_category: {"$regex": search_term, "$options": "i"}
-    }))
     centrals = list(central_collection.find({}))
     central_map = {str(central["_id"]): central["name"] for central in centrals}
 
+    # Fahrzeuge filtern
+    if search_category == "location":
+        central_ids = [str(central["_id"]) for central in centrals if search_term.lower() in central["name"].lower()]
+        filtered_vehicles = list(vehicles_collection.find({
+            "central_id": {"$in": [ObjectId(cid) for cid in central_ids]}
+        }))
+    else:
+        filtered_vehicles = list(vehicles_collection.find({
+            search_category: {"$regex": search_term, "$options": "i"}
+        }))
+
+    # Fahrzeugdaten mit Zentrale-Namen aktualisieren
     for vehicle in filtered_vehicles:
         vehicle["central_name"] = central_map.get(str(vehicle.get("central_id", "Unbekannt")), "Unbekannt")
         if 'date_of_purchase' in vehicle:
@@ -87,6 +96,8 @@ def filter_vehicles():
 
     show_navbar = True
     return render_template("vehiclesview.html", show_navbar=show_navbar, vehicles=filtered_vehicles, centrals=centrals)
+
+
 
 @vehicles_bp.route('/edit/<vehicle_id>', methods=['GET', 'POST'])
 def edit_vehicle(vehicle_id):
