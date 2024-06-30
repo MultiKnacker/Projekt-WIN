@@ -21,12 +21,14 @@ vehicles_collection = db["vehicle"]
 vehicle_costs_collection = db["vehicle_costs"]
 rental_agreements_collection = db["rentalagreement"]
 performance_data_collection = db["keydata"]
+employee_collection = db["employee"]
 
 locations = list(locations_collection.find({}))
 vehicles = list(vehicles_collection.find({}))
 vehicle_costs = list(vehicle_costs_collection.find({}))
 rental_agreements = list(rental_agreements_collection.find({}))
 performance_data = list(performance_data_collection.find({}))
+employees = list(employee_collection.find({}))
 
 default_file_path = 'static/diagrams/'
 
@@ -91,8 +93,7 @@ def gen_Car_usage_pie_chart():
   if(len(rental_agreements) >= 0 &  len(vehicles) >= 0):
     for rental_agreement in rental_agreements:
       for vehicle in vehicles:
-        rental_agreement_ids = rental_agreement.get('vehicles')
-        if vehicle.get('_id') == rental_agreement_ids[0]:
+        if vehicle.get('_id') == rental_agreement.get('vehicles'):
           if vehicle.get('vehicletype') == 'PKW':
             pkw_usage += 1
           elif vehicle.get('vehicletype') == 'LKW':
@@ -142,60 +143,82 @@ def gen_coast_comp_bar_chart():
   # adding past data
   if(len(performance_data) >=0):
     for performance_set in performance_data:
-      quarters = quarters + (performance_set.get('quater'),)
+      if performance_set['year'] == date.today().year:
+        quarters = quarters + (performance_set.get('quater'),)
 
-      revenue = performance_set.get('revenue', 0.00)  # Default to 0 for missing 'revenue'
-      cost = performance_set.get('personal_costs', 0.00)  # Default to 0 for missing 'personal_costs'
-      outstanding_revenue = 0.00
+        revenue = performance_set.get('revenue', 0.00)  # Default to 0 for missing 'revenue'
+        cost = performance_set.get('cost', 0.00)  # Default to 0 for missing 'personal_costs'
+        outstanding_revenue = 0.00
 
-      values_per_quater['Einnahmen'] = values_per_quater['Einnahmen'] + (float(revenue),)
-      values_per_quater['zukünftige_Einnahmen'] = values_per_quater['zukünftige_Einnahmen'] + (float(outstanding_revenue),)
-      values_per_quater['Ausgaben'] =  values_per_quater['Ausgaben'] + (float(cost),)
+        values_per_quater['Einnahmen'] = values_per_quater['Einnahmen'] + (float(revenue),)
+        values_per_quater['zukünftige_Einnahmen'] = values_per_quater['zukünftige_Einnahmen'] + (float(outstanding_revenue),)
+        values_per_quater['Ausgaben'] =  values_per_quater['Ausgaben'] + (float(cost),)
 
-  # adding current data
-  current_date = datetime.now()
-  current_app.logger.debug(f"current_date {current_date}")
+  # adding current data (current revenue, current outstanding revenue and current cost)
+  date_format = '%d.%m.%Y'
+  current_date = date.today()
   current_quarter_timespan = get_start_of_quarter(current_date)
+
+  current_app.logger.debug(f"current_date {current_date}")
   current_app.logger.debug(f"quaters:  {current_quarter_timespan}")
 
-  rental_agreements_pre_date = list(rental_agreements_collection.find({'returned': {'$lt': current_date.date().__str__()}, 'receives': {'$gt': current_quarter_timespan.get('start_date').__str__()}}))
-  rental_agreements_past_date = list(rental_agreements_collection.find({'receives': {'$gt': current_date.date().__str__()}, 'returned': {'$lt': current_quarter_timespan.get('end_date').__str__()}}))
+  rental_agreements_past_date = list()
+  rental_agreements_pre_date = list()
+
+  for rental_agreement in rental_agreements:
+    receives_date = datetime.strptime(rental_agreement.get('receives', 0), date_format).date()
+    return_date = datetime.strptime(rental_agreement.get('returned', 0), date_format).date()
+    if(return_date != 0 and receives_date != 0):
+      if(receives_date >= current_quarter_timespan.get('start_date') and return_date <= current_quarter_timespan.get('end_date')):
+        if(current_date > return_date):
+          current_app.logger.debug("added to rental_agreement_pre_date")
+          rental_agreements_pre_date.append(rental_agreement)
+        elif(current_date < receives_date):
+          current_app.logger.debug("added to rental_agreement_past_date")
+          rental_agreements_past_date.append(rental_agreement)
+
+  current_app.logger.debug(f"rental_agreements_pre_date: {len(rental_agreements_pre_date)} rental_agreements_past_date: {len(rental_agreements_past_date)}")
 
   current_revenue = 0.00
   current_cost = 0.00
   current_outstanding_revenue = 0.00
 
-  if(rental_agreements_pre_date and rental_agreements_past_date):
-    for rental_agreement in rental_agreements_pre_date:
-      for vehicle in vehicles:
-        rental_agreement_ids = rental_agreement.get('vehicles')
-        if rental_agreement_ids[0] == vehicle.get('_id'):
-          cost_per_day = vehicle.get('cost_per_day')
-          rental_time = days_between(rental_agreement.get('receives'), rental_agreement.get('returned'))
-          current_app.logger.debug(f"Cost_per_day {cost_per_day} rental_time {rental_time}")
-          current_revenue += cost_per_day * rental_time
+  for rental_agreement_pre in rental_agreements_pre_date:
+    for vehicle in vehicles:
+      if rental_agreement_pre.get('vehicles') == vehicle.get('_id'):
+        # revenue
+        cost_per_day = vehicle.get('cost_per_day')
+        rental_time = days_between(rental_agreement_pre.get('receives'), rental_agreement_pre.get('returned'))
+        current_revenue += cost_per_day * rental_time
 
-    for rental_agreement in rental_agreements_past_date:
-      for vehicle in vehicles:
-        rental_agreement_ids = rental_agreement.get('vehicles')
-        if rental_agreement_ids[0] == vehicle.get('_id'):
-          cost_per_day = vehicle.get('cost_per_day')
-          rental_time = days_between(rental_agreement.get('receives'), rental_agreement.get('returned'))
-          current_app.logger.debug(f"Cost_per_day {cost_per_day} rental_time {rental_time}")
-          current_outstanding_revenue += cost_per_day * rental_time
+  for rental_agreement_past in rental_agreements_past_date:
+    for vehicle in vehicles:
+      # revenue
+      if rental_agreement_past.get('vehicles') == vehicle.get('_id'):
+        cost_per_day = vehicle.get('cost_per_day')
+        rental_time = days_between(rental_agreement_past.get('receives'), rental_agreement_past.get('returned'))
+        current_outstanding_revenue += cost_per_day * rental_time
 
-    current_app.logger.debug(f"Collection: {values_per_quater}")
-    current_app.logger.debug(f"current_revenue -> {current_revenue}")
-    current_app.logger.debug(f"current_outstanding_revenue -> {current_outstanding_revenue}")
-    current_app.logger.debug(f"current_cost -> {current_cost}")
+  for vehicle_cost in vehicle_costs:
+    cost_date = datetime.strptime(vehicle_cost.get('date', 0), date_format).date()
+    if current_quarter_timespan.get('start_date') <= cost_date <= current_quarter_timespan.get('end_date'):
+      current_cost += vehicle_cost.get('costs')
+
+  for employee in employees:
+    current_cost += employee.get('monthly_wage') * 3
+
+  current_app.logger.debug(f"Collection: {values_per_quater}")
+  current_app.logger.debug(f"current_revenue -> {current_revenue}")
+  current_app.logger.debug(f"current_outstanding_revenue -> {current_outstanding_revenue}")
+  current_app.logger.debug(f"current_cost -> {current_cost}")
 
   quarters += ("current",)
-  current_revenue = float(current_revenue)
-  values_per_quater['Einnahmen'] = values_per_quater['Einnahmen'] + (current_revenue,)
-  current_outstanding_revenue = float(current_outstanding_revenue)
-  values_per_quater['zukünftige_Einnahmen'] = values_per_quater['zukünftige_Einnahmen'] + (current_outstanding_revenue,)
-  current_cost = float(current_cost)
-  values_per_quater['Ausgaben'] =  values_per_quater['Ausgaben'] + (current_cost,)
+  values_per_quater['Einnahmen'] = values_per_quater['Einnahmen'] + (float(current_revenue),)
+  values_per_quater['zukünftige_Einnahmen'] = values_per_quater['zukünftige_Einnahmen'] + (float(current_outstanding_revenue),)
+  values_per_quater['Ausgaben'] = values_per_quater['Ausgaben'] + (float(current_cost),)
+  y_height = max(max(values_per_quater[category]) for category in values_per_quater) + 30000
+
+  current_app.logger.debug(f"values_per_quater: {values_per_quater}")
 
   # create graph
   x = np.arange(len(quarters))  # the label locations
@@ -219,21 +242,19 @@ def gen_coast_comp_bar_chart():
   ax.set_title('Gewinn und Verlustrechnung' , color='white')
   ax.set_xticks(x + width, quarters, color='white')
   ax.legend(loc='upper left', ncols=3, facecolor='#222222', labelcolor='white')
-  ax.set_ylim(0, 30000)
+  ax.set_ylim(0, y_height)
 
   plt.savefig(filename)
   plt.close()
 
 # minions
 def days_between(date_str1, date_str2):
-  current_app.logger.debug(f"date_str1 -> {date_str1} date_str2 -> {date_str2}")
-  date1 = datetime.strptime(date_str1, '%d-%m-%Y').date()
-  date2 = datetime.strptime(date_str2, '%d-%m-%Y').date()
+  date1 = datetime.strptime(date_str1, '%d.%m.%Y').date()
+  date2 = datetime.strptime(date_str2, '%d.%m.%Y').date()
 
   time_delta = date2 - date1
   days_between = time_delta.days
   days_between = float(days_between)
-  current_app.logger.debug(f"Calc Days _between: {days_between}")
   return days_between
 
 def get_start_of_quarter(current_date):
@@ -244,9 +265,6 @@ def get_start_of_quarter(current_date):
     {'start_date' : datetime(current_year, 7, 1).date(), 'end_date' : datetime(current_year, 9, 30).date()},
     {'start_date' : datetime(current_year, 10, 1).date(), 'end_date' : datetime(current_year, 12, 31).date()}
   ]
-  current_date = current_date.date()
-  current_app.logger.debug(f"current_date -> {current_date} current_year -> {current_year}")
-  current_app.logger.debug(f"start_date {quarters[0]['start_date']} end_date {quarters[0]['end_date']}")
   for quarter in quarters:
     if quarter.get('start_date') <= current_date <= quarter.get('end_date'):
       return quarter

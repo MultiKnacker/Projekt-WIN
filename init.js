@@ -8,7 +8,7 @@
 });
 
  // Create the collections
- const collections = ['keydata', 'performance_report', 'central', 'employee', 'customer', 'rentalagreement', 'vehicle', 'vehicle_costs', 'vehicle_cost_types', 'sys_admins'];
+ const collections = ['keydata', 'central', 'employee', 'customer', 'rentalagreement', 'vehicle', 'vehicle_costs', 'vehicle_cost_types', 'sys_admins'];
  collections.forEach(collection => {
    db.createCollection(collection, function(err, res) {
      if (err) throw err;
@@ -83,17 +83,16 @@
   { _id: ObjectId(), lastname: 'Pohl', firstname: 'Christian', job: 'Zentralleiter', streetname: 'Am Wegfeld 60', region: 'Nürnberg', zipcode: '90427', monthly_wage: 5000.00 },
   { _id: ObjectId(), lastname: 'Horn', firstname: 'Daniel', job: 'Fahrzeugwartung', streetname: 'Am Wegfeld 60', region: 'Nürnberg', zipcode: '90427', monthly_wage: 2800.00 },
   { _id: ObjectId(), lastname: 'Busch', firstname: 'Johannes', job: 'Gutachter', streetname: 'Am Wegfeld 60', region: 'Nürnberg', zipcode: '90427', monthly_wage: 2900.00 },
-  // Next 6 employees are not assigned to any central
   { _id: ObjectId(), lastname: 'Vogel', firstname: 'Markus', job: 'Vertrieb', streetname: 'Unter den Linden 77', region: 'Berlin', zipcode: '10117', monthly_wage: 1500.00 },
   { _id: ObjectId(), lastname: 'Friedrich', firstname: 'Robert', job: 'HR', streetname: 'Marienplatz 8', region: 'München', zipcode: '80331', monthly_wage: 2000.00 },
   { _id: ObjectId(), lastname: 'Keller', firstname: 'Michael', job: 'Kundenservice', streetname: 'Ettore-Bugatti-Straße 1', region: 'Köln', zipcode: '51149', monthly_wage: 1700.00 },
   { _id: ObjectId(), lastname: 'Günther', firstname: 'Stefan', job: 'Fahrzeugwartung', streetname: 'Am Burghof 55', region: 'Frankfurt', zipcode: '60437', monthly_wage: 2800.00 },
   { _id: ObjectId(), lastname: 'Petersen', firstname: 'Andreas', job: 'Gutachter', streetname: 'Unterländer Straße 66-68', region: 'Stuttgart', zipcode: '70435', monthly_wage: 2900.00 },
-  { _id: ObjectId(), lastname: 'Lang', firstname: 'Martin', job: 'Vertrieb', streetname: 'Willy-Brandt-Platz 5', region: 'Leipzig', zipcode: '04109', monthly_wage: 1500.00 }    
-  // Add more employee documents here...
+  { _id: ObjectId(), lastname: 'Lang', firstname: 'Martin', job: 'Vertrieb', streetname: 'Willy-Brandt-Platz 5', region: 'Leipzig', zipcode: '04109', monthly_wage: 1500.00 }
  ];
  db.employee.insertMany(employees);
- // Insert multiple documents into each collection
+
+
  const vehicles = [
   { _id: ObjectId(), numberplate: 'U-BC-123', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 60, brand: 'BMW', model: '3er', ensurance: 120.00, original_price: 40000.00, milage: 20000, date_of_purchase: "15-06-2020", state: "frei", image: "bmw_x5.png" },
   { _id: ObjectId(), numberplate: 'V-DE-456', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 110, brand: 'Volvo', model: 'FH', ensurance: 220.00, original_price: 260000.00, milage: 50000, date_of_purchase: "12-12-2021", state: "vermietet" },
@@ -162,7 +161,6 @@
   { _id: ObjectId(), numberplate: 'LL-MN-321', fueltype: 'Diesel', vehicletype: 'LKW', dailyrate: 120, brand: 'MAN', model: 'TGX', ensurance: 240.00, original_price: 280000.00, milage: 60000, date_of_purchase: "01-05-2023", state: "frei" },
   { _id: ObjectId(), numberplate: 'II-JK-123', fueltype: 'Diesel', vehicletype: 'Transporter', dailyrate: 180, brand: 'Volkswagen', model: 'Transporter', ensurance: 360.00, original_price: 56000.00, milage: 0, date_of_purchase: "01-01-2016", state: "frei" },
   { _id: ObjectId(), numberplate: 'MM-NO-654', fueltype: 'Benzin', vehicletype: 'PKW', dailyrate: 80, brand: 'Audi', model: 'A6', ensurance: 160.00, original_price: 50000.00, milage: 0, date_of_purchase: "01-09-2023", state: "frei" }
-  // Add more vehicle documents here... Milage ändern. Sehr oft 0 Obwohl Fahrzeug schon länger vorhanden ist
  ];
 
  // Function to calculate random cost per day based on vehicle type
@@ -197,59 +195,47 @@
   { _id: ObjectId(), name: 'Zentrale Dresden', location: 'Innenstadt', streetname: 'Altmarkt 10', region: 'Dresden', zipcode: '01067', rent: 3000.00, employees: [employees[48]._id,employees[49]._id,employees[50]._id,employees[51]._id,employees[52]._id,employees[53]._id], vehicles: [vehicles[35]._id,vehicles[36]._id,vehicles[37]._id,vehicles[38]._id,vehicles[39]._id] },
   { _id: ObjectId(), name: 'Zentrale Hannover', location: 'Industriegebiet', streetname: 'Heinkelstraße 8', region: 'Hannover', zipcode: '30827', rent: 4500.00, employees: [employees[54]._id,employees[55]._id,employees[56]._id,employees[57]._id,employees[58]._id,employees[59]._id], vehicles: [vehicles[40]._id,vehicles[41]._id,vehicles[42]._id,vehicles[43]._id,vehicles[44]._id] },
   { _id: ObjectId(), name: 'Zentrale Nürnberg', location: 'Ländlich', streetname: 'Am Wegfeld 60', region: 'Nürnberg', zipcode: '90427', rent: 2000.00, employees: [employees[60]._id,employees[61]._id,employees[62]._id,employees[63]._id,employees[64]._id,employees[65]._id], vehicles: [vehicles[50]._id,vehicles[51]._id,vehicles[52]._id,vehicles[53]._id,vehicles[54]._id] }
-  // Add more central documents here...
-  // Add more central documents here...
  ];
  db.central.insertMany(centrals);
 
- const keydatas = [
-   { quater: 1, revenue: 10000, personal_costs: 2000, rent: 1000, year: 2024},
-   { quater: 2, revenue: 15000, personal_costs: 2500, rent: 1200, year: 2024},
-   // Add more keydata documents here...
+ const keydata = [
+   { quater: 1, revenue: 30000, cost: 15000, year: 2024 },
+   { quater: 2, revenue: 20000, cost: 10000, year: 2024 },
+   { quater: 3, revenue: 25000, cost: 11000, year: 2024 },
  ];
- db.keydata.insertMany(keydatas);
-
- const performance_reports = [
-   { name: 'Q1 2024', date: new Date(), centralID: 1 },
-   { name: 'Q2 2024', date: new Date(), centralID: 2 },
-   // Add more performance_report documents here...
- ];
- db.performance_report.insertMany(performance_reports);
-
-
- const vehicle_costs = [
-  { date: '02-12-2020', costs: 500.00, vehicle_cost_types: 1, vehicles: 1 },
-  { date: '15-02-2023', costs: 1000.00, vehicle_cost_types: 2, vehicles: 2 },
-  { date: '01-10-2023', costs: 750.00, vehicle_cost_types: 3, vehicles: 7 },
-  { date: '29-10-2023', costs: 140.00, vehicle_cost_types: 4, vehicles: 22 },
-  { date: '11-09-2023', costs: 850.00, vehicle_cost_types: 2, vehicles: 37 },
-  { date: '24-01-2024', costs: 900.00, vehicle_cost_types: 3, vehicles: 24 },
-  { date: '15-02-2024', costs: 700.00, vehicle_cost_types: 1, vehicles: 39 },
-  { date: '14-05-2024', costs: 950.00, vehicle_cost_types: 2, vehicles: 54 },
-  { date: '01-05-2024', costs: 800.00, vehicle_cost_types: 3, vehicles: 30 },
-  { date: '12-06-2024', costs: 140.00, vehicle_cost_types: 4, vehicles: 45 },
-  { date: '25-05-2024', costs: 1100.00, vehicle_cost_types: 2, vehicles: 60 },
-  { date: '23-09-2024', costs: 700.00, vehicle_cost_types: 3, vehicles: 11 },
-  { date: '21-10-2024', costs: 550.00, vehicle_cost_types: 1, vehicles: 26 },
-  { date: '01-09-2024', costs: 1200.00, vehicle_cost_types: 2, vehicles: 41 },
-  { date: '01-01-2025', costs: 140.00, vehicle_cost_types: 4, vehicles: 13 },
-  { date: '13-02-2025', costs: 500.00, vehicle_cost_types: 1, vehicles: 28 },
-  { date: '01-01-2025', costs: 1000.00, vehicle_cost_types: 2, vehicles: 43 },
-  { date: '06-05-2025', costs: 900.00, vehicle_cost_types: 3, vehicles: 15 },
-  { date: '26-06-2025', costs: 140.00, vehicle_cost_types: 4, vehicles: 34 },
-  { date: '11-06-2025', costs: 1100.00, vehicle_cost_types: 2, vehicles: 59 }
-  // Add more vehicle_costs documents here... Yakup
- ];
- db.vehicle_costs.insertMany(vehicle_costs);
+ db.keydata.insertMany(keydata);
 
  const vehicle_cost_types = [
-   { _id: 1, type: 'Reinigung'},
-   { _id: 2,type: 'Reparatur'},
-   { _id: 3,type: 'Steuern'},
-   { _id: 4,type: 'TÜV'},
-   // Add more vehicle_cost_types documents here... Yakup
+   { _id: ObjectId(), type: 'Reinigung'},
+   { _id: ObjectId(), type: 'Reparatur'},
+   { _id: ObjectId(), type: 'Steuern'},
+   { _id: ObjectId(), type: 'TÜV'}
  ];
  db.vehicle_cost_types.insertMany(vehicle_cost_types);
+
+ const vehicle_costs = [
+  { date: '02.12.2020', costs: 500.00, vehicle_cost_types: [vehicle_cost_types[1]._id], vehicles: [vehicles[8]._id] },
+  { date: '15.02.2023', costs: 1000.00, vehicle_cost_types: [vehicle_cost_types[2]._id], vehicles: [vehicles[25]._id] },
+  { date: '01.10.2023', costs: 750.00, vehicle_cost_types: [vehicle_cost_types[1]._id], vehicles: [vehicles[45]._id] },
+  { date: '29.10.2023', costs: 140.00, vehicle_cost_types: [vehicle_cost_types[3]._id], vehicles: [vehicles[1]._id] },
+  { date: '11.09.2023', costs: 850.00, vehicle_cost_types: [vehicle_cost_types[3]._id], vehicles: [vehicles[3]._id] },
+  { date: '24.01.2024', costs: 900.00, vehicle_cost_types: [vehicle_cost_types[3]._id], vehicles: [vehicles[7]._id] },
+  { date: '15.02.2024', costs: 700.00, vehicle_cost_types: [vehicle_cost_types[3]._id], vehicles: [vehicles[11]._id] },
+  { date: '14.05.2024', costs: 950.00, vehicle_cost_types: [vehicle_cost_types[3]._id], vehicles: [vehicles[12]._id] },
+  { date: '01.05.2024', costs: 800.00, vehicle_cost_types: [vehicle_cost_types[3]._id], vehicles: [vehicles[15]._id] },
+  { date: '12.06.2024', costs: 140.00, vehicle_cost_types: [vehicle_cost_types[3]._id], vehicles: [vehicles[64]._id] },
+  { date: '25.05.2024', costs: 1100.00, vehicle_cost_types: [vehicle_cost_types[2]._id], vehicles: [vehicles[61]._id] },
+  { date: '23.09.2024', costs: 700.00, vehicle_cost_types: [vehicle_cost_types[2]._id], vehicles: [vehicles[56]._id] },
+  { date: '21.10.2024', costs: 550.00, vehicle_cost_types: [vehicle_cost_types[2]._id], vehicles: [vehicles[53]._id] },
+  { date: '01.09.2024', costs: 1200.00, vehicle_cost_types: [vehicle_cost_types[1]._id], vehicles: [vehicles[9]._id] },
+  { date: '01.01.2025', costs: 140.00, vehicle_cost_types: [vehicle_cost_types[1]._id], vehicles: [vehicles[6]._id] },
+  { date: '13.02.2025', costs: 500.00, vehicle_cost_types: [vehicle_cost_types[1]._id], vehicles: [vehicles[33]._id] },
+  { date: '01.01.2025', costs: 1000.00, vehicle_cost_types: [vehicle_cost_types[1]._id], vehicles: [vehicles[36]._id] },
+  { date: '06.05.2025', costs: 900.00, vehicle_cost_types: [vehicle_cost_types[1]._id], vehicles: [vehicles[42]._id] },
+  { date: '26.06.2025', costs: 140.00, vehicle_cost_types: [vehicle_cost_types[1]._id], vehicles: [vehicles[15]._id] },
+  { date: '11.06.2025', costs: 1100.00, vehicle_cost_types: [vehicle_cost_types[1]._id], vehicles: [vehicles[16]._id] }
+ ];
+ db.vehicle_costs.insertMany(vehicle_costs);
 
  const customers = [
   { _id: 1, lastname: 'Schmidt', firstname: 'Peter', streetname: 'Herberstraße 20', region: 'Hamburg', zipcode: '20359', company: ''},
@@ -278,33 +264,80 @@
  db.customer.insertMany(customers);
 
  const rentalagreements = [
-  { _id: 1, receives: "20-06-2020", returned: "30-06-2020", discount: 10, vehicles: [vehicles[1]._id], centrals: [centrals[1]._id] , customers: [customers[1]._id]},
-  { _id: 2, receives: "15-12-2021", returned: "15-01-2022", discount: 15, vehicles: [vehicles[2]._id], centrals: [centrals[2]._id] , customers: [customers[2]._id]},
-  { _id: 3, receives: "10-08-2020", returned: "18-08-2020", discount: 20, vehicles: [vehicles[3]._id], centrals: [centrals[3]._id], customers: [customers[3]._id] },
-  { _id: 4, receives: "05-05-2022", returned: "10-05-2022", discount: 25, vehicles: [vehicles[4]._id], centrals: [centrals[4]._id], customers: [customers[4]._id] },
-  { _id: 5, receives: "20-10-2023", returned: "21-10-2023", discount: 15, vehicles: [vehicles[5]._id], centrals: [centrals[5]._id], customers: [customers[5]._id] },
-  { _id: 6, receives: "12-03-2021", returned: "15-03-2021", discount: 30, vehicles: [vehicles[6]._id], centrals: [centrals[6]._id], customers: [customers[6]._id] },
-  { _id: 7, receives: "08-11-2020", returned: "15-11-2020", discount: 10, vehicles: [vehicles[7]._id], centrals: [centrals[7]._id], customers: [customers[7]._id] },
-  { _id: 8, receives: "25-07-2022", returned: "27-07-2022", discount: 5, vehicles: [vehicles[8]._id], centrals: [centrals[8]._id], customers: [customers[8]._id] },
-  { _id: 9, receives: "03-12-2023", returned: "10-12-2023", discount: 20, vehicles: [vehicles[9]._id], centrals: [centrals[9]._id], customers: [customers[9]._id] },
-  { _id: 10, receives: "14-09-2021", returned: "15-09-2021", discount: 15, vehicles: [vehicles[10]._id], centrals: [centrals[10]._id], customers: [customers[10]._id] },
-  { _id: 11, receives: "18-06-2020", returned: "22-06-2020", discount: 30, vehicles: [vehicles[11]._id], centrals: [centrals[1]._id], customers: [customers[11]._id] },
-  { _id: 12, receives: "09-04-2022", returned: "15-04-2022", discount: 10, vehicles: [vehicles[12]._id], centrals: [centrals[2]._id], customers: [customers[12]._id] },
-  { _id: 13, receives: "25-10-2023", returned: "28-10-2023", discount: 25, vehicles: [vehicles[13]._id], centrals: [centrals[3]._id], customers: [customers[13]._id] },
-  { _id: 14, receives: "02-01-2021", returned: "10-01-2021", discount: 15, vehicles: [vehicles[14]._id], centrals: [centrals[4]._id], customers: [customers[14]._id] },
-  { _id: 15, receives: "17-07-2022", returned: "25-07-2022", discount: 5, vehicles: [vehicles[15]._id], centrals: [centrals[5]._id], customers: [customers[15]._id] },
-  { _id: 16, receives: "29-11-2023", returned: "05-12-2023", discount: 20, vehicles: [vehicles[16]._id], centrals: [centrals[6]._id], customers: [customers[16]._id] },
-  { _id: 17, receives: "08-09-2020", returned: "10-09-2020", discount: 30, vehicles: [vehicles[17]._id], centrals: [centrals[7]._id], customers: [customers[17]._id] },
-  { _id: 18, receives: "03-06-2021", returned: "08-06-2021", discount: 10, vehicles: [vehicles[18]._id], centrals: [centrals[8]._id], customers: [customers[18]._id] },
-  { _id: 19, receives: "22-03-2022", returned: "25-03-2022", discount: 25, vehicles: [vehicles[19]._id], centrals: [centrals[9]._id], customers: [customers[19]._id] },
-  { _id: 20, receives: "12-12-2023", returned: "18-12-2023", discount: 15, vehicles: [vehicles[20]._id], centrals: [centrals[10]._id], customers: [customers[20]._id] },
-  { _id: 21, receives: "27-12-2023", returned: "03-01-2024", discount: 10, vehicles: [vehicles[2]._id],  centrals: [centrals[1]._id],  customers: [customers[8]._id] },
-  { _id: 22, receives: "10-02-2024", returned: "15-02-2024", discount: 20, vehicles: [vehicles[14]._id], centrals: [centrals[3]._id], customers: [customers[15]._id] },
-  {_id: 23,  receives: "08-03-2024", returned: "12-03-2024", discount: 5,  vehicles: [vehicles[7]._id],  centrals: [centrals[5]._id], customers: [customers[3]._id] },
-  {_id: 24,  receives: "20-03-2024", returned: "27-03-2024", discount: 15, vehicles: [vehicles[11]._id], centrals: [centrals[7]._id], customers: [customers[10]._id] },
-  {_id: 25,  receives: "15-04-2024", returned: "20-04-2024", discount: 25, vehicles: [vehicles[3]._id],  centrals: [centrals[9]._id], customers: [customers[17]._id] },
+  { _id: ObjectId(), receives: "20.06.2020", returned: "30.06.2020", discount: 10, vehicles: [vehicles[1]._id], centrals: [centrals[1]._id] , customers: [customers[1]._id]},
+  { _id: ObjectId(), receives: "15.12.2021", returned: "15.01.2022", discount: 15, vehicles: [vehicles[2]._id], centrals: [centrals[2]._id] , customers: [customers[2]._id]},
+  { _id: ObjectId(), receives: "10.08.2020", returned: "18.08.2020", discount: 20, vehicles: [vehicles[3]._id], centrals: [centrals[3]._id], customers: [customers[3]._id] },
+  { _id: ObjectId(), receives: "05.05.2022", returned: "10.05.2022", discount: 25, vehicles: [vehicles[4]._id], centrals: [centrals[4]._id], customers: [customers[4]._id] },
+  { _id: ObjectId(), receives: "20.10.2023", returned: "21.10.2023", discount: 15, vehicles: [vehicles[5]._id], centrals: [centrals[5]._id], customers: [customers[5]._id] },
+  { _id: ObjectId(), receives: "12.03.2021", returned: "15.03.2021", discount: 30, vehicles: [vehicles[6]._id], centrals: [centrals[6]._id], customers: [customers[6]._id] },
+  { _id: ObjectId(), receives: "08.11.2020", returned: "15.11.2020", discount: 10, vehicles: [vehicles[7]._id], centrals: [centrals[7]._id], customers: [customers[7]._id] },
+  { _id: ObjectId(), receives: "25.07.2022", returned: "27.07.2022", discount: 5, vehicles: [vehicles[8]._id], centrals: [centrals[8]._id], customers: [customers[8]._id] },
+  { _id: ObjectId(), receives: "03.12.2023", returned: "10.12.2023", discount: 20, vehicles: [vehicles[9]._id], centrals: [centrals[9]._id], customers: [customers[9]._id] },
+  { _id: ObjectId(), receives: "14.09.2021", returned: "15.09.2021", discount: 15, vehicles: [vehicles[10]._id], centrals: [centrals[10]._id], customers: [customers[10]._id] },
+  { _id: ObjectId(), receives: "18.06.2020", returned: "22.06.2020", discount: 30, vehicles: [vehicles[11]._id], centrals: [centrals[1]._id], customers: [customers[11]._id] },
+  { _id: ObjectId(), receives: "09.04.2022", returned: "15.04.2022", discount: 10, vehicles: [vehicles[12]._id], centrals: [centrals[2]._id], customers: [customers[12]._id] },
+  { _id: ObjectId(), receives: "25.10.2023", returned: "28.10.2023", discount: 25, vehicles: [vehicles[13]._id], centrals: [centrals[3]._id], customers: [customers[13]._id] },
+  { _id: ObjectId(), receives: "02.01.2021", returned: "10.01.2021", discount: 15, vehicles: [vehicles[14]._id], centrals: [centrals[4]._id], customers: [customers[14]._id] },
+  { _id: ObjectId(), receives: "17.07.2022", returned: "25.07.2022", discount: 5, vehicles: [vehicles[15]._id], centrals: [centrals[5]._id], customers: [customers[15]._id] },
+  { _id: ObjectId(), receives: "29.11.2023", returned: "05.12.2023", discount: 20, vehicles: [vehicles[16]._id], centrals: [centrals[6]._id], customers: [customers[16]._id] },
+  { _id: ObjectId(), receives: "08.09.2020", returned: "10.09.2020", discount: 30, vehicles: [vehicles[17]._id], centrals: [centrals[7]._id], customers: [customers[17]._id] },
+  { _id: ObjectId(), receives: "03.06.2021", returned: "08.06.2021", discount: 10, vehicles: [vehicles[18]._id], centrals: [centrals[8]._id], customers: [customers[18]._id] },
+  { _id: ObjectId(), receives: "22.03.2022", returned: "25.03.2022", discount: 25, vehicles: [vehicles[19]._id], centrals: [centrals[9]._id], customers: [customers[19]._id] },
+  { _id: ObjectId(), receives: "12.12.2023", returned: "18.12.2023", discount: 15, vehicles: [vehicles[20]._id], centrals: [centrals[10]._id], customers: [customers[20]._id] },
+  { _id: ObjectId(), receives: "27.12.2023", returned: "03.01.2024", discount: 10, vehicles: [vehicles[2]._id],  centrals: [centrals[1]._id],  customers: [customers[8]._id] },
+  { _id: ObjectId(), receives: "10.02.2024", returned: "15.02.2024", discount: 20, vehicles: [vehicles[14]._id], centrals: [centrals[3]._id], customers: [customers[15]._id] },
+  {_id: ObjectId(),  receives: "08.03.2024", returned: "12.03.2024", discount: 5,  vehicles: [vehicles[7]._id],  centrals: [centrals[5]._id], customers: [customers[3]._id] },
+  {_id: ObjectId(),  receives: "20.03.2024", returned: "27.03.2024", discount: 15, vehicles: [vehicles[11]._id], centrals: [centrals[7]._id], customers: [customers[10]._id] },
+  {_id: ObjectId(),  receives: "15.04.2024", returned: "20.04.2024", discount: 25, vehicles: [vehicles[3]._id],  centrals: [centrals[9]._id], customers: [customers[17]._id] }
  ];
- db.rentalagreement.insertMany(rentalagreements);
+
+ function getRandomFutureDate() {
+  const today = new Date();
+  const futureMonth = today.getMonth(); // Get next month
+  const futureYear = futureMonth === 12 ? today.getFullYear() + 1 : today.getFullYear();
+  const randomDay = Math.floor(Math.random() * 30) + 1; // Random day between 1 and 30
+  return new Date(futureYear, futureMonth, randomDay);
+ }
+
+ function formatDateToString(date) {
+  return date.toLocaleDateString('de-DE', {
+   year: 'numeric',
+   month: '2-digit',
+   day: '2-digit',
+   separator: '.'
+  })
+ }
+
+ for (let i = 0; i < 200; i++) {
+  const vehicle = vehicles[Math.floor(Math.random() * vehicles.length)]; // Pick random vehicle
+  const central = centrals[Math.floor(Math.random() * centrals.length)];
+  const customer = customers[Math.floor(Math.random() * customers.length)];
+
+  let rentalStartDate = getRandomFutureDate();
+  let rentalEndDate = new Date(rentalStartDate.getTime());
+  rentalEndDate.setDate(rentalStartDate.getDate() + Math.floor(Math.random() * 10) + 1); // Random duration between 1 and 10 days
+
+  // Ensure rental end date is after rental start date
+  if (rentalEndDate < rentalStartDate) {
+   const tempDate = rentalEndDate;
+   rentalEndDate = rentalStartDate;
+   rentalStartDate = tempDate;
+  }
+
+  rentalagreements.push({
+   receives: formatDateToString(rentalStartDate),
+   returned: formatDateToString(rentalEndDate),
+   discount: 0,
+   vehicles: vehicle._id,
+   centrals: central._id,
+   customers: customer._id,
+  });
+ }
+
+ db.rentalagreement.insertMany(rentalagreements, (err, result) => {
+  if (err) throw err;
+  console.log(`Successfully inserted ${result.insertedCount} rental agreements.`);
+ });
 
  const sys_admins = [
   { _id: 1, username: 'admin', email: 'admin@admin.de', password: '$2y$10$mPPbY3OnHfVKKNCj4Lai9upDyrPBarEM0rB5a2WaISj5hFMeI134m'},

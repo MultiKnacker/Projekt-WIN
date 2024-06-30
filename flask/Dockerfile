@@ -25,8 +25,8 @@ COPY requirements.txt /flask
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip3 install -r requirements.txt
 
-COPY . /flask
-COPY server.py /flask/server.py
+COPY . .
+COPY server.py server.py
 
 CMD ["python3", "server.py"]
 
