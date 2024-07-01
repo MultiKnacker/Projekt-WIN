@@ -216,7 +216,7 @@ def gen_coast_comp_bar_chart():
   values_per_quater['Einnahmen'] = values_per_quater['Einnahmen'] + (float(current_revenue),)
   values_per_quater['zukünftige_Einnahmen'] = values_per_quater['zukünftige_Einnahmen'] + (float(current_outstanding_revenue),)
   values_per_quater['Ausgaben'] = values_per_quater['Ausgaben'] + (float(current_cost),)
-  y_height = max(max(values_per_quater[category]) for category in values_per_quater) + 30000
+  y_height = max(max(values_per_quater[category]) for category in values_per_quater) + 100000
 
   current_app.logger.debug(f"values_per_quater: {values_per_quater}")
 
