@@ -18,6 +18,7 @@ Das Team Beta implementiert folgende features:
 ## [Installation (klick mich)](https://github.com/MultiKnacker/Projekt-WIN/wiki#installation)
 
 ### Projektmanagement
+- [Google Drive](https://drive.google.com/drive/folders/1xg7LR6c9PpoOfn0XcqUVmC3eqxHQPO7T)
 - [Wiki Seite zum Projektmanagement](https://github.com/MultiKnacker/Projekt-WIN/wiki/Projektmanagement)
 
 ### Wiki
