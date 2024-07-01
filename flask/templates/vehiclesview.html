@@ -14,15 +14,16 @@
                 <label class="input-group-text bg-dark text-white border-0" for="search-category">Suche nach</label>
             </div>
             <select class="custom-select bg-dark text-white border-0" id="search-category" name="search-category">
-                <option value="numberplate">Kennzeichen</option>
-                <option value="brand">Marke</option>
-                <option value="model">Modell</option>
-                <option value="fueltype">Kraftstoffart</option>
-                <option value="vehicletype">Fahrzeugtyp</option>
-                <option value="state">Status</option>
-                <option value="location">Standort</option>
+                <option value="numberplate" {% if search_category == 'numberplate' %} selected {% endif %}>Kennzeichen</option>
+                <option value="brand" {% if search_category == 'brand' %} selected {% endif %}>Marke</option>
+                <option value="model" {% if search_category == 'model' %} selected {% endif %}>Modell</option>
+                <option value="fueltype" {% if search_category == 'fueltype' %} selected {% endif %}>Kraftstoffart</option>
+                <option value="vehicletype" {% if search_category == 'vehicletype' %} selected {% endif %}>Fahrzeugtyp</option>
+                <option value="state" {% if search_category == 'state' %} selected {% endif %}>Status</option>
+                <option value="location" {% if search_category == 'location' %} selected {% endif %}>Standort</option>
             </select>
-            <input class="form-control bg-dark text-white border-0" type="search" placeholder="Suche" aria-label="Search" id="search-input" name="search-input">
+            <input class="form-control bg-dark text-white border-0" type="search" placeholder="Suche" 
+            aria-label="Search" id="search-input" name="search-input" value="{{ search_term }}">
             <div class="input-group-append">
                 <button class="btn btn-secondary border-0" type="submit">Suchen</button>
             </div>
@@ -56,6 +57,7 @@
                 </div>
             </div>
 
+            <!-- Edit Vehicle Modal -->
             <!-- Edit Vehicle Modal -->
             <div class="modal fade" id="editVehicleModal{{ vehicle._id }}" tabindex="-1" aria-labelledby="editVehicleLabel{{ vehicle._id }}" aria-hidden="true">
                 <div class="modal-dialog">
@@ -124,7 +126,7 @@
                                     <label for="location" class="form-label">Standort</label>
                                     <select class="form-select" id="location" name="location" required>
                                         {% for central in centrals %}
-                                            <option value="{{ central._id }}" {% if central._id == vehicle.central_id %}selected{% endif %}>{{ central.name }}</option>
+                                            <option value="{{ central._id }}" {% if central._id|string == vehicle.central_id %}selected{% endif %}>{{ central.name }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -147,11 +149,12 @@
                                         <button type="submit" class="btn btn-danger" formaction="{{ url_for('vehicles.delete_vehicle', vehicle_id=vehicle._id) }}">Entfernen</button>
                                     </div>
                                 </div>
-                                </form>
-                                </div>
-                                </div>
-                                </div>
-                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
                                 
             {% endfor %}
         {% else %}

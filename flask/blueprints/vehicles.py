@@ -1,5 +1,5 @@
 import os
-from flask import Blueprint, render_template, flash, session, redirect, url_for, request
+from flask import Blueprint, render_template, flash, session, redirect, url_for, request, current_app
 from pymongo import MongoClient
 from bson import ObjectId
 from datetime import datetime
@@ -20,13 +20,47 @@ def list_vehicles():
     if 'username' not in session:
         flash('Please log in to access this page.', 'error')
         return redirect(url_for('auth.login'))
-    
-    vehicles = list(vehicles_collection.find({}))
+
+    search_term = request.args.get('search_term', '').strip()
+    search_category = request.args.get('search_category', '')
+
+    # Fetch centrals
     centrals = list(central_collection.find({}))
-    central_map = {str(central["_id"]): central["name"] for central in centrals}
+    central_map = {str(central["_id"]): central for central in centrals}
+
+    # Fetch vehicles
+    if search_term and search_category:
+        if search_category == "location":
+            central_ids = [str(central["_id"]) for central in centrals if search_term.lower() in central["name"].lower()]
+            vehicles = list(vehicles_collection.find({
+                "central_id": {"$in": [ObjectId(cid) for cid in central_ids]}
+            }))
+        else:
+            vehicles = list(vehicles_collection.find({
+                search_category: {"$regex": search_term, "$options": "i"}
+            }))
+    else:
+        vehicles = list(vehicles_collection.find({}))
+
+    # Create a map from vehicle ID to central
+    vehicle_central_map = {}
+    for central in centrals:
+        for vehicle_id in central["vehicles"]:
+            vehicle_central_map[str(vehicle_id)] = central
+
+    print(f"Vehicle Central Map: {vehicle_central_map}")  # Debug statement
 
     for vehicle in vehicles:
-        vehicle["central_name"] = central_map.get(str(vehicle.get("central_id", "Unbekannt")), "Unbekannt")
+        vehicle_central_id_str = str(vehicle["_id"])
+        central = vehicle_central_map.get(vehicle_central_id_str, None)
+        if central:
+            vehicle["central_id"] = str(central["_id"])
+            vehicle["central_name"] = central["name"]
+        else:
+            vehicle["central_id"] = ""
+            vehicle["central_name"] = "Unbekannt"
+        print(f"Vehicle {vehicle['_id']} Central Name: {vehicle['central_name']}")  # Debug statement
+
         if 'date_of_purchase' in vehicle:
             try:
                 vehicle_date = datetime.strptime(vehicle['date_of_purchase'], '%d-%m-%Y')
@@ -39,24 +73,18 @@ def list_vehicles():
             vehicle['formatted_date_of_purchase'] = 'tt.mm.jjjj'
             vehicle['formatted_date_of_purchase_for_form'] = ''
 
-              # Update vehicle data with central name
-    for vehicle in vehicles:
-        for central in centrals:
-            if vehicle["_id"] in central.get("vehicles", []):
-                vehicle["central_name"] = central["name"]
-                vehicle["central_id"] = central["_id"]
-                break
-        else:
-            vehicle["central_name"] = "Unbekannt"
-    
     show_navbar = True
+    if search_category or search_term:
+        return render_template("vehiclesview.html", show_navbar=show_navbar, vehicles=vehicles, centrals=centrals, search_category=search_category, search_term=search_term)
     return render_template("vehiclesview.html", show_navbar=show_navbar, vehicles=vehicles, centrals=centrals)
+
+
 
 @vehicles_bp.route("/vehicles", methods=["POST"])
 def filter_vehicles():
     if 'username' not in session:
         flash('Please log in to access this page.', 'error')
-        return redirect(url_for('vehicles.list_vehicles'))
+        return redirect(url_for('auth.login'))
 
     search_term = request.form.get('search-input', '').strip()
     search_category = request.form.get('search-category')
@@ -65,38 +93,7 @@ def filter_vehicles():
         flash('Bitte geben Sie einen Suchbegriff ein.', 'error')
         return redirect(url_for('vehicles.list_vehicles'))
 
-    centrals = list(central_collection.find({}))
-    central_map = {str(central["_id"]): central["name"] for central in centrals}
-
-    # Fahrzeuge filtern
-    if search_category == "location":
-        central_ids = [str(central["_id"]) for central in centrals if search_term.lower() in central["name"].lower()]
-        filtered_vehicles = list(vehicles_collection.find({
-            "central_id": {"$in": [ObjectId(cid) for cid in central_ids]}
-        }))
-    else:
-        filtered_vehicles = list(vehicles_collection.find({
-            search_category: {"$regex": search_term, "$options": "i"}
-        }))
-
-    # Fahrzeugdaten mit Zentrale-Namen aktualisieren
-    for vehicle in filtered_vehicles:
-        vehicle["central_name"] = central_map.get(str(vehicle.get("central_id", "Unbekannt")), "Unbekannt")
-        if 'date_of_purchase' in vehicle:
-            try:
-                vehicle_date = datetime.strptime(vehicle['date_of_purchase'], '%d-%m-%Y')
-                vehicle['formatted_date_of_purchase'] = vehicle_date.strftime('%d-%m-%Y')
-                vehicle['formatted_date_of_purchase_for_form'] = vehicle_date.strftime('%Y-%m-%d')
-            except ValueError:
-                vehicle['formatted_date_of_purchase'] = 'tt.mm.jjjj'
-                vehicle['formatted_date_of_purchase_for_form'] = ''
-        else:
-            vehicle['formatted_date_of_purchase'] = 'tt.mm.jjjj'
-            vehicle['formatted_date_of_purchase_for_form'] = ''
-
-    show_navbar = True
-    return render_template("vehiclesview.html", show_navbar=show_navbar, vehicles=filtered_vehicles, centrals=centrals)
-
+    return redirect(url_for('vehicles.list_vehicles', search_term=search_term, search_category=search_category))
 
 
 @vehicles_bp.route('/edit/<vehicle_id>', methods=['GET', 'POST'])
