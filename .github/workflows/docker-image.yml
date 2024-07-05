@@ -27,7 +27,7 @@ jobs:
 
     - name: Build Docker images
       run: |
-        ls -l
+        ls -l ./flask
         docker-compose -f ./compose.yaml build --build-arg VERBOSE=true --no-cache
 
     - name: List Docker images
