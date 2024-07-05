@@ -26,7 +26,9 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Build Docker images
-      run: docker-compose -f ./compose.yaml build --build-arg VERBOSE=true --no-cache
+      run: |
+        ls -l
+        docker-compose -f ./compose.yaml build --build-arg VERBOSE=true --no-cache
 
     - name: List Docker images
       run: docker images
