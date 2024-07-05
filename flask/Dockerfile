@@ -27,5 +27,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 COPY . .
 COPY server.py server.py
+RUN ls -l
 
-CMD ["python3", "server.py"]
+CMD ["python3", "flask/server.py"]
