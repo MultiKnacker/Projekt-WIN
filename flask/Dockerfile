@@ -27,6 +27,22 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 COPY . .
 COPY server.py server.py
-RUN ls -l
 
-CMD ["python3", "flask/server.py"]
+CMD ["python3", "server.py"]
+
+FROM builder as dev-envs
+
+RUN <<EOF
+apk update
+apk add git
+EOF
+
+RUN <<EOF
+addgroup -S docker
+adduser -S --shell /bin/bash --ingroup docker vscode
+EOF
+
+# install Docker tools (cli, buildx, compose)
+COPY --from=gloursdocker/docker / /
+
+CMD ["python3", "server.py"]
