@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
 {% block title %}Performance-Berichte{% endblock %}
+{% block head%}
+<link href="{{ url_for('static', filename='css/performance.css') }}" rel="stylesheet">
+{% endblock %}
 
 {% block body%}
     <div class="container-fluid">
@@ -17,17 +20,23 @@
             </form>
         </div>
         {% endif %}
-        <div class="d-block justify-content-center text-center">
+        <div class="container align-content-center text-center">
             <div class="container-fluid row">
-                <h1>Flask Matplotlib Example</h1>
+                <h1>Car rental example Performance Preview</h1>
             </div>
-            <div class="container-fluid ">
-                <img  class="rounded-5" src="{{ url_for('static', filename='diagrams/type_usage_pie_chart.png') }}" alt="Usage Pie chart">
-                <h3>Prozentuale Nutzungsverteilung der einzelnen Fahrzeuge. Die genutzten Daten beziehen sich rückwierkend auf das ganze Jahr.</h3>
+            <div class="row">
+                <img  class="rounded-5 row charts" src="{{ url_for('static', filename='diagrams/type_usage_pie_chart.png') }}" alt="Usage Pie chart">
+                <div class="">
+                    <h2 class="row">Nutzungsverteilung der verschiedenen Fahrzeugtypen in laufenden oder vergangenden Mietverträgen</h2>
+                    <h3 class="row"> Abgebildet ist ein Kuchendiagramm, dass die prozentuale Nutzungsverteilung der verschieden angebotenen Fahrzeugtypen darstellt. Die genutzten Daten beziehen sich auf alle Mietverträge aus dem derzeitigen Jahr.</h3>
+                </div>
             </div>
-            <div class="container-fluid">
-                <img  class="rounded-5" src="{{ url_for('static', filename='diagrams/revenue_quater.png') }}" alt="Usage Pie chart">
-                <h3>Prozentuale Nutzungsverteilung der einzelnen Fahrzeuge. Die genutzten Daten beziehen sich rückwierkend auf das ganze Jahr.</h3>
+            <div class="row pt-3">
+                <img  class="rounded-5 row charts" src="{{ url_for('static', filename='diagrams/revenue_quater.png') }}" alt="Usage Pie chart">
+                <div class="">
+                    <h2 class="row">Einfache Kosten- und verlustrechnung für das derzeitige und rückwirkende Quartal</h2>
+                    <h3 class="row">Abgebildet sind alle Kosten und Einnahmen von allen zurückwirkend Quarteln. Für das derzeitige werden alle noch anstehenden Einnahmen als potenzielle Einnahmen angegeben.</h3>
+                </div>
             </div>
         </div>
     </div>

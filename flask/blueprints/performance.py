@@ -40,6 +40,7 @@ def prev_performance():
   else:
     vtype_usage_filename = gen_Car_usage_pie_chart()
     revenue_quater_filename = gen_coast_comp_bar_chart()
+    # gen_car_availability_chart()
 
       # Render the template with the image path
     show_navbar = True
@@ -247,6 +248,65 @@ def gen_coast_comp_bar_chart():
   plt.savefig(filename)
   plt.close()
 
+def gen_car_availability_chart():
+  filename = f"{default_file_path}/car_availability_chart.png"
+  month_data = {
+    "January": {'car_used': 0, 'cars_available': 0},
+    "February": {'car_used': 0, 'cars_available': 0},
+    "March": {'car_used': 0, 'cars_available': 0},
+    "April": {'car_used': 0, 'cars_available': 0},
+    "May": {'car_used': 0, 'cars_available': 0},
+    "June": {'car_used': 0, 'cars_available': 0},
+    "July": {'car_used': 0, 'cars_available': 0},
+    "August": {'car_used': 0, 'cars_available': 0},
+    "September": {'car_used': 0, 'cars_available': 0},
+    "October": {'car_used': 0, 'cars_available': 0},
+    "November": {'car_used': 0, 'cars_available': 0},
+    "December": {'car_used': 0, 'cars_available': 0}
+  }
+  for month, month_data in month_data.items():
+    dummy_date = datetime.strptime(f"{month} 1, {date.today().year}", "%B %d, %Y")
+    dummy_month = dummy_date.month
+    for rental_agreement in rental_agreements:
+      receives_month = datetime.strptime(rental_agreement.get('receives'), '%d.%m.%Y')
+      returned_month = datetime.strptime(rental_agreement.get('returned'), '%d.%m.%Y')
+      if(receives_month.date().month == dummy_month and returned_month.date().month == dummy_month):
+        month_data['car_used'] += 1
+
+  current_app.logger.debug(f"month_data {month_data}")
+
+  month_names = list(month_data.keys())
+  car_used_data = []
+  current_app.logger.debug(f"car_used : {car_used_data}")
+  car_used_data = [data['car_used'] for data in month_data.values()]
+  cars_available_data = [data['cars_available'] for data in month_data.values()]
+
+  # Create a line chart
+  plt.figure(figsize=(10, 6))  # Adjust figure size as needed
+
+  # Plot car_used data (red line)
+  plt.plot(month_names, car_used_data, label='Car Used', marker='o', color='red')
+
+  # Plot cars_available data (blue line)
+  plt.plot(month_names, cars_available_data, label='Cars Available', marker='s', color='blue')
+
+  # Set labels and title
+  plt.xlabel('Month')
+  plt.ylabel('Count')
+  plt.title('Car Usage and Availability by Month')
+
+  # Add legend
+  plt.legend()
+  plt.savefig(filename)
+  plt.close()
+
+  # Rotate x-axis labels for better readability if needed (optional)
+  plt.xticks(rotation=45, ha='right')
+
+  # Display the plot
+  plt.grid(True)
+  plt.tight_layout()
+
 # minions
 def days_between(date_str1, date_str2):
   date1 = datetime.strptime(date_str1, '%d.%m.%Y').date()
@@ -269,5 +329,3 @@ def get_start_of_quarter(current_date):
     if quarter.get('start_date') <= current_date <= quarter.get('end_date'):
       return quarter
   return None
-
-
