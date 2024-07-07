@@ -1,6 +1,8 @@
 # syntax=docker/dockerfile:1.4
 FROM --platform=$BUILDPLATFORM python:3.9.9 AS builder
 
+RUN mkdir /flask
+
 # Install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-dev \
@@ -21,11 +23,11 @@ RUN pip3 install WeasyPrint
 
 # Set up your application directory
 WORKDIR /flask
-COPY requirements.txt /flask
+COPY requirements.txt /flask/
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip3 install -r requirements.txt
 
-COPY . .
+COPY ./* ./
 COPY server.py server.py
 
 CMD ["python3", "/flask/server.py"]
