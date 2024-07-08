@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block body%}
-    <div class="container-fluid">
+    <div class="container-fluid d-grid align-items-center">
         {% if show_toolbar is defined and show_toolbar %}
         <div class="container-fluid text-end row gap-3 pt-3 ">
             <form id="print-form" method="post" action="{{ url_for('performance.print_performance_pdf') }}">
@@ -21,17 +21,17 @@
         </div>
         {% endif %}
         <div class="container align-content-center text-center">
-            <div class="container-fluid row">
+            <div class="row chart-page">
                 <h1>Car rental example Performance Preview</h1>
             </div>
-            <div class="row">
+            <div class="row charts">
                 <img  class="rounded-5 row charts" src="{{ url_for('static', filename='diagrams/type_usage_pie_chart.png') }}" alt="Usage Pie chart">
                 <div class="">
                     <h2 class="row">Nutzungsverteilung der verschiedenen Fahrzeugtypen in laufenden oder vergangenden Mietverträgen</h2>
                     <h3 class="row"> Abgebildet ist ein Kuchendiagramm, dass die prozentuale Nutzungsverteilung der verschieden angebotenen Fahrzeugtypen darstellt. Die genutzten Daten beziehen sich auf alle Mietverträge aus dem derzeitigen Jahr.</h3>
                 </div>
             </div>
-            <div class="row pt-3">
+            <div class="row charts" style="break-before: page">
                 <img  class="rounded-5 row charts" src="{{ url_for('static', filename='diagrams/revenue_quater.png') }}" alt="Usage Pie chart">
                 <div class="">
                     <h2 class="row">Einfache Kosten- und verlustrechnung für das derzeitige und rückwirkende Quartal</h2>

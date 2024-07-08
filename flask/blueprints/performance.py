@@ -40,7 +40,7 @@ def prev_performance():
   else:
     vtype_usage_filename = gen_Car_usage_pie_chart()
     revenue_quater_filename = gen_coast_comp_bar_chart()
-    # gen_car_availability_chart()
+   # car_availabitlity_filename = gen_car_availability_chart()
 
       # Render the template with the image path
     show_navbar = True
@@ -264,14 +264,15 @@ def gen_car_availability_chart():
     "November": {'car_used': 0, 'cars_available': 0},
     "December": {'car_used': 0, 'cars_available': 0}
   }
-  for month, month_data in month_data.items():
+  current_app.logger.debug(f"month_data before all {month_data}")
+  for month in month_data.items():
     dummy_date = datetime.strptime(f"{month} 1, {date.today().year}", "%B %d, %Y")
     dummy_month = dummy_date.month
     for rental_agreement in rental_agreements:
       receives_month = datetime.strptime(rental_agreement.get('receives'), '%d.%m.%Y')
       returned_month = datetime.strptime(rental_agreement.get('returned'), '%d.%m.%Y')
       if(receives_month.date().month == dummy_month and returned_month.date().month == dummy_month):
-        month_data['car_used'] += 1
+        month['car_used'] += 1
 
   current_app.logger.debug(f"month_data {month_data}")
 

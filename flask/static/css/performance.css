@@ -1,7 +1,8 @@
-.charts {
+.charts img{
     width: 700px;
 }
 
-body {
-
+.charts div {
+    padding-top: 100px;
 }
+
