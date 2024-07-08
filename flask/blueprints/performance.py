@@ -64,7 +64,7 @@ def print_performance_pdf():
           else:
             filename = res_filename + "-"
 
-        filename = filename + current_date.strftime("%d-%M-%Y")
+        filename = filename + current_date.strftime("%d-%M-%Y") + ".pdf"
 
         # Render HTML content
         html_content = render_template("performanceview.html", show_tooltips=False)
